@@ -146,3 +146,6 @@ env
 git-exit.txt
 git-status-tail.txt
 git-debug.txt
+
+# Ignore local Graphify output
+graphify-out/
