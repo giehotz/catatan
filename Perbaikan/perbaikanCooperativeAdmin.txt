@@ -1,0 +1,185 @@
+## Prompt AI untuk Memecah (Refactor) Controller `CooperativeAdmin.php`
+
+Saya memiliki file controller CodeIgniter 4 bernama `CooperativeAdmin.php` (path: `app/Controllers/CooperativeAdmin.php`). Controller ini saat ini **terlalu besar** (800+ baris) dan menangani banyak tanggung jawab berbeda dalam modul koperasi: dashboard, manajemen anggota, kode undangan, verifikasi simpanan, persetujuan pinjaman, manajemen angsuran, kas internal, pengaturan sistem, dan pinjaman langsung. Saya ingin Anda melakukan **refactoring dengan memecah controller ini** menjadi beberapa controller terpisah sesuai prinsip SOLID, khususnya **Single Responsibility Principle**.
+
+---
+
+### Detail Controller Saat Ini
+
+**Namespace:** `App\Controllers`  
+**Method yang ada:**
+- `__construct()` – menginisialisasi 8 model
+- `checkCoopManage()` – private method untuk otorisasi (admin/superadmin/manager)
+- `index()` – dashboard dengan chart & statistik
+- `members()`, `toggleMemberStatus()`
+- `invitations()`, `generateInvitation()`, `deleteInvitation()`
+- `savings()`, `approveSaving()`, `rejectSaving()`
+- `loans()`, `approveLoan()`, `rejectLoan()`
+- `installments()`, `storeInstallment()`, `approveInstallment()`, `rejectInstallment()`
+- `funds()`, `storeFund()`
+- `settings()`, `updateSettings()`
+- `isDirectLoanEnabled()`, `checkDirectLoanAccess()`, `directLoanForm()`, `storeDirectLoan()`
+
+**Model yang digunakan:**
+`KopInvitationModel`, `KopAnggotaModel`, `KopSimpananModel`, `KopPinjamanModel`, `KopAngsuranModel`, `DebtModel`, `ReceivableModel`, `AuditLogModel`, `KopKasInternalModel`, `KopSettingModel`
+
+---
+
+### Tujuan Refactoring
+
+1. **Pisahkan setiap kelompok fitur** ke dalam controller terpisah di folder `app/Controllers/Cooperative/`.
+2. **Hilangkan method `checkCoopManage()`** dan gantikan dengan **Filter** bernama `CoopAuthFilter` (seperti pada `AdminAuthFilter`). Filter akan dipasang di route group `admin/cooperative/*`.
+3. **Setiap controller baru hanya mewarisi `BaseController`** dan hanya meng-inject model yang benar-benar dibutuhkan.
+4. **Tetap pertahankan semua logika bisnis** tanpa perubahan, hanya memindahkan dan mengatur ulang struktur.
+5. **Sertakan contoh perubahan routes** yang mengarah ke namespace `App\Controllers\Cooperative` dengan filter `coop_auth`.
+
+---
+
+### Struktur Output yang Diminta
+
+Buatlah file-file berikut dengan kode lengkap:
+
+```
+app/Controllers/
+├── BaseController.php (sudah ada, tidak perlu diubah)
+└── Cooperative/
+    ├── DashboardController.php
+    ├── MemberController.php
+    ├── InvitationController.php
+    ├── SavingController.php
+    ├── LoanController.php
+    ├── InstallmentController.php
+    ├── CashController.php
+    ├── SettingController.php
+    └── DirectLoanController.php
+```
+
+**Rincian method setiap controller:**
+
+| Controller | Method yang dipindahkan |
+|------------|--------------------------|
+| `DashboardController` | `index()` |
+| `MemberController` | `members()`, `toggleMemberStatus()` |
+| `InvitationController` | `invitations()`, `generateInvitation()`, `deleteInvitation()` |
+| `SavingController` | `savings()`, `approveSaving()`, `rejectSaving()` |
+| `LoanController` | `loans()`, `approveLoan()`, `rejectLoan()` |
+| `InstallmentController` | `installments()`, `storeInstallment()`, `approveInstallment()`, `rejectInstallment()` |
+| `CashController` | `funds()`, `storeFund()` |
+| `SettingController` | `settings()`, `updateSettings()` |
+| `DirectLoanController` | `isDirectLoanEnabled()`, `checkDirectLoanAccess()`, `directLoanForm()`, `storeDirectLoan()` |
+
+**Catatan:** Method `isDirectLoanEnabled()` dan `checkDirectLoanAccess()` bersifat private/protected, tetap simpan di `DirectLoanController` sebagai method protected/private.
+
+---
+
+### Ketentuan Kode untuk Setiap Controller
+
+1. **Namespace:** `namespace App\Controllers\Cooperative;`
+2. **Extends:** `use App\Controllers\BaseController;`
+3. **Constructor** hanya menginisialisasi model-model yang digunakan oleh controller tersebut (bukan semua model).
+4. **Hapus semua pemanggilan `$this->checkCoopManage()`** karena akan digantikan filter.
+5. **Method `checkCoopManage()` tidak perlu ditulis ulang** – filter akan menangani otorisasi.
+6. **Import model** yang diperlukan: contoh `use App\Models\KopAnggotaModel;`
+7. **AuditLogModel** tetap digunakan, pastikan namespace `App\Models\AuditLogModel`.
+
+---
+
+### Filter Otorisasi (CoopAuthFilter)
+
+Selain controller, buatkan juga file filter:
+
+**Path:** `app/Filters/CoopAuthFilter.php`
+
+**Isi filter:**
+- Cek apakah user sudah login (`auth()->loggedIn()`).
+- Cek apakah user memiliki role `admin`, `superadmin`, atau `manager`.
+- Jika tidak, arahkan ke halaman 404 atau redirect ke login dengan pesan error.
+- Daftarkan filter ini di `app/Config/Filters.php` dengan alias `coop_auth`.
+
+**Contoh kode filter:**
+```php
+<?php
+
+namespace App\Filters;
+
+use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+
+class CoopAuthFilter implements FilterInterface
+{
+    public function before(RequestInterface $request, $arguments = null)
+    {
+        if (!auth()->loggedIn()) {
+            return redirect()->to('/admin/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        
+        $user = auth()->user();
+        if (!$user->inGroup('admin') && !$user->inGroup('superadmin') && !$user->inGroup('manager')) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Halaman tidak ditemukan.');
+        }
+        
+        return $request;
+    }
+    
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
+}
+```
+
+---
+
+### Perubahan Routes (Contoh)
+
+Saat ini route `admin/cooperative` mungkin didefinisikan secara manual. Setelah refactor, gunakan group seperti ini di `app/Config/Routes.php`:
+
+```php
+// Group untuk cooperative dengan filter
+$routes->group('admin/cooperative', ['namespace' => 'App\Controllers\Cooperative', 'filter' => 'coop_auth'], function($routes) {
+    $routes->get('/', 'DashboardController::index');
+    $routes->get('members', 'MemberController::members');
+    $routes->post('toggle-member-status/(:num)', 'MemberController::toggleMemberStatus/$1');
+    $routes->get('invitations', 'InvitationController::invitations');
+    $routes->post('generate-invitation', 'InvitationController::generateInvitation');
+    $routes->delete('delete-invitation/(:num)', 'InvitationController::deleteInvitation/$1');
+    $routes->get('savings', 'SavingController::savings');
+    $routes->post('approve-saving/(:num)', 'SavingController::approveSaving/$1');
+    $routes->post('reject-saving/(:num)', 'SavingController::rejectSaving/$1');
+    $routes->get('loans', 'LoanController::loans');
+    $routes->post('approve-loan/(:num)', 'LoanController::approveLoan/$1');
+    $routes->post('reject-loan/(:num)', 'LoanController::rejectLoan/$1');
+    $routes->get('installments', 'InstallmentController::installments');
+    $routes->post('store-installment', 'InstallmentController::storeInstallment');
+    $routes->post('approve-installment/(:num)', 'InstallmentController::approveInstallment/$1');
+    $routes->post('reject-installment/(:num)', 'InstallmentController::rejectInstallment/$1');
+    $routes->get('funds', 'CashController::funds');
+    $routes->post('store-fund', 'CashController::storeFund');
+    $routes->get('settings', 'SettingController::settings');
+    $routes->post('update-settings', 'SettingController::updateSettings');
+    $routes->get('direct-loan', 'DirectLoanController::directLoanForm');
+    $routes->post('store-direct-loan', 'DirectLoanController::storeDirectLoan');
+});
+```
+
+---
+
+### Yang Harus Dihasilkan AI
+
+1. **Kode lengkap setiap controller** (9 file) dengan penjelasan singkat jika diperlukan.
+2. **Kode lengkap `CoopAuthFilter.php`** dan instruksi pendaftaran di `Config/Filters.php`.
+3. **Contoh perubahan routes** (seperti di atas) – tidak perlu menimpa seluruh file, cukup berikan blok yang harus ditambahkan.
+4. **Catatan penting** tentang kemungkinan perubahan path view (jika ada view yang memanggil helper `url_to` atau hardcoded route, beri saran penyesuaian).
+
+---
+
+### Format Output
+
+Berikan dalam bentuk **kode yang siap pakai**, dipisah per file dengan jelas, misalnya:
+
+```php
+// app/Controllers/Cooperative/DashboardController.php
+<?php
+namespace App\Controllers\Cooperative;
+...
+```
+
+Jangan lupa sertakan instruksi untuk menghapus file `CooperativeAdmin.php` yang lama setelah semua kode baru berfungsi dengan baik.

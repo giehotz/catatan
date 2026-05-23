@@ -1,0 +1,176 @@
+# Rencana Implementasi Fitur Pengunduran Diri Anggota Koperasi (Membership Resignation System) - VERSI FINAL PRODUCTION-GRADE
+
+Dokumen spesifikasi arsitektur teknis, skema database, logika alur bisnis, dan skenario pengujian untuk sistem pengunduran diri anggota koperasi. Dokumen ini merupakan **Versi Final** yang mengadopsi penyempurnaan akhir untuk performa tinggi, atomisitas tangguh, dan penanganan notifikasi *best-effort*.
+
+---
+
+## 📌 1. Deskripsi Fitur & Alur Sistem (Flow)
+
+Sistem ini memfasilitasi anggota koperasi aktif untuk mengajukan permohonan pengunduran diri resmi. Seluruh alur data dikawal dengan transaksi database manual, pencegahan konkurensi berbasis tahun, task scheduler otomatis, dan enkripsi verifikasi publik demi menjaga kepatuhan hukum dan integritas keuangan.
+
+```mermaid
+sequenceDiagram
+    actor Anggota as 👤 Anggota Koperasi
+    actor Admin as ⚙️ Admin / Manager
+    participant Scheduler as ⏰ CI4 Task Scheduler
+    
+    Anggota->>+Portal: Akses "Keluar Keanggotaan" di Hub Koperasi
+    Note over Portal: Validasi Server-Side:<br/>Cek apakah ada pengajuan PENDING (No Duplicate)
+    Portal-->>Anggota: Tampilkan Ringkasan Finansial & Riwayat Pengajuan Lama
+    
+    alt Anggota Membatalkan Sendiri
+        Anggota->>Portal: Klik "Batalkan Pengajuan" (Selagi Pending)
+        Note over Portal: Validasi Kepemilikan Server-Side: auth()->id() == user_id
+        Portal->>Database: Ubah status menjadi 'cancelled'
+        Portal-->>Anggota: Kembali Aktif Penuh & Riwayat Tercatat
+    else Anggota Mengajukan
+        Anggota->>Portal: Isi Alasan & Kirim Form Pengunduran Diri
+        Portal->>Database: Simpan sebagai 'pending'
+        Portal->>Database: Kirim Notifikasi Antrean ke Semua Admin
+    end
+    
+    alt Kadaluarsa Otomatis (30 Hari)
+        Scheduler->>Portal: Jalankan cooperative:resign-cleanup (Cron)
+        Portal->>Database: DB Manual Transaction: Ubah status pending > 30 hari ke 'expired'
+        Portal->>Database: Kirim Notifikasi Kadaluarsa ke Inbox Anggota (Best-Effort)
+    end
+
+    Admin->>Portal: Buka Dashboard Admin -> Daftar Permohonan Resign (Badge Pending Aktif)
+    
+    alt Penolakan oleh Admin
+        Admin->>Portal: Isi Form Penolakan (Wajib Tulis Alasan Penolakan)
+        Portal->>Database: DB Manual Transaction: Simpan status 'rejected' & Alasan Penolakan
+        Portal->>Database: Kirim Notifikasi Inbox ke Anggota
+        Database-->>Anggota: Terima alasan penolakan & Bisa ajukan ulang setelah lunas
+    else Persetujuan oleh Admin
+        Note over Portal: Validasi Server-Side:<br/>Sisa utang HARUS Rp 0
+        Admin->>Portal: Klik Setujui Pengunduran Diri
+        
+        Note over Portal: DB Manual Transaction & Concurrency Lock:<br/>SELECT FOR UPDATE nomor_urut per tahun berjalan
+        Portal->>Database: Ubah status ke 'approved', set nomor surat & generate SHA-256 HMAC hash + Salt acak
+        Portal->>Database: Ubah status anggota di kop_anggota menjadi 'nonaktif'
+        Portal->>Database: Automasi Finansial: Catat penarikan sisa simpanan ke Rp 0
+        Portal->>Database: Invalidasi Cache Keanggotaan (coop_member_active_{userId})
+        Portal->>Database: Kirim Notifikasi Inbox dengan Link Surat Terverifikasi
+        
+        Database-->>Anggota: Terima notifikasi kelulusan + Link unduh surat terverifikasi
+    end
+```
+
+---
+
+## 💾 2. Skema & Perubahan Database (Database Design)
+
+Berikut adalah skema tabel `kop_pengunduran_diri` yang disempurnakan dengan penambahan kolom salt kriptografis, status `'expired'`, dan stempel audit lengkap:
+
+### Tabel: `kop_pengunduran_diri`
+
+| Kolom | Tipe Data | Atribut | Deskripsi |
+| :--- | :--- | :--- | :--- |
+| `id` | `INT` | Primary Key, Auto Increment, Unsigned | ID unik pengajuan |
+| `anggota_id` | `INT` | Foreign Key (`kop_anggota.id`), Unsigned | Referensi ke anggota yang mengajukan |
+| `nomor_surat` | `VARCHAR(50)` | Unique, `NULL` | Nomor surat resmi (contoh: `005/KOP-SKP/RE/2026`) |
+| `nomor_urut` | `INT` | Unsigned, `NULL` | Angka urut pengunci konkurensi nomor surat (di-reset per tahun kalender) |
+| `hash_verifikasi`| `VARCHAR(64)` | Unique, `NULL` | SHA-256 HMAC hash untuk verifikasi keaslian QR Code |
+| `crypt_salt` | `VARCHAR(32)` | `NULL` | Cryptographic random salt untuk keamanan hash |
+| `status` | `ENUM` | `'pending'`, `'approved'`, `'rejected'`, `'cancelled'`, `'expired'` | Status pengajuan permohonan |
+| `alasan_keluar` | `TEXT` | - | Alasan pengunduran diri dari anggota |
+| `alasan_penolakan`| `TEXT` | `NULL` | Catatan dari admin jika permohonan ditolak |
+| `processed_by` | `INT` | Foreign Key (`users.id`), `NULL`, Unsigned | ID admin/manager yang memproses |
+| `processed_at` | `TIMESTAMP` | `NULL` | Waktu persetujuan/penolakan |
+| `created_at` | `TIMESTAMP` | Default `CURRENT_TIMESTAMP` | Waktu pengajuan permohonan |
+| `updated_at` | `TIMESTAMP` | `NULL` ON UPDATE `CURRENT_TIMESTAMP` | Waktu pembaruan data secara umum |
+
+---
+
+## 🛡️ 3. Penyelesaian Ulasan Terkini (Production-Grade Refinement)
+
+### 🟡 Sedang (Medium)
+
+#### 1. Limitasi Batch Fallback Event-Driven (Performa UI Dashboard)
+* **Masalah**: Eksekusi auto-expiry tanpa batas pada dashboard admin dapat menyumbat rendering halaman jika terdapat ratusan permohonan kedaluwarsa sekaligus.
+* **Solusi**: Pemicu cadangan (*event-driven fallback*) pada Controller Admin akan **dibatasi secara ketat maksimal 50 record** per pemuatan halaman:
+  ```php
+  $pendingExpired = $resignModel->where('status', 'pending')
+                                ->where('created_at <', date('Y-m-d H:i:s', strtotime('-30 days')))
+                                ->limit(50)
+                                ->findAll();
+  ```
+  Ini mengamankan performa UI admin dengan mencegah pemrosesan data raksasa dalam satu siklus *request* tunggal, sementara proses di latar belakang (*CLI Spark Command*) tetap memproses seluruh record tanpa batas.
+
+#### 2. Pemeriksaan Nilai Kembalian Eksplisit Setiap Kueri Database (Atomisitas Tangguh)
+* **Masalah**: Beberapa kegagalan kueri di CI4 (seperti update ke baris yang hilang) tidak memicu *exception*, sehingga bisa lolos tanpa masuk ke blok `catch`.
+* **Solusi**: Setiap operasi database di dalam blok transaksi manual (`transBegin()`) **wajib diperiksa nilai kembaliannya secara eksplisit**:
+  ```php
+  $db = \Config\Database::connect();
+  $db->transBegin();
+  try {
+      // 1. Update Pengajuan
+      if (!$resignModel->update($id, ['status' => 'approved', ...])) {
+          $db->transRollback();
+          return redirect()->back()->with('error', 'Gagal memperbarui status permohonan.');
+      }
+      
+      // 2. Update Anggota
+      if (!$anggotaModel->update($anggotaId, ['status_keaktifan' => 'nonaktif'])) {
+          $db->transRollback();
+          return redirect()->back()->with('error', 'Gagal memperbarui status keanggotaan.');
+      }
+      
+      // ... Operasi lainnya wajib menggunakan pemeriksaan if-conditional eksplisit ...
+      
+      if ($db->transStatus() === false) {
+          $db->transRollback();
+          return redirect()->back()->with('error', 'Transaksi database gagal.');
+      }
+      $db->transCommit();
+  } catch (\Throwable $e) {
+      $db->transRollback();
+      throw $e;
+  }
+  ```
+
+---
+
+### 🟢 Minor (Minor)
+
+#### 3. Penanganan Pengiriman Notifikasi *Best-Effort* pada Auto-Expiry
+* **Kebijakan Pengiriman**: Pengubahan status permohonan menjadi `expired` di dalam Spark Command tetap dibungkus dalam transaksi database manual demi atomisitas data.
+* **Notifikasi Mandiri**: Proses pembuatan pesan inbox notifikasi kepada anggota dilakukan secara **best-effort**. Jika pengiriman notifikasi gagal (misalnya karena kueri tabel pesan bermasalah), sistem akan mencatat kegagalan tersebut ke dalam log kesalahan (`log_message('error', ...)`), tetapi transaksi perubahan status ke `expired` **TIDAK akan di-rollback**. Hal ini memastikan integritas status inti permohonan di database tetap terjaga walaupun notifikasi mengalami gangguan sementara.
+
+#### 4. Uji Coba Penanganan Kasus Kosong Spark Command
+* Spark Command `cooperative:resign-cleanup` akan diprogram untuk melakukan evaluasi data sebelum memproses kueri.
+* Jika tidak ditemukan data yang memenuhi kriteria kedaluwarsa (`count($pendingExpired) === 0`), Spark Command akan langsung berhenti secara anggun dan menampilkan pesan informatif di terminal:
+  `"Tidak ada permohonan pengunduran diri yang kedaluwarsa untuk diproses."` (berwarna kuning/hijau) tanpa memicu galat (*error*) atau kueri kosong.
+
+---
+
+## 📂 4. Proposed Changes (Struktur Kode & Berkas Baru)
+
+### Component: Database Migrations
+#### [NEW] [2026_05_22_100000_CreateCooperativeResignationTable.php](file:///c:/laragon/www/catatan/app/Database/Migrations/2026-05-22-100000_CreateCooperativeResignationTable.php)
+* Membuat tabel `kop_pengunduran_diri` dengan seluruh kolom platinum revisi (termasuk `nomor_surat`, `nomor_urut`, `hash_verifikasi`, `crypt_salt`, status `'expired'` dan `'cancelled'`).
+
+### Component: Commands (Spark CLI)
+#### [NEW] [CooperativeResignCleanup.php](file:///c:/laragon/www/catatan/app/Commands/CooperativeResignCleanup.php)
+* Membuat Spark Command CLI `cooperative:resign-cleanup` untuk otomatisasi pembersihan pengajuan kedaluwarsa berumur `> 30 hari`, penanganan *best-effort* notifikasi inbox, dan penanganan kondisi kosong secara anggun.
+
+### Component: Controllers
+#### [NEW] [ResignController.php](file:///c:/laragon/www/catatan/app/Controllers/Cooperative/Member/ResignController.php)
+* Mengelola pengajuan formulir, pembatalan mandiri anggota dengan proteksi kepemilikan ketat, verifikasi hash QR code publik minimalist dengan rate limiting, dan render riwayat historis pengajuan.
+
+#### [NEW] [ResignApprovalController.php](file:///c:/laragon/www/catatan/app/Controllers/Admin/Cooperative/ResignApprovalController.php)
+* Persetujuan pengajuan dibungkus **Manual DB Transaction**, pemeriksaan eksplisit nilai kembalian setiap operasi, limitasi fallback event-driven ke 50 record, dan **Pessimistic Locking FOR UPDATE** berdasar tahun kalender berjalan.
+
+---
+
+## 🧪 5. Rencana Verifikasi & Skenario Pengujian
+
+### Skenario Uji 6: Verifikasi Command Spark pada Kasus Kosong
+1. Pastikan tidak ada data pengisian permohonan pengunduran diri berumur `> 30 hari` yang berstatus `pending` di database.
+2. Jalankan perintah Spark Command melalui terminal:
+   `php spark cooperative:resign-cleanup`
+3. **Hasil yang Diharapkan**:
+   - Terminal merespons secara bersih: *"Tidak ada permohonan pengunduran diri yang kedaluwarsa untuk diproses."*
+   - Tidak ada modifikasi database dan tidak ada berkas notifikasi baru yang terkirim.
+   - Command selesai dengan kode status sukses 0.

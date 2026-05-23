@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.theme-dark, .theme-dark *));
+
+/* Pindai semua berkas PHP di dalam folder app untuk kelas-kelas Tailwind */
+@source "../../app/**/*.php";
+@source "../../app/Views/user/savings/index.php";
+@source "../../app/Views/user/inbox/index.php";
+@source "../../app/Views/user/inbox/show.php";
+@source "../../app/Views/layouts/base.php";
+@source "../**/*.php";
+@source "app/**/*.php";
+
+
+
+@theme {
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+
+  --color-tx-primary: var(--text-primary);
+  --color-tx-secondary: var(--text-secondary);
+  --color-tx-disabled: var(--text-disabled);
+
+  --color-br-default: var(--border-default);
+  --color-br-subtle: var(--border-subtle);
+
+  --color-brand: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-danger: var(--status-danger);
+  --color-info: var(--status-info);
+}
+
+:root, .theme-dark {
+  /* DARK MODE (Default/Current App State) */
+  --bg-base: var(--color-slate-950);
+  --bg-surface: var(--color-slate-900);
+  --bg-elevated: var(--color-slate-800);
+
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-slate-400);
+  --text-disabled: var(--color-slate-600);
+
+  --border-default: var(--color-slate-800);
+  --border-subtle: var(--color-slate-900);
+
+  --brand-primary: var(--color-indigo-500);
+  --brand-hover: var(--color-indigo-400);
+
+  --status-success: var(--color-emerald-400);
+  --status-warning: var(--color-amber-400);
+  --status-danger: var(--color-rose-400);
+  --status-info: var(--color-sky-400);
+}
+
+.theme-light {
+  /* LIGHT MODE */
+  --bg-base: var(--color-slate-50);
+  --bg-surface: var(--color-white);
+  --bg-elevated: var(--color-slate-100);
+
+  --text-primary: var(--color-slate-900);
+  --text-secondary: var(--color-slate-500);
+  --text-disabled: var(--color-slate-300);
+
+  --border-default: var(--color-slate-200);
+  --border-subtle: var(--color-slate-100);
+
+  --brand-primary: var(--color-indigo-600);
+  --brand-hover: var(--color-indigo-700);
+
+  /* Status (Diuji khusus di light mode agar kontras tetap optimal) */
+  --status-success: var(--color-emerald-600);
+  --status-warning: var(--color-amber-600);
+  --status-danger: var(--color-rose-600);
+  --status-info: var(--color-sky-600);
+}
+
+/* Guard class for smooth transition, excludes inputs */
+body.theme-transitioned *:not(input):not(textarea):not([data-no-transition]) {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Styling for Print Mode - Monochrome & Ink Saver */
+@media print {
+  :root, .theme-dark, .theme-light {
+    --bg-base: #ffffff !important;
+    --bg-surface: #ffffff !important;
+    --bg-elevated: #ffffff !important;
+    --text-primary: #000000 !important;
+    --text-secondary: #4b5563 !important;
+    --text-disabled: #9ca3af !important;
+    --border-default: #d1d5db !important;
+    --border-subtle: #e5e7eb !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  header, footer, nav, button, #quickAddBtn, #sheetBackdrop, #toast-container, .mobile-nav-dot, [role="dialog"], [title="Pesan Masuk"] {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+/* Custom Base Utilities to prevent Tailwind v4 .text-base collision */
+@utility bg-base {
+  background-color: var(--bg-base);
+}
+@utility border-base {
+  border-color: var(--bg-base);
+}
+@utility ring-base {
+  --tw-ring-color: var(--bg-base);
+}
+@utility from-base {
+  --tw-gradient-from: var(--bg-base) var(--tw-gradient-from-position);
+  --tw-gradient-to: var(--bg-base) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+@utility to-base {
+  --tw-gradient-to: var(--bg-base) var(--tw-gradient-to-position);
+}
+
