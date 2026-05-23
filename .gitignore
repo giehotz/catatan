@@ -149,3 +149,9 @@ git-debug.txt
 
 # Ignore local Graphify output
 graphify-out/
+
+# Ignore local database and project notes
+db/
+
+# Ignore local improvement notes
+Perbaikan/
