@@ -135,3 +135,14 @@ node_modules/
 
 # Ignore Windows reserved device file
 nul
+
+# Ignore local environment file
+env
+
+# Ignore workspace agent files
+.agents/
+
+# Ignore temporary git debug files
+git-exit.txt
+git-status-tail.txt
+git-debug.txt
