@@ -94,6 +94,7 @@ $isLainnyaActive = !$isDashboardActive && !$isTransactionActive && !$isReportsAc
             </div>
 
             <!-- Profile & Inbox Icons -->
+            <?php if (auth()->loggedIn()): ?>
             <div class="flex items-center gap-3">
                 <a href="<?= base_url('inbox') ?>" class="relative p-2 text-slate-400 hover:text-indigo-400 active:scale-95 transition-all" title="Pesan Masuk">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -114,10 +115,11 @@ $isLainnyaActive = !$isDashboardActive && !$isTransactionActive && !$isReportsAc
                     <?php endif; ?>
                 </a>
             </div>
+            <?php endif; ?>
         </header>
 
         <!-- Main Content Area with padding bottom to avoid Bottom Nav overlap -->
-        <main class="grow px-4 pt-6 pb-28 relative">
+        <main class="grow px-4 pt-6 <?= auth()->loggedIn() ? 'pb-28' : 'pb-6' ?> relative">
             <!-- Impersonation Warning Banner if active -->
             <?php if (session()->has('impersonator_user_id')) : ?>
                 <div class="mb-4 bg-linear-to-r from-amber-600 to-orange-600 text-white p-3 rounded-xl shadow-lg text-xs font-semibold border border-orange-500/20 flex items-center justify-between gap-3">
@@ -136,6 +138,7 @@ $isLainnyaActive = !$isDashboardActive && !$isTransactionActive && !$isReportsAc
         </main>
     </div>
 
+    <?php if (auth()->loggedIn()): ?>
     <!-- Sticky Glassmorphic Bottom Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 md:max-w-md md:left-1/2 md:-translate-x-1/2 z-40 backdrop-blur-md bg-base/80 border-t border-br-default/60 pb-safe h-16 flex items-center justify-around px-4">
         <!-- Dashboard / Beranda -->
@@ -392,6 +395,7 @@ $isLainnyaActive = !$isDashboardActive && !$isTransactionActive && !$isReportsAc
             </a>
         </div>
     </div>
+    <?php endif; ?>
 
     <!-- MOBILE SHEETS LOGIC (Pure JS & Lightweight) -->
     <script>
