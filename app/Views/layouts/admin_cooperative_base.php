@@ -38,7 +38,7 @@ if ($isAdmin) {
 <head>
     <?= view('partials/head', ['title' => $title ?? 'Pengelola Koperasi', 'forceDarkTheme' => true]) ?>
 </head>
-<body class="h-full bg-slate-950 antialiased overflow-x-hidden">
+<body class="h-full bg-slate-950 antialiased overflow-x-clip">
     
     <!-- Premium background glowing gradients in Emerald/Teal -->
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -89,8 +89,8 @@ if ($isAdmin) {
             <div id="coop-layout-wrapper" class="flex flex-col lg:flex-row gap-8 w-full">
                 
                 <!-- Sidebar Navigation - Hidden on Mobile -->
-                <aside id="coop-sidebar" class="hidden lg:block lg:w-[280px] shrink-0 transition-all duration-300 ease-in-out">
-                    <div id="coop-sidebar-card" class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 backdrop-blur-md shadow-2xl sticky lg:top-24 overflow-hidden transition-all duration-300">
+                <aside id="coop-sidebar" class="hidden lg:block lg:w-[280px] shrink-0 transition-all duration-300 ease-in-out sticky top-24 self-start z-30">
+                    <div id="coop-sidebar-card" class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 backdrop-blur-md shadow-2xl overflow-y-auto max-h-[calc(100vh-8rem)] transition-all duration-300" style="scrollbar-width: none;">
                         <!-- Glow background -->
                         <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -240,6 +240,7 @@ if ($isAdmin) {
             const isMinimized = sidebar.classList.contains("lg:w-[82px]");
             applySidebarState(!isMinimized);
         }
+
 
         function applySidebarState(minimize) {
             const sidebar = document.getElementById("coop-sidebar");

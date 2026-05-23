@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var array $transactions
  * @var array $incomeCategories
@@ -15,10 +16,10 @@
  */
 ?>
 <?= $this->extend('layouts/base') ?>
- 
+
 <?= $this->section('content') ?>
 <div class="space-y-8">
-    
+
     <!-- Welcome Header & Add Button -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="space-y-1">
@@ -46,7 +47,7 @@
             </button>
         </div>
     </div>
- 
+
     <!-- Alert Messages -->
     <?php if (session('message') !== null) : ?>
         <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm flex items-center gap-2">
@@ -64,7 +65,7 @@
             <?= session('error') ?>
         </div>
     <?php endif ?>
- 
+
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Saldo Bersih -->
@@ -99,7 +100,7 @@
             </h3>
         </div>
     </div>
- 
+
     <!-- Filters Panel -->
     <div class="bg-surface/40 border border-br-default rounded-2xl p-6 shadow-xl">
         <form method="get" action="<?= url_to('transaction') ?>" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
@@ -144,14 +145,14 @@
                     </button>
                     <a href="<?= url_to('transaction') ?>" class="px-4 py-2.5 bg-elevated hover:bg-elevated/80 text-tx-primary border border-br-default font-bold text-sm rounded-xl transition-all flex items-center justify-center" title="Reset Filter">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15.89M9 11l3-3 3 3m-3-3v12" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
                     </a>
                 </div>
             </div>
         </form>
     </div>
- 
+
     <!-- Transactions List Container -->
     <div class="bg-surface/40 border border-br-default rounded-2xl shadow-xl overflow-hidden">
         <?php if (empty($transactions)) : ?>
@@ -239,7 +240,7 @@
                                             </svg>
                                         </button>
                                     <?php endif; ?>
- 
+
                                     <!-- Delete Button -->
                                     <form action="<?= base_url('transaction/delete/' . $tx['id']) ?>" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?');" class="inline">
                                         <?= csrf_field() ?>
@@ -258,7 +259,7 @@
         <?php endif; ?>
     </div>
 </div>
- 
+
 <!-- Modal Tambah Transaksi -->
 <div id="addModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-base/80 backdrop-blur-sm hidden opacity-0 transition-all duration-300">
     <div class="bg-surface border border-br-default rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 relative">
@@ -268,20 +269,20 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
- 
+
         <!-- Header -->
         <div class="px-6 py-5 border-b border-br-subtle">
             <h3 class="text-xl font-bold text-tx-primary">Tambah Transaksi</h3>
             <p class="text-tx-secondary text-xs mt-1">Isi formulir di bawah ini untuk mencatat transaksi baru.</p>
         </div>
- 
+
         <!-- Body -->
         <form action="<?= base_url('transaction/create') ?>" method="post" class="p-6 space-y-4">
             <?= csrf_field() ?>
-            
+
             <!-- Real category ID field containing synchronized selection -->
             <input type="hidden" name="category_id" id="category_id" value="">
- 
+
             <div class="grid grid-cols-2 gap-4">
                 <!-- Type -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
@@ -291,14 +292,14 @@
                         <option value="income">Pemasukan</option>
                     </select>
                 </div>
- 
+
                 <!-- Transaction Date -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
                     <label for="transaction_date" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Tanggal</label>
                     <input type="date" id="transaction_date" name="transaction_date" value="<?= date('Y-m-d') ?>" required class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm">
                 </div>
             </div>
- 
+
             <div class="grid grid-cols-2 gap-4">
                 <!-- Wallet Selection -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
@@ -309,7 +310,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
- 
+
                 <!-- Amount -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
                     <label for="amount" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Jumlah (Nominal)</label>
@@ -321,7 +322,7 @@
                     </div>
                 </div>
             </div>
- 
+
             <!-- Income Category Container -->
             <div id="category_income_container" class="space-y-1.5 hidden">
                 <label for="income_category_select" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Kategori Pemasukan</label>
@@ -331,7 +332,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
- 
+
             <!-- Expense Category Container -->
             <div id="category_expense_container" class="space-y-1.5">
                 <label for="expense_category_select" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Kategori Pengeluaran</label>
@@ -341,13 +342,13 @@
                     <?php endforeach; ?>
                 </select>
             </div>
- 
+
             <!-- Description -->
             <div class="space-y-1.5">
                 <label for="description" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Deskripsi (Keterangan)</label>
                 <input type="text" id="description" name="description" placeholder="Contoh: Makan siang nasi padang" class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary placeholder-tx-disabled transition-all outline-none text-sm">
             </div>
- 
+
             <!-- Submit -->
             <div class="flex gap-3 pt-3 border-t border-br-subtle">
                 <button type="button" onclick="closeModal()" class="w-1/3 py-3 bg-elevated hover:bg-elevated/80 text-tx-primary border border-br-default font-bold rounded-xl text-sm transition-all">
@@ -360,7 +361,7 @@
         </form>
     </div>
 </div>
- 
+
 <!-- Modal Edit Transaksi -->
 <div id="editModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-base/80 backdrop-blur-sm hidden opacity-0 transition-all duration-300">
     <div class="bg-surface border border-br-default rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 relative">
@@ -370,19 +371,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
- 
+
         <!-- Header -->
         <div class="px-6 py-5 border-b border-br-subtle">
             <h3 class="text-xl font-bold text-tx-primary">Edit Transaksi</h3>
             <p class="text-tx-secondary text-xs mt-1">Perbarui data transaksi yang dipilih.</p>
         </div>
- 
+
         <!-- Body -->
         <form id="editForm" method="post" class="p-6 space-y-4">
             <?= csrf_field() ?>
-            
+
             <input type="hidden" name="category_id" id="edit_category_id" value="">
- 
+
             <div class="grid grid-cols-2 gap-4">
                 <!-- Type -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
@@ -392,14 +393,14 @@
                         <option value="income">Pemasukan</option>
                     </select>
                 </div>
- 
+
                 <!-- Transaction Date -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
                     <label for="edit_transaction_date" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Tanggal</label>
                     <input type="date" id="edit_transaction_date" name="transaction_date" required class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm">
                 </div>
             </div>
- 
+
             <div class="grid grid-cols-2 gap-4">
                 <!-- Wallet Selection -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
@@ -410,7 +411,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
- 
+
                 <!-- Amount -->
                 <div class="space-y-1.5 col-span-2 sm:col-span-1">
                     <label for="edit_amount" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Jumlah (Nominal)</label>
@@ -422,7 +423,7 @@
                     </div>
                 </div>
             </div>
- 
+
             <!-- Income Category Container -->
             <div id="edit_category_income_container" class="space-y-1.5 hidden">
                 <label for="edit_income_category_select" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Kategori Pemasukan</label>
@@ -432,7 +433,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
- 
+
             <!-- Expense Category Container -->
             <div id="edit_category_expense_container" class="space-y-1.5 hidden">
                 <label for="edit_expense_category_select" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Kategori Pengeluaran</label>
@@ -442,13 +443,13 @@
                     <?php endforeach; ?>
                 </select>
             </div>
- 
+
             <!-- Description -->
             <div class="space-y-1.5">
                 <label for="edit_description" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Deskripsi (Keterangan)</label>
                 <input type="text" id="edit_description" name="description" class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary placeholder-tx-disabled transition-all outline-none text-sm">
             </div>
- 
+
             <!-- Submit -->
             <div class="flex gap-3 pt-3 border-t border-br-subtle">
                 <button type="button" onclick="closeEditModal()" class="w-1/3 py-3 bg-elevated hover:bg-elevated/80 text-tx-primary border border-br-default font-bold rounded-xl text-sm transition-all">
@@ -471,17 +472,17 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
- 
+
         <!-- Header -->
         <div class="px-6 py-5 border-b border-br-subtle">
             <h3 class="text-xl font-bold text-tx-primary">Sesuaikan Saldo Dompet</h3>
             <p class="text-tx-secondary text-xs mt-1">Ubah saldo secara manual. Sistem akan mencatat transaksi penyesuaian otomatis di dalam rekening terpilih agar saldo sesuai.</p>
         </div>
- 
+
         <!-- Body -->
         <form action="<?= base_url('transaction/adjust-balance') ?>" method="post" class="p-6 space-y-4">
             <?= csrf_field() ?>
- 
+
             <!-- Wallet Select for Adjustment -->
             <div class="space-y-1.5">
                 <label for="adjust_wallet_id" class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Pilih Rekening Terkait</label>
@@ -493,7 +494,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
- 
+
             <!-- Target Balance Input -->
             <div class="space-y-1.5">
                 <label for="target_balance" class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Target Saldo Baru</label>
@@ -504,7 +505,7 @@
                     <input type="text" id="target_balance" name="target_balance" placeholder="0" required class="w-full pl-10 pr-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary placeholder-tx-disabled transition-all outline-none text-sm font-semibold">
                 </div>
             </div>
- 
+
             <!-- Submit -->
             <div class="flex gap-3 pt-3 border-t border-br-subtle">
                 <button type="button" onclick="closeAdjustModal()" class="w-1/3 py-3 bg-elevated hover:bg-elevated/80 text-tx-primary border border-br-default font-bold rounded-xl text-sm transition-all">
@@ -517,7 +518,7 @@
         </form>
     </div>
 </div>
- 
+
 <script>
     // Open Edit Modal and Populate Fields
     function openEditModal(id, type, date, wallet_id, category_id, amount, description) {
@@ -526,12 +527,12 @@
         document.getElementById('edit_transaction_date').value = date;
         document.getElementById('edit_wallet_id').value = wallet_id;
         document.getElementById('edit_description').value = description;
-        
+
         let cleanAmount = Math.abs(amount).toString();
         document.getElementById('edit_amount').value = cleanAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        
+
         toggleEditCategoryOptions();
-        
+
         if (type === 'income') {
             document.getElementById('edit_income_category_select').value = category_id;
         } else {
@@ -562,7 +563,7 @@
         const type = document.getElementById('edit_type').value;
         const incomeSelect = document.getElementById('edit_category_income_container');
         const expenseSelect = document.getElementById('edit_category_expense_container');
- 
+
         if (type === 'income') {
             incomeSelect.classList.remove('hidden');
             expenseSelect.classList.add('hidden');
@@ -572,11 +573,11 @@
         }
         syncEditCategory();
     }
- 
+
     function syncEditCategory() {
         const type = document.getElementById('edit_type').value;
         const realCategoryInput = document.getElementById('edit_category_id');
- 
+
         if (type === 'income') {
             const select = document.getElementById('edit_income_category_select');
             realCategoryInput.value = select ? select.value : '';
@@ -600,7 +601,7 @@
         }, 50);
         toggleCategoryOptions();
     }
- 
+
     // Close Modal
     function closeModal() {
         const modal = document.getElementById('addModal');
@@ -611,7 +612,7 @@
             modal.classList.add('hidden');
         }, 300);
     }
- 
+
     // Open Adjust Modal
     function openAdjustModal() {
         const modal = document.getElementById('adjustModal');
@@ -621,10 +622,10 @@
             modal.classList.remove('opacity-0');
             modal.querySelector('div').classList.remove('scale-95');
         }, 50);
-        
+
         updateAdjustTargetBalance();
     }
- 
+
     // Dynamically set adjustment target balance value as clean formatted number from data-balance
     function updateAdjustTargetBalance() {
         const select = document.getElementById('adjust_wallet_id');
@@ -632,7 +633,7 @@
         const selectedOption = select.options[select.selectedIndex];
         if (!selectedOption) return;
         const currentBalance = parseInt(selectedOption.getAttribute('data-balance') || 0);
-        
+
         const targetInput = document.getElementById('target_balance');
         if (targetInput) {
             let isNeg = currentBalance < 0;
@@ -641,7 +642,7 @@
             targetInput.value = (isNeg ? '-' : '') + formatted;
         }
     }
- 
+
     // Close Adjust Modal
     function closeAdjustModal() {
         const modal = document.getElementById('adjustModal');
@@ -652,13 +653,13 @@
             modal.classList.add('hidden');
         }, 300);
     }
- 
+
     // Toggle categories appropriate for the active type
     function toggleCategoryOptions() {
         const type = document.getElementById('type').value;
         const incomeSelect = document.getElementById('category_income_container');
         const expenseSelect = document.getElementById('category_expense_container');
- 
+
         if (type === 'income') {
             incomeSelect.classList.remove('hidden');
             expenseSelect.classList.add('hidden');
@@ -668,12 +669,12 @@
         }
         syncCategory();
     }
- 
+
     // Sync selected drop-down category ID to the hidden input field
     function syncCategory() {
         const type = document.getElementById('type').value;
         const realCategoryInput = document.getElementById('category_id');
- 
+
         if (type === 'income') {
             const select = document.getElementById('income_category_select');
             realCategoryInput.value = select ? select.value : '';
@@ -682,7 +683,7 @@
             realCategoryInput.value = select ? select.value : '';
         }
     }
- 
+
     // Auto-open modal based on URL query parameter action
     window.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -692,13 +693,13 @@
         } else if (action === 'add_expense') {
             openModal('expense');
         }
- 
+
         // Bind change listener for adjust select dropdown
         const adjustSelect = document.getElementById('adjust_wallet_id');
         if (adjustSelect) {
             adjustSelect.addEventListener('change', updateAdjustTargetBalance);
         }
- 
+
         // Live dot formatting for amount input
         const amountInput = document.getElementById('amount');
         if (amountInput) {
@@ -708,12 +709,12 @@
                 let cleanValue = e.target.value.replace(/\D/g, "");
                 let formattedValue = cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 e.target.value = formattedValue;
-                
+
                 let newLength = formattedValue.length;
                 cursorPosition = cursorPosition + (newLength - originalLength);
                 e.target.setSelectionRange(cursorPosition, cursorPosition);
             });
- 
+
             // Strip dots on submit
             const form = amountInput.closest('form');
             if (form) {
@@ -722,7 +723,7 @@
                 });
             }
         }
- 
+
         // Live dot formatting for target balance input
         const targetBalanceInput = document.getElementById('target_balance');
         if (targetBalanceInput) {
@@ -738,12 +739,12 @@
                     formattedValue = '-';
                 }
                 e.target.value = formattedValue;
-                
+
                 let newLength = formattedValue.length;
                 cursorPosition = cursorPosition + (newLength - originalLength);
                 e.target.setSelectionRange(cursorPosition, cursorPosition);
             });
- 
+
             // Strip dots on submit
             const form = targetBalanceInput.closest('form');
             if (form) {
@@ -763,12 +764,12 @@
                 let cleanValue = e.target.value.replace(/\D/g, "");
                 let formattedValue = cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 e.target.value = formattedValue;
-                
+
                 let newLength = formattedValue.length;
                 cursorPosition = cursorPosition + (newLength - originalLength);
                 e.target.setSelectionRange(cursorPosition, cursorPosition);
             });
- 
+
             // Strip dots on submit
             const form = editAmountInput.closest('form');
             if (form) {

@@ -11,16 +11,39 @@ $strSettings = [];
 foreach ((array) $settings as $k => $v) {
     $strSettings[(string) $k] = is_array($v) ? json_encode($v) : (string) $v;
 }
+$serverStateHash = md5(json_encode($strSettings));
 ?>
 <?= $this->extend('layouts/admin_cooperative_base') ?>
 
-
 <?= $this->section('koprasi_content') ?>
+<style>
+    .tab-btn.active {
+        color: rgb(45 212 191);
+        border-bottom-color: rgb(45 212 191);
+    }
+    .tab-btn {
+        color: rgb(148 163 184);
+        border-bottom-width: 2px;
+        border-bottom-color: transparent;
+    }
+    .tab-btn:hover:not(.active) {
+        color: rgb(226 232 240);
+        border-bottom-color: rgb(71 85 105);
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
 <div class="space-y-6 relative">
     
     <!-- Flash Messages -->
     <?php if (session()->getFlashdata('message')) : ?>
-        <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-xl text-xs flex items-center gap-3 animate-fade-in">
+        <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-xl text-xs flex items-center gap-3 animate-fade-in mb-4">
             <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -29,7 +52,7 @@ foreach ((array) $settings as $k => $v) {
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('error')) : ?>
-        <div class="bg-rose-500/10 border border-rose-500/30 text-rose-400 p-4 rounded-xl text-xs flex items-center gap-3 animate-fade-in">
+        <div class="bg-rose-500/10 border border-rose-500/30 text-rose-400 p-4 rounded-xl text-xs flex items-center gap-3 animate-fade-in mb-4">
             <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -37,653 +60,812 @@ foreach ((array) $settings as $k => $v) {
         </div>
     <?php endif; ?>
 
-    <!-- Card wrapper with sleek backdrop blur and tailored HSL values -->
-    <div class="bg-slate-950/40 border border-slate-900 rounded-2xl p-6 relative overflow-hidden backdrop-blur-sm">
+    <!-- Main Settings Redesign Wrapper -->
+    <div class="flex flex-col gap-6 relative" id="settings-container">
         
-        <!-- Subtle Glow -->
-        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Main Form & Content -->
+        <div class="flex-1 min-w-0 bg-[#0f172a]/80 border border-slate-700/80 rounded-2xl relative shadow-2xl overflow-hidden backdrop-blur-md flex flex-col h-full">
+            <form action="<?= base_url('admin/cooperative/settings/update') ?>" method="POST" enctype="multipart/form-data" id="settingsForm" class="flex flex-col h-full relative" onsubmit="return handleFormSubmit(event)">
+                <?= csrf_field() ?>
+                <input type="hidden" id="server_state_hash" value="<?= (string) esc($serverStateHash) ?>">
+                <input type="hidden" id="server_timestamp" value="<?= time() ?>">
 
-        <div class="flex items-center gap-3 mb-6">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-emerald-400 shadow-inner">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </div>
-            <div>
-                <h3 class="text-sm font-extrabold text-white tracking-wide">Pengaturan Fitur KSP</h3>
-                <p class="text-[11px] text-slate-500">Kelola preferensi operasional dan aturan main modul koperasi.</p>
-            </div>
+                <!-- HORIZONTAL TABS -->
+                <div class="flex overflow-x-auto border-b border-slate-700/60 bg-[#1e293b]/40 hide-scrollbar" role="tablist">
+                    <button type="button" role="tab" aria-selected="true" onclick="switchTab('aturan_umum')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap active tab-btn" data-tab-id="aturan_umum">
+                        <span class="material-symbols-outlined text-sm"></span> Aturan Pinjaman
+                    </button>
+                    <button type="button" role="tab" aria-selected="false" onclick="switchTab('aturan_bunga')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="aturan_bunga">
+                        <span class="material-symbols-outlined text-sm"></span> Bunga & Jasa
+                    </button>
+                    <button type="button" role="tab" aria-selected="false" onclick="switchTab('iuran')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="iuran">
+                        <span class="material-symbols-outlined text-sm"></span> Iuran & Sosial
+                    </button>
+                    <button type="button" role="tab" aria-selected="false" onclick="switchTab('rekening')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="rekening">
+                        <span class="material-symbols-outlined text-sm"></span> Rekening Bank
+                    </button>
+                    <button type="button" role="tab" aria-selected="false" onclick="switchTab('kop_surat')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="kop_surat">
+                        <span class="material-symbols-outlined text-sm"></span> Template & KOP
+                    </button>
+                </div>
+
+                <!-- Padding Container for contents -->
+                <div class="p-6 pb-24 relative flex-1">
+                    
+                    <!-- TAB 1: Aturan Umum -->
+                    <div id="tab-aturan_umum" class="tab-pane block" data-tab-id="aturan_umum" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4">
+                            <h2 class="text-lg font-bold text-white mb-1">Aturan Pinjaman Umum</h2>
+                            <p class="text-xs text-slate-400">Konfigurasi parameter inti untuk modul pinjaman. Perubahan pada pengaturan ini akan langsung mempengaruhi perhitungan pada transaksi baru.</p>
+                        </div>
+                        
+                        <!-- Direct Loan Toggle Card -->
+                        <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <label for="direct_loan_enabled" class="text-sm font-bold text-slate-200 cursor-pointer">Pemberian Pinjaman Langsung</label>
+                                        <span class="px-2 py-0.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded text-[9px] font-bold uppercase tracking-wider">Manager Only</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 leading-relaxed max-w-2xl">
+                                        Mengizinkan pencairan dana pinjaman secara instan tanpa melalui proses persetujuan berjenjang. Gunakan dengan hati-hati karena fitur ini mengabaikan antrean validasi standar. 
+                                    </p>
+                                </div>
+                                <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in shrink-0">
+                                    <input type="checkbox" name="direct_loan_enabled" id="direct_loan_enabled" value="1" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-500 appearance-none cursor-pointer z-10 transition-all duration-300 right-0 checked:border-teal-500" <?= (isset($settings['direct_loan_enabled']) && $settings['direct_loan_enabled'] === '1') ? 'checked' : '' ?>>
+                                    <label for="direct_loan_enabled" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-600 cursor-pointer transition-colors duration-300"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Aturan Bunga & Jasa -->
+                    <div id="tab-aturan_bunga" class="tab-pane hidden" data-tab-id="aturan_bunga" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4">
+                            <h2 class="text-lg font-bold text-white mb-1">Aturan Bunga & Jasa Pinjaman</h2>
+                            <p class="text-xs text-slate-400">Parameter default untuk perhitungan persentase bunga dan biaya administrasi pinjaman anggota.</p>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <!-- Bunga Card -->
+                            <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl overflow-hidden shadow-sm">
+                                <div class="p-4 border-b border-slate-700/60 flex items-center gap-3 bg-[#0f172a]/40">
+                                    <div class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-teal-400">
+                                        <span class="material-symbols-outlined text-lg">percent</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">Komponen Bunga</h3>
+                                    </div>
+                                </div>
+                                <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Persentase Bunga</label>
+                                        <div class="relative">
+                                            <input type="number" step="0.01" name="kop_bunga_pinjaman_persen" id="kop_bunga_pinjaman_persen" value="<?= (string) esc((string) ($strSettings['kop_bunga_pinjaman_persen'] ?? '1.50')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 pr-8 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                            <span class="absolute right-3 top-2.5 text-slate-400 font-bold">%</span>
+                                        </div>
+                                        <span class="error-msg text-[10px] text-rose-450 hidden mt-1 font-semibold"></span>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Jenis Bunga</label>
+                                        <select name="kop_bunga_pinjaman_jenis" id="kop_bunga_pinjaman_jenis" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="flat" <?= ($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') === 'flat' ? 'selected' : '' ?>>Flat / Tetap</option>
+                                            <option value="efektif" <?= ($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') === 'efektif' ? 'selected' : '' ?>>Efektif (Menurun)</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Periode Bunga</label>
+                                        <select name="kop_bunga_pinjaman_periode" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="bulanan" <?= ($settings['kop_bunga_pinjaman_periode'] ?? 'bulanan') === 'bulanan' ? 'selected' : '' ?>>Bulanan</option>
+                                            <option value="tahunan" <?= ($settings['kop_bunga_pinjaman_periode'] ?? 'bulanan') === 'tahunan' ? 'selected' : '' ?>>Tahunan</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Pembayaran</label>
+                                        <select name="kop_bunga_pinjaman_opsi_bayar" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="cicil" <?= ($settings['kop_bunga_pinjaman_opsi_bayar'] ?? 'cicil') === 'cicil' ? 'selected' : '' ?>>Dicicil Bersama Angsuran</option>
+                                            <option value="di_awal" <?= ($settings['kop_bunga_pinjaman_opsi_bayar'] ?? 'cicil') === 'di_awal' ? 'selected' : '' ?>>Dibayar Penuh Di Awal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Jasa Card -->
+                            <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl overflow-hidden shadow-sm">
+                                <div class="p-4 border-b border-slate-700/60 flex items-center gap-3 bg-[#0f172a]/40">
+                                    <div class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-teal-400">
+                                        <span class="material-symbols-outlined text-lg">payments</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">Jasa / Administrasi</h3>
+                                    </div>
+                                </div>
+                                <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Jenis Jasa</label>
+                                        <select name="kop_jasa_pinjaman_jenis" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="nominal_tetap" <?= ($settings['kop_jasa_pinjaman_jenis'] ?? 'nominal_tetap') === 'nominal_tetap' ? 'selected' : '' ?>>Nominal Tetap (Rp)</option>
+                                            <option value="persentase" <?= ($settings['kop_jasa_pinjaman_jenis'] ?? 'nominal_tetap') === 'persentase' ? 'selected' : '' ?>>Persentase dari Pinjaman (%)</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nilai Jasa</label>
+                                        <input type="number" step="0.01" name="kop_jasa_pinjaman_nominal" id="kop_jasa_pinjaman_nominal" value="<?= (string) esc((string) ($strSettings['kop_jasa_pinjaman_nominal'] ?? '0')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                        <span class="error-msg text-[10px] text-rose-450 hidden mt-1 font-semibold"></span>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Cara Pembayaran</label>
+                                        <select name="kop_jasa_pinjaman_cara_bayar" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all appearance-none cursor-pointer">
+                                            <option value="cicil" <?= ($settings['kop_jasa_pinjaman_cara_bayar'] ?? 'cicil') === 'cicil' ? 'selected' : '' ?>>Dicicil Bersama Angsuran</option>
+                                            <option value="di_awal" <?= ($settings['kop_jasa_pinjaman_cara_bayar'] ?? 'cicil') === 'di_awal' ? 'selected' : '' ?>>Dibayar Penuh Di Awal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Iuran & Sosial -->
+                    <div id="tab-iuran" class="tab-pane hidden" data-tab-id="iuran" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4">
+                            <h2 class="text-lg font-bold text-white mb-1">Simpanan Wajib & Dana Sosial</h2>
+                            <p class="text-xs text-slate-400">Aturan iuran rutin bulanan untuk seluruh anggota koperasi.</p>
+                        </div>
+                        <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Simpanan Wajib (Rp)</label>
+                                    <input type="number" name="kop_simpanan_wajib_nominal" value="<?= (string) esc((string) ($strSettings['kop_simpanan_wajib_nominal'] ?? '50000')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Batas Bayar (Tgl)</label>
+                                    <input type="number" min="1" max="28" name="kop_simpanan_wajib_batas_hari" value="<?= (string) esc((string) ($strSettings['kop_simpanan_wajib_batas_hari'] ?? '7')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Dana Sosial (Rp)</label>
+                                    <input type="number" name="kop_dana_sosial_nominal" value="<?= (string) esc((string) ($strSettings['kop_dana_sosial_nominal'] ?? '20000')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Batas Bayar (Tgl)</label>
+                                    <input type="number" min="1" max="28" name="kop_dana_sosial_batas_hari" value="<?= (string) esc((string) ($strSettings['kop_dana_sosial_batas_hari'] ?? '7')) ?>" required class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Rekening -->
+                    <div id="tab-rekening" class="tab-pane hidden" data-tab-id="rekening" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4">
+                            <h2 class="text-lg font-bold text-white mb-1">Rekening Bank Tujuan</h2>
+                            <p class="text-xs text-slate-400">Informasi rekening ini akan ditampilkan secara otomatis kepada anggota saat hendak menyetor atau membayar angsuran via transfer bank.</p>
+                        </div>
+                        <div class="space-y-5">
+                            <!-- Bank 1 -->
+                            <div class="p-5 bg-[#1e293b]/80 border border-slate-700/60 rounded-xl space-y-4 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-2 h-full bg-teal-500"></div>
+                                <span class="text-xs font-bold text-teal-400 uppercase tracking-wider block">Rekening Utama</span>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nama Bank</label>
+                                        <input type="text" name="kop_rekening_bank_1_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_nama'] ?? '')) ?>" placeholder="Contoh: Bank Mandiri" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nomor Rekening</label>
+                                        <input type="text" name="kop_rekening_bank_1_nomor" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_nomor'] ?? '')) ?>" placeholder="Contoh: 123-000-456-7890" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Atas Nama</label>
+                                        <input type="text" name="kop_rekening_bank_1_atas_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_atas_nama'] ?? '')) ?>" placeholder="Contoh: KSP Sejahtera" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bank 2 -->
+                            <div class="p-5 bg-[#1e293b]/80 border border-slate-700/60 rounded-xl space-y-4 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-2 h-full bg-slate-600"></div>
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Rekening Alternatif (Opsional)</span>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nama Bank</label>
+                                        <input type="text" name="kop_rekening_bank_2_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_nama'] ?? '')) ?>" placeholder="Contoh: BCA" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nomor Rekening</label>
+                                        <input type="text" name="kop_rekening_bank_2_nomor" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_nomor'] ?? '')) ?>" placeholder="Contoh: 888-999-555-12" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none font-mono transition-all">
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Atas Nama</label>
+                                        <input type="text" name="kop_rekening_bank_2_atas_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_atas_nama'] ?? '')) ?>" placeholder="Contoh: KSP Sejahtera" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: Template & KOP -->
+                    <div id="tab-kop_surat" class="tab-pane hidden" data-tab-id="kop_surat" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4 flex justify-between items-end flex-wrap gap-2">
+                            <div>
+                                <h2 class="text-lg font-bold text-white mb-1">Template & KOP Surat</h2>
+                                <p class="text-xs text-slate-400">Kelola identitas resmi, logo, pola penomoran otomatis, serta susunan dewan pengurus penanda tangan.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Identitas & Logo Card -->
+                            <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl overflow-hidden shadow-sm">
+                                <div class="p-4 border-b border-slate-700/60 flex items-center gap-2 bg-[#0f172a]/40">
+                                    <span class="text-sm font-bold text-white">Identitas & Logo Koperasi</span>
+                                </div>
+                                <div class="p-5 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                    <!-- Identitas Form -->
+                                    <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Nama Resmi Koperasi</label>
+                                            <input type="text" name="kop_nama_koperasi" value="<?= (string) esc((string) ($strSettings['kop_nama_koperasi'] ?? '')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">No. Badan Hukum</label>
+                                            <input type="text" name="kop_badan_hukum" value="<?= (string) esc((string) ($strSettings['kop_badan_hukum'] ?? '')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Wilayah Kerja</label>
+                                            <input type="text" name="kop_wilayah_kerja" value="<?= (string) esc((string) ($strSettings['kop_wilayah_kerja'] ?? '')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Telepon</label>
+                                            <input type="text" name="kop_telepon" value="<?= (string) esc((string) ($strSettings['kop_telepon'] ?? '')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">E-mail</label>
+                                            <input type="email" name="kop_email" value="<?= (string) esc((string) ($strSettings['kop_email'] ?? '')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Kode Cabang/Unit</label>
+                                            <input type="text" name="kop_unit_code" value="<?= (string) esc((string) ($strSettings['kop_unit_code'] ?? 'PST')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none uppercase transition-all">
+                                        </div>
+                                        <div class="sm:col-span-2 space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Alamat Lengkap</label>
+                                            <textarea name="kop_alamat" rows="2" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none resize-none transition-all"><?= (string) esc((string) ($strSettings['kop_alamat'] ?? '')) ?></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- Logo Upload -->
+                                    <div class="lg:col-span-4 flex flex-col space-y-4 border-t lg:border-t-0 lg:border-l border-slate-700/60 pt-4 lg:pt-0 lg:pl-6">
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Preview Logo</label>
+                                            <div class="bg-[#0f172a] border border-slate-600 rounded-lg p-4 flex items-center justify-center h-28">
+                                                <img id="logo_preview" src="<?= !empty($settings['kop_logo_path']) ? base_url($settings['kop_logo_path']) : base_url('assets/images/logo-ksp-default.png') ?>" alt="Logo Preview" class="max-h-[80px] object-contain">
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Unggah Baru</label>
+                                            <input type="file" id="kop_logo" name="kop_logo" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-teal-500/10 file:text-teal-400 hover:file:bg-teal-500/20 file:cursor-pointer cursor-pointer border border-slate-600 rounded">
+                                            <p class="text-[9px] text-slate-500 mt-1">Format: JPG/PNG/SVG. Max 2MB.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Format Penomoran -->
+                            <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl overflow-hidden shadow-sm">
+                                <div class="p-4 border-b border-slate-700/60 flex items-center justify-between bg-[#0f172a]/40">
+                                    <span class="text-sm font-bold text-white">Format Nomor Surat Otomatis</span>
+                                </div>
+                                <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Pola Penomoran</label>
+                                        <input type="text" id="kop_format_nomor_surat" name="kop_format_nomor_surat" value="<?= (string) esc((string) ($strSettings['kop_format_nomor_surat'] ?? '{nomor_urut}/KOP-SKP/{kode}/{year}')) ?>" class="w-full bg-[#0f172a] border border-slate-600 rounded p-2.5 text-white text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all font-mono">
+                                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] text-slate-400 mt-2">
+                                            <div><code class="text-teal-400 font-bold">{nomor_urut}</code>: No urut</div>
+                                            <div><code class="text-teal-400 font-bold">{kode}</code>: Tipe surat</div>
+                                            <div><code class="text-teal-400 font-bold">{year}</code>: Tahun 4 digit</div>
+                                            <div><code class="text-teal-400 font-bold">{month_roman}</code>: Bln Romawi</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-bold text-slate-400 flex items-center gap-2 uppercase tracking-wide">
+                                            Live Test Preview
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        </label>
+                                        <div class="bg-[#0f172a] border border-slate-600 rounded-lg p-4 flex flex-col justify-center min-h-[70px]">
+                                            <span id="nomor_surat_preview" class="text-sm font-mono font-bold text-teal-400 block">-</span>
+                                            <span id="nomor_surat_preview_error" class="text-[10px] text-rose-450 mt-1 font-semibold block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Daftar Pengurus Tabel CRUD -->
+                            <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl overflow-hidden shadow-sm">
+                                <div class="p-4 border-b border-slate-700/60 flex items-center justify-between flex-wrap gap-2 bg-[#0f172a]/40">
+                                    <span class="text-sm font-bold text-white">Daftar Dewan Pengurus (Penandatangan)</span>
+                                </div>
+                                <input type="hidden" id="kop_letter_signers" name="kop_letter_signers" value="<?= (string) esc((string) ($strSettings['kop_letter_signers'] ?? '[]')) ?>">
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse" id="signers_table">
+                                        <thead>
+                                            <tr class="bg-[#0f172a] border-b border-slate-700/60">
+                                                <th class="p-3 font-bold text-[10px] text-slate-400 uppercase tracking-wider">Nama & Jabatan</th>
+                                                <th class="p-3 font-bold text-[10px] text-slate-400 uppercase tracking-wider text-center">Tipe Dok</th>
+                                                <th class="p-3 font-bold text-[10px] text-slate-400 uppercase tracking-wider text-center">Prioritas</th>
+                                                <th class="p-3 font-bold text-[10px] text-slate-400 uppercase tracking-wider text-center">Aktif</th>
+                                                <th class="p-3 font-bold text-[10px] text-slate-400 uppercase tracking-wider text-right">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-700/60" id="signers_tbody">
+                                            <!-- JS populated -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Add form -->
+                                <div class="p-4 bg-[#0f172a] border-t border-slate-700/60">
+                                    <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest block mb-2">Tambah Pengurus Baru</span>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+                                        <div class="space-y-1">
+                                            <label class="text-[9px] font-bold text-slate-500 block uppercase">Pilih User (Opsional)</label>
+                                            <select id="active_user_select" onchange="autoFillSignerFromUser()" class="w-full bg-[#1e293b] border border-slate-600 rounded px-2 py-1.5 text-white text-xs outline-none focus:border-teal-500 transition-all cursor-pointer">
+                                                <option value="">-- Pilih User Aktif --</option>
+                                                <?php if (!empty($activeUsers)): ?>
+                                                    <?php foreach ($activeUsers as $u): ?>
+                                                        <option value="<?= (string) esc((string) $u->username) ?>" data-email="<?= (string) esc((string) $u->email) ?>" data-id="<?= (string) esc((string) $u->id) ?>"><?= (string) esc((string) $u->username) ?></option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <label class="text-[9px] font-bold text-slate-500 block uppercase">Nama & Jabatan</label>
+                                            <div class="flex gap-2">
+                                                <input type="text" id="add_signer_name" placeholder="Nama..." class="w-1/2 bg-[#1e293b] border border-slate-600 rounded px-2 py-1.5 text-white text-xs outline-none focus:border-teal-500 transition-all">
+                                                <input type="text" id="add_signer_role" placeholder="Jabatan..." class="w-1/2 bg-[#1e293b] border border-slate-600 rounded px-2 py-1.5 text-white text-xs outline-none focus:border-teal-500 transition-all">
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <label class="text-[9px] font-bold text-slate-500 block uppercase">Tipe Dokumen</label>
+                                            <select id="add_signer_type" class="w-full bg-[#1e293b] border border-slate-600 rounded px-2 py-1.5 text-white text-xs outline-none focus:border-teal-500 transition-all cursor-pointer">
+                                                <option value="default">Default (Semua)</option>
+                                                <option value="resign">Pengunduran Diri</option>
+                                                <option value="loan">Pinjaman</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <label class="text-[9px] font-bold text-slate-500 block uppercase">Prioritas</label>
+                                            <input type="number" id="add_signer_priority" value="0" min="0" max="100" class="w-full bg-[#1e293b] border border-slate-600 rounded px-2 py-1.5 text-white text-xs outline-none focus:border-teal-500 transition-all font-mono">
+                                        </div>
+                                        <div>
+                                            <button type="button" onclick="addNewSignerRow()" class="w-full bg-teal-500 hover:bg-teal-600 text-white rounded px-3 py-1.5 font-bold text-xs transition-colors flex items-center justify-center gap-1 shadow-md cursor-pointer">
+                                                + Tambah
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticky Action Bar (Bottom of the tab content container) -->
+                <div class="sticky bottom-0 left-0 right-0 bg-[#0f172a]/95 backdrop-blur-md border-t border-slate-700/80 p-4 z-20 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="resetFormToDefault()" class="px-4 py-2 rounded border border-slate-600 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-xs font-bold cursor-pointer" title="Batalkan perubahan dan kembali ke setelan server">
+                            Reset / Batal
+                        </button>
+                        <span id="unsaved-indicator" class="text-[10px] text-amber-400 font-semibold hidden animate-pulse bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20">Perubahan belum disimpan</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="triggerSystemCacheClear('config')" class="px-3 py-2 rounded bg-slate-800 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-bold transition-colors cursor-pointer hidden md:flex items-center gap-1" title="Clear Configuration Cache">
+                            <span class="material-symbols-outlined text-sm">refresh</span> Cache
+                        </button>
+                        <button type="submit" id="submit-btn" class="bg-teal-500 hover:bg-teal-400 text-slate-900 font-extrabold text-xs px-6 py-2.5 rounded shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40 transition-all flex items-center gap-2 cursor-pointer group">
+                            <span class="material-symbols-outlined text-sm group-hover:scale-110 transition-transform" id="submit-icon">save</span>
+                            <span id="submit-text">Simpan Perubahan</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <form action="<?= base_url('admin/cooperative/settings/update') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
-            <?= csrf_field() ?>
-
-            <!-- Direct Loan Toggle Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300">
-                <div class="flex items-start justify-between gap-4">
-                    <div class="space-y-1">
-                        <label for="direct_loan_enabled" class="text-xs font-bold text-slate-200 cursor-pointer">Pemberian Pinjaman Langsung (Direct Loan)</label>
-                        <p class="text-[11px] text-slate-400 leading-relaxed max-w-xl">
-                            Mengizinkan Admin & Manager untuk memberikan pinjaman baru kepada anggota koperasi secara langsung dari dashboard, meskipun anggota tersebut belum mengajukan sebelumnya. 
-                        </p>
-                        <div class="flex items-center gap-2 mt-2 text-[10px] text-amber-500 font-semibold bg-amber-500/5 border border-amber-500/10 px-2.5 py-1 rounded-lg w-fit">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span>Manager tidak dapat menggunakan fitur ini apabila dimatikan oleh Administrator.</span>
-                        </div>
-                    </div>
-
-                    <!-- Custom Elegant Toggle Switch -->
-                    <div class="flex items-center shrink-0">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="direct_loan_enabled" id="direct_loan_enabled" value="1" class="sr-only peer" <?= (isset($settings['direct_loan_enabled']) && $settings['direct_loan_enabled'] === '1') ? 'checked' : '' ?>>
-                            <div class="w-11 h-6 bg-slate-800 rounded-full peer peer-focus:ring-2 peer-focus:ring-emerald-500/30 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-slate-400 peer-checked:after:bg-emerald-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500/20 border border-slate-700/60 peer-checked:border-emerald-500/50"></div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bunga Pinjaman Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300 space-y-4">
-                <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Aturan Bunga Pinjaman</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Persentase Bunga (%)</label>
-                        <input type="number" step="0.01" name="kop_bunga_pinjaman_persen" value="<?= (string) esc((string) ($strSettings['kop_bunga_pinjaman_persen'] ?? '1.50')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold font-mono">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Jenis Bunga</label>
-                        <select name="kop_bunga_pinjaman_jenis" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg text-white text-xs font-bold outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="flat" <?= ($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') === 'flat' ? 'selected' : '' ?>>Flat / Tetap</option>
-                            <option value="efektif" <?= ($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') === 'efektif' ? 'selected' : '' ?>>Efektif (Menurun)</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Periode Bunga</label>
-                        <select name="kop_bunga_pinjaman_periode" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg text-white text-xs font-bold outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="bulanan" <?= ($settings['kop_bunga_pinjaman_periode'] ?? 'bulanan') === 'bulanan' ? 'selected' : '' ?>>Bulanan</option>
-                            <option value="tahunan" <?= ($settings['kop_bunga_pinjaman_periode'] ?? 'bulanan') === 'tahunan' ? 'selected' : '' ?>>Tahunan</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Opsi Pembayaran Bunga</label>
-                        <select name="kop_bunga_pinjaman_opsi_bayar" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg text-white text-xs font-bold outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="cicil" <?= ($settings['kop_bunga_pinjaman_opsi_bayar'] ?? 'cicil') === 'cicil' ? 'selected' : '' ?>>Dicicil Bersama Angsuran</option>
-                            <option value="di_awal" <?= ($settings['kop_bunga_pinjaman_opsi_bayar'] ?? 'cicil') === 'di_awal' ? 'selected' : '' ?>>Dibayar Penuh Di Awal</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jasa Pinjaman Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300 space-y-4">
-                <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <span>Aturan Jasa Pinjaman</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Nominal / Persen Jasa</label>
-                        <input type="number" step="0.01" name="kop_jasa_pinjaman_nominal" value="<?= (string) esc((string) ($strSettings['kop_jasa_pinjaman_nominal'] ?? '0')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold font-mono">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Jenis Jasa</label>
-                        <select name="kop_jasa_pinjaman_jenis" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg text-white text-xs font-bold outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="nominal_tetap" <?= ($settings['kop_jasa_pinjaman_jenis'] ?? 'nominal_tetap') === 'nominal_tetap' ? 'selected' : '' ?>>Nominal Tetap (Rupiah)</option>
-                            <option value="persentase" <?= ($settings['kop_jasa_pinjaman_jenis'] ?? 'nominal_tetap') === 'persentase' ? 'selected' : '' ?>>Persentase dari Pinjaman</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Cara Pembayaran Jasa</label>
-                        <select name="kop_jasa_pinjaman_cara_bayar" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg text-white text-xs font-bold outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="cicil" <?= ($settings['kop_jasa_pinjaman_cara_bayar'] ?? 'cicil') === 'cicil' ? 'selected' : '' ?>>Dicicil Bersama Angsuran</option>
-                            <option value="di_awal" <?= ($settings['kop_jasa_pinjaman_cara_bayar'] ?? 'cicil') === 'di_awal' ? 'selected' : '' ?>>Dibayar Penuh Di Awal</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Simpanan Wajib & Dana Sosial Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300 space-y-4">
-                <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2" />
-                    </svg>
-                    <span>Iuran Simpanan Wajib & Dana Sosial</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Nominal Simpanan Wajib (Rp)</label>
-                        <input type="number" name="kop_simpanan_wajib_nominal" value="<?= (string) esc((string) ($strSettings['kop_simpanan_wajib_nominal'] ?? '50000')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Batas Hari Pembayaran (Hari Ke-X)</label>
-                        <input type="number" min="1" max="28" name="kop_simpanan_wajib_batas_hari" value="<?= (string) esc((string) ($strSettings['kop_simpanan_wajib_batas_hari'] ?? '7')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Nominal Dana Sosial (Rp)</label>
-                        <input type="number" name="kop_dana_sosial_nominal" value="<?= (string) esc((string) ($strSettings['kop_dana_sosial_nominal'] ?? '20000')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Batas Hari Pembayaran (Hari Ke-X)</label>
-                        <input type="number" min="1" max="28" name="kop_dana_sosial_batas_hari" value="<?= (string) esc((string) ($strSettings['kop_dana_sosial_batas_hari'] ?? '7')) ?>" required class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rekening Tujuan Transfer Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300 space-y-4">
-                <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                    </svg>
-                    <span>Rekening Tujuan Transfer (Ditampilkan ke Anggota)</span>
-                </div>
-                <p class="text-[11px] text-slate-500 leading-relaxed">Data rekening ini akan ditampilkan secara otomatis kepada anggota saat hendak menyetor simpanan atau membayar angsuran.</p>
-                
-                <!-- Bank 1 -->
-                <div class="p-4 bg-slate-950/40 border border-slate-900/60 rounded-xl space-y-3">
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Rekening Bank 1 (Utama)</span>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Nama Bank</label>
-                            <input type="text" name="kop_rekening_bank_1_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_nama'] ?? '')) ?>" placeholder="Contoh: Bank Mandiri" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Nomor Rekening</label>
-                            <input type="text" name="kop_rekening_bank_1_nomor" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_nomor'] ?? '')) ?>" placeholder="Contoh: 123-000-456-7890" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold font-mono">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Atas Nama</label>
-                            <input type="text" name="kop_rekening_bank_1_atas_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_1_atas_nama'] ?? '')) ?>" placeholder="Contoh: KSP Sejahtera" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Bank 2 -->
-                <div class="p-4 bg-slate-950/40 border border-slate-900/60 rounded-xl space-y-3">
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Rekening Bank 2 (Opsional)</span>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Nama Bank</label>
-                            <input type="text" name="kop_rekening_bank_2_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_nama'] ?? '')) ?>" placeholder="Contoh: Bank BCA" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Nomor Rekening</label>
-                            <input type="text" name="kop_rekening_bank_2_nomor" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_nomor'] ?? '')) ?>" placeholder="Contoh: 888-999-555-12" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold font-mono">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-400 block">Atas Nama</label>
-                            <input type="text" name="kop_rekening_bank_2_atas_nama" value="<?= (string) esc((string) ($strSettings['kop_rekening_bank_2_atas_nama'] ?? '')) ?>" placeholder="Contoh: KSP Sejahtera" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Template Surat Resmi & KOP Koperasi Card -->
-            <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-5 hover:border-slate-800 transition-all duration-300 space-y-5">
-                <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 19v-8.93a2 2 0 01.89-1.664l8-5.333a2 2 0 012.22 0l8 5.333A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-5.603-3.737A1 1 0 007.1 11v7a1 1 0 001 1h8a1 1 0 001-1v-7a1 1 0 00-.547-.888L14.25 14.5" />
-                    </svg>
-                    <span>Template & KOP Surat Keputusan Resmi</span>
-                </div>
-                
-                <p class="text-[11px] text-slate-500 leading-relaxed">Sesuaikan format KOP surat, logo resmi, format penomoran otomatis, serta susunan dewan pengurus penanda tangan resmi koperasi secara dinamis.</p>
-
-                <!-- KOP Identity Fields -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-t border-slate-950/40 pt-4">
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Nama Resmi Koperasi</label>
-                        <input type="text" name="kop_nama_koperasi" value="<?= (string) esc((string) ($strSettings['kop_nama_koperasi'] ?? '')) ?>" placeholder="Contoh: KSP Catatan Keuangan" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">No. Badan Hukum Resmi</label>
-                        <input type="text" name="kop_badan_hukum" value="<?= (string) esc((string) ($strSettings['kop_badan_hukum'] ?? '')) ?>" placeholder="Contoh: No. 00892/KSP/BH/2025" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Wilayah Kerja Operasional</label>
-                        <input type="text" name="kop_wilayah_kerja" value="<?= (string) esc((string) ($strSettings['kop_wilayah_kerja'] ?? '')) ?>" placeholder="Contoh: Wilayah Kerja DKI Jakarta" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Nomor Telepon Koperasi</label>
-                        <input type="text" name="kop_telepon" value="<?= (string) esc((string) ($strSettings['kop_telepon'] ?? '')) ?>" placeholder="Contoh: (021) 8089-9800" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">E-mail Resmi Koperasi</label>
-                        <input type="email" name="kop_email" value="<?= (string) esc((string) ($strSettings['kop_email'] ?? '')) ?>" placeholder="Contoh: ksp@catatankeuangan.com" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Website Resmi Koperasi</label>
-                        <input type="text" name="kop_website" value="<?= (string) esc((string) ($strSettings['kop_website'] ?? '')) ?>" placeholder="Contoh: www.catatankeuangan.com" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="sm:col-span-2 space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Alamat Lengkap Koperasi</label>
-                        <input type="text" name="kop_alamat" value="<?= (string) esc((string) ($strSettings['kop_alamat'] ?? '')) ?>" placeholder="Contoh: Jl. Jend. Sudirman Kav. 21, Jakarta Selatan" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Kode Cabang/Unit</label>
-                        <input type="text" name="kop_unit_code" value="<?= (string) esc((string) ($strSettings['kop_unit_code'] ?? 'PST')) ?>" placeholder="Contoh: PST" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold uppercase">
-                    </div>
-                </div>
-
-                <!-- Logo upload with preview -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-950/40 pt-4 items-center">
-                    <div class="sm:col-span-2 space-y-1">
-                        <label class="text-xs font-bold text-slate-400 block">Unggah Logo Koperasi Baru</label>
-                        <p class="text-[10px] text-slate-500 leading-relaxed">Hanya menerima format JPG/JPEG/PNG berukuran maksimal 2MB. Logo lama akan tetap dipertahankan permanen di disk untuk keabsahan arsip dokumen sejarah.</p>
-                        <input type="file" id="kop_logo" name="kop_logo" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-500/10 file:text-emerald-450 hover:file:bg-emerald-500/20 file:cursor-pointer mt-1">
-                    </div>
-                    <div class="flex items-center justify-center p-3 bg-slate-950/40 border border-slate-900 rounded-xl min-h-[90px]">
-                        <img id="logo_preview" src="<?= !empty($settings['kop_logo_path']) ? base_url($settings['kop_logo_path']) : base_url('assets/images/logo-ksp-default.png') ?>" alt="Logo Preview" class="max-h-[70px] max-width-[100px] object-contain">
-                    </div>
-                </div>
-
-                <!-- Format string & Live AJAX preview -->
-                <div class="border-t border-slate-950/40 pt-4 space-y-3">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label for="kop_format_nomor_surat" class="text-xs font-bold text-slate-400 block">Format Nomor Surat Resmi</label>
-                            <input type="text" id="kop_format_nomor_surat" name="kop_format_nomor_surat" value="<?= (string) esc((string) ($strSettings['kop_format_nomor_surat'] ?? '{nomor_urut}/KOP-SKP/{kode}/{year}')) ?>" placeholder="Contoh: {nomor_urut}/KSP-RE/{kode}/{month_roman}/{year}" class="w-full px-3 py-2 bg-slate-950/60 border border-slate-900 rounded-lg focus:border-emerald-500 text-white transition-all outline-none text-xs font-semibold">
-                        </div>
-                        
-                        <div class="p-3 bg-slate-950/40 border border-slate-900 rounded-xl flex flex-col justify-center">
-                            <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Live Test Parser Preview (AJAX)</span>
-                            <span id="nomor_surat_preview" class="text-xs font-mono font-bold text-indigo-400 mt-1 block">-</span>
-                            <span id="nomor_surat_preview_error" class="text-[10px] text-rose-450 mt-1 font-semibold block"></span>
-                        </div>
-                    </div>
-
-                    <!-- Placeholder list helper -->
-                    <div class="p-3 bg-slate-950/20 border border-slate-900/60 rounded-xl text-[10px] text-slate-500 leading-relaxed space-y-1">
-                        <span class="font-bold text-slate-400 block">💡 Panduan Placeholder Resmi:</span>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1">
-                            <div><code class="text-indigo-400 font-bold font-mono">{nomor_urut}</code>: Urutan digital (Wajib)</div>
-                            <div><code class="text-indigo-400 font-bold font-mono">{kode}</code>: Kode tipe surat (e.g. RE)</div>
-                            <div><code class="text-indigo-400 font-bold font-mono">{year}</code>: Tahun berjalan (e.g. 2026)</div>
-                            <div><code class="text-indigo-400 font-bold font-mono">{month}</code>: Bulan angka (e.g. 05)</div>
-                            <div><code class="text-indigo-400 font-bold font-mono">{month_roman}</code>: Bulan Romawi (e.g. V)</div>
-                            <div><code class="text-indigo-400 font-bold font-mono">{unit_code}</code>: Kode Cabang (e.g. PST)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Structured Dynamic CRUD for Dewan Pengurus Signers -->
-                <div class="border-t border-slate-950/40 pt-4 space-y-4">
-                    <div class="flex items-center justify-between gap-4 flex-wrap">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Daftar Dewan Pengurus (Penanda Tangan Resmi)</span>
-                        <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md uppercase tracking-wider">Metode Prioritas & Fallback Terstruktur</span>
-                    </div>
-
-                    <!-- Hidden JSON storage input -->
-                    <input type="hidden" id="kop_letter_signers" name="kop_letter_signers" value="<?= (string) esc((string) ($strSettings['kop_letter_signers'] ?? '[]')) ?>">
-
-                    <!-- Interactive CRUD Table -->
-                    <div class="overflow-x-auto border border-slate-900 rounded-xl">
-                        <table class="w-full text-left border-collapse" id="signers_table">
-                            <thead>
-                                <tr class="border-b border-slate-900 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-950/40">
-                                    <th class="py-2.5 px-4">Nama Pengurus</th>
-                                    <th class="py-2.5 px-4">Jabatan/Peran</th>
-                                    <th class="py-2.5 px-4 text-center">Tipe Dokumen</th>
-                                    <th class="py-2.5 px-4 text-center">Prioritas</th>
-                                    <th class="py-2.5 px-4 text-center">Status</th>
-                                    <th class="py-2.5 px-4 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-900/60 text-xs text-slate-350" id="signers_tbody">
-                                <!-- JS populated -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Adding signer form segment -->
-                    <div class="p-4 bg-slate-950/30 border border-slate-900 rounded-xl space-y-3">
-                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest block">Tambah Penanda Tangan Baru</span>
-                        
-                        <!-- Select from active users -->
-                        <div class="space-y-1 max-w-xs">
-                            <label class="text-[9px] font-bold text-slate-500 block">Pilih Dari User Aktif (Opsional)</label>
-                            <select id="active_user_select" onchange="autoFillSignerFromUser()" class="w-full px-2 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-white text-xs outline-none focus:border-emerald-500 cursor-pointer font-semibold">
-                                <option value="">-- Pilih User Aktif --</option>
-                                <?php if (!empty($activeUsers)): ?>
-                                    <?php foreach ($activeUsers as $u): ?>
-                                        <option value="<?= (string) esc((string) $u->username) ?>" data-email="<?= (string) esc((string) $u->email) ?>" data-id="<?= (string) esc((string) $u->id) ?>"><?= (string) esc((string) $u->username) ?> (<?= (string) esc((string) $u->email) ?>)</option>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </select>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                            <div class="space-y-1">
-                                <label class="text-[9px] font-bold text-slate-500 block">Nama Lengkap</label>
-                                <input type="text" id="add_signer_name" placeholder="Contoh: H. Budi Santoso, M.B.A." class="w-full px-2 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-white text-xs outline-none focus:border-emerald-500 font-semibold">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[9px] font-bold text-slate-500 block">Jabatan Resmi</label>
-                                <input type="text" id="add_signer_role" placeholder="Contoh: Ketua Koperasi" class="w-full px-2 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-white text-xs outline-none focus:border-emerald-500 font-semibold">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[9px] font-bold text-slate-500 block">Tipe Dokumen</label>
-                                <select id="add_signer_type" class="w-full px-2 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-white text-xs outline-none focus:border-emerald-500 cursor-pointer font-bold">
-                                    <option value="resign">resign (Pengunduran Diri)</option>
-                                    <option value="loan">loan (Pinjaman/Kredit)</option>
-                                    <option value="default">default (Dokumen Lainnya)</option>
-                                </select>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[9px] font-bold text-slate-500 block">Prioritas (Priority)</label>
-                                <input type="number" id="add_signer_priority" value="0" min="0" max="100" class="w-full px-2 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-white text-xs outline-none focus:border-emerald-500 font-bold font-mono">
-                            </div>
-                            <div class="flex items-end justify-end">
-                                <button type="button" onclick="addNewSignerRow()" class="w-full px-4 py-2 bg-emerald-500/10 border border-emerald-500/25 hover:bg-emerald-500/20 text-emerald-450 hover:text-emerald-300 rounded-lg text-xs font-bold transition-all cursor-pointer">
-                                    + Tambah Pengurus
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons Block -->
-            <div class="flex items-center justify-between gap-4 pt-2 border-t border-slate-900/60 flex-wrap">
-                <!-- System Cache Flusher Trigger -->
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="triggerSystemCacheClear('config')" class="px-4 py-2.5 rounded-xl border border-slate-800 hover:border-indigo-500/30 bg-slate-900/40 hover:bg-indigo-500/5 text-slate-400 hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.5M4 8h3m14 8h-3m-15.356 2A8.001 8.001 0 102.21 16H4.5" />
-                        </svg>
-                        Refresh Cache Konfig
-                    </button>
-                    <button type="button" onclick="triggerSystemCacheClear('all')" class="px-4 py-2.5 rounded-xl border border-slate-800 hover:border-rose-500/30 bg-slate-900/40 hover:bg-rose-500/5 text-slate-400 hover:text-rose-450 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Flush Semua Cache
-                    </button>
-                </div>
-
-                <!-- Submit changes -->
-                <button type="submit" class="cursor-pointer bg-linear-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold text-xs px-5 py-3 rounded-xl shadow-md shadow-emerald-950/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Simpan Perubahan
-                </button>
-            </div>
-
-        </form>
     </div>
 </div>
 
-<!-- Structured Javascript CRUD & Preview Controller -->
 <script>
-    // 1. Live Logo Preview Controller
-    const logoInput = document.getElementById('kop_logo');
-    const logoPreview = document.getElementById('logo_preview');
+// ==========================================
+// 1. Core State & LocalStorage Versioning
+// ==========================================
+const serverHash = document.getElementById('server_state_hash').value;
+const serverTime = parseInt(document.getElementById('server_timestamp').value, 10);
+const formEl = document.getElementById('settingsForm');
+const unsavedIndicator = document.getElementById('unsaved-indicator');
+let isSubmitting = false;
 
-    logoInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                logoPreview.src = e.target.result;
-            }
-            reader.readAsDataURL(file);
+function saveDraftToStorage() {
+    if (isSubmitting) return; // don't save draft if we are submitting
+    const formData = new FormData(formEl);
+    const draft = {};
+    for (let [key, value] of formData.entries()) {
+        if (key !== 'kop_logo' && key !== 'csrf_test_name') { // skip files and csrf
+            draft[key] = value;
         }
+    }
+    
+    // Checkboxes (like direct_loan_enabled) won't be in formData if unchecked
+    const checkboxes = formEl.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+        if (cb.name && cb.name !== 'toggle') draft[cb.name] = cb.checked ? cb.value : '0';
     });
 
-    // 2. Debounced Live AJAX Preview for Format String
-    const formatInput = document.getElementById('kop_format_nomor_surat');
-    const previewEl = document.getElementById('nomor_surat_preview');
-    const previewErrorEl = document.getElementById('nomor_surat_preview_error');
-    
-    let debounceTimer;
-    function updatePreview() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const formatVal = formatInput.value.trim();
-            if (!formatVal) {
-                previewEl.textContent = '-';
-                previewErrorEl.textContent = '';
-                return;
-            }
+    const payload = {
+        hash: serverHash,
+        time: serverTime,
+        data: draft
+    };
+    localStorage.setItem('ksp_settings_draft', JSON.stringify(payload));
+    unsavedIndicator.classList.remove('hidden');
+}
 
-            fetch('<?= base_url('admin/cooperative/settings/preview-number') ?>', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
-                },
-                body: new URLSearchParams({
-                    'format': formatVal,
-                    'kode': 'RE'
-                })
-            })
-            .then(response => {
-                if (response.status === 429) {
-                    throw new Error('Terlalu banyak permintaan (Rate limit exceeded). Harap tunggu beberapa detik.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    previewEl.textContent = data.preview;
-                    previewEl.classList.remove('text-rose-450');
-                    previewEl.classList.add('text-indigo-400');
-                    previewErrorEl.textContent = '';
-                } else {
-                    previewEl.textContent = 'Format Error';
-                    previewEl.classList.remove('text-indigo-400');
-                    previewEl.classList.add('text-rose-450');
-                    previewErrorEl.textContent = data.error;
-                }
-            })
-            .catch(err => {
-                previewEl.textContent = 'Network Error';
-                previewEl.classList.remove('text-indigo-400');
-                previewEl.classList.add('text-rose-450');
-                previewErrorEl.textContent = err.message;
-            });
-        }, 300); // 300ms debounce
-    }
-    formatInput.addEventListener('input', updatePreview);
-    updatePreview(); // Trigger initial preview load
-
-    // 3. Dynamic JSON signers array manager
-    const signersInput = document.getElementById('kop_letter_signers');
-    const signersTbody = document.getElementById('signers_tbody');
-
-    // Read initial JSON
-    let signersData = [];
+function loadDraftFromStorage() {
+    const raw = localStorage.getItem('ksp_settings_draft');
+    if (!raw) return;
     try {
-        signersData = JSON.parse(signersInput.value || '[]');
-    } catch(e) {
-        signersData = [];
-    }
-
-    function renderSignersTable() {
-        signersTbody.innerHTML = '';
-        if (signersData.length === 0) {
-            signersTbody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="py-4 text-center text-slate-500 italic font-semibold">Belum ada dewan pengurus aktif penanda tangan. Sistem menggunakan default Ketua Koperasi.</td>
-                </tr>
-            `;
+        const payload = JSON.parse(raw);
+        // Versioning check: If server hash changed or server time is newer than draft time by a large margin (e.g. 5 minutes)
+        if (payload.hash !== serverHash) {
+            console.warn("Server state has changed since last draft. Discarding stale draft.");
+            localStorage.removeItem('ksp_settings_draft');
             return;
         }
-
-        // Sort dynamically for rendering
-        signersData.sort((a,b) => (b.priority || 0) - (a.priority || 0));
-
-        signersData.forEach((signer, index) => {
-            const tr = document.createElement('tr');
-            tr.className = 'hover:bg-slate-950/20 transition-colors border-b border-slate-900/40';
-            
-            const badgeClass = signer.letter_type === 'resign' 
-                ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' 
-                : (signer.letter_type === 'loan' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-slate-700/30 text-slate-400 border-slate-800');
-
-            tr.innerHTML = `
-                <td class="py-2.5 px-4 font-bold text-white">${esc(signer.name)}</td>
-                <td class="py-2.5 px-4 text-slate-400">${esc(signer.role)}</td>
-                <td class="py-2.5 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[9px] font-bold border uppercase ${badgeClass}">
-                        ${esc(signer.letter_type)}
-                    </span>
-                </td>
-                <td class="py-2.5 px-4 text-center font-bold font-mono text-emerald-400">${signer.priority}</td>
-                <td class="py-2.5 px-4 text-center">
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" ${signer.is_active ? 'checked' : ''} onchange="toggleSignerActive('${signer.signer_id}')">
-                        <div class="w-8 h-4 bg-slate-800 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-slate-400 peer-checked:after:bg-emerald-400 after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500/20 border border-slate-700/60 peer-checked:border-emerald-500/50"></div>
-                    </label>
-                </td>
-                <td class="py-2.5 px-4 text-right">
-                    <button type="button" onclick="deleteSignerRow('${signer.signer_id}')" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/25 text-rose-450 hover:text-rose-300 rounded-md font-bold text-[10px] cursor-pointer transition-colors">
-                        Hapus
-                    </button>
-                </td>
-            `;
-            signersTbody.appendChild(tr);
-        });
-    }
-
-    // Toggle active status in array
-    window.toggleSignerActive = function(signerId) {
-        signersData = signersData.map(s => {
-            if (s.signer_id === signerId) {
-                s.is_active = !s.is_active;
+        
+        // Restore values
+        for (let key in payload.data) {
+            const el = formEl.querySelector(`[name="${key}"]`);
+            if (el) {
+                if (el.type === 'checkbox') {
+                    el.checked = payload.data[key] === el.value;
+                } else {
+                    el.value = payload.data[key];
+                }
             }
-            return s;
-        });
-        saveSignersJson();
-    };
-
-    // Delete signer from array
-    window.deleteSignerRow = function(signerId) {
-        if (confirm('Apakah Anda yakin ingin menghapus dewan pengurus ini?')) {
-            signersData = signersData.filter(s => s.signer_id !== signerId);
-            saveSignersJson();
+        }
+        
+        // specific for signers json
+        if (payload.data['kop_letter_signers']) {
+            signersData = JSON.parse(payload.data['kop_letter_signers']);
             renderSignersTable();
         }
-    };
 
-    // Save array to hidden input JSON
-    function saveSignersJson() {
-        signersInput.value = JSON.stringify(signersData);
+        unsavedIndicator.classList.remove('hidden');
+        updatePreview(); // update string preview
+        
+    } catch (e) {
+        console.error("Error loading draft", e);
+        localStorage.removeItem('ksp_settings_draft');
     }
+}
 
-    window.autoFillSignerFromUser = function() {
-        const select = document.getElementById('active_user_select');
-        const selectedOption = select.options[select.selectedIndex];
-        if (selectedOption && selectedOption.value !== "") {
-            document.getElementById('add_signer_name').value = selectedOption.value;
+function resetFormToDefault() {
+    if (confirm("Yakin ingin membatalkan semua perubahan dan kembali ke data server?")) {
+        localStorage.removeItem('ksp_settings_draft');
+        window.location.reload();
+    }
+}
+
+// Bind change events to save draft
+formEl.addEventListener('input', () => saveDraftToStorage());
+formEl.addEventListener('change', () => saveDraftToStorage());
+
+// ==========================================
+// 2. Tab Navigation & A11y & Mobile Dropdown
+// ==========================================
+function switchTab(tabId) {
+    if(window.location.hash !== '#' + tabId) {
+        history.replaceState(null, null, '#' + tabId);
+    }
+    // Hide all tabs
+    document.querySelectorAll('.tab-pane').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('block');
+    });
+    // Deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+        el.setAttribute('aria-selected', 'false');
+    });
+    
+    // Show target tab
+    const targetPane = document.getElementById('tab-' + tabId);
+    if (targetPane) {
+        targetPane.classList.remove('hidden');
+        targetPane.classList.add('block');
+        // focus first input for a11y
+        const firstInput = targetPane.querySelector('input, select, textarea, button');
+        if (firstInput) firstInput.focus();
+    }
+    
+    // Activate target buttons (desktop & mobile)
+    const targetBtns = document.querySelectorAll(`.tab-btn[onclick="switchTab('${tabId}')"]`);
+    targetBtns.forEach(btn => {
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+    });
+}
+
+// ==========================================
+// 3. Extensible Custom Validator (Cross-Tab)
+// ==========================================
+function validateForm() {
+    let isValid = true;
+    let errorTabId = null;
+    let errorEl = null;
+
+    // Reset previous errors
+    document.querySelectorAll('.error-msg').forEach(el => {
+        el.classList.add('hidden');
+        el.innerText = '';
+        const input = el.previousElementSibling;
+        if(input) input.classList.remove('border-rose-500', 'ring-rose-500/50');
+    });
+
+    const showError = (inputId, msg) => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const errSpan = input.nextElementSibling;
+        if (errSpan && errSpan.classList.contains('error-msg')) {
+            errSpan.innerText = msg;
+            errSpan.classList.remove('hidden');
+            input.classList.add('border-rose-500', 'ring-rose-500/50');
+        }
+        isValid = false;
+        if (!errorTabId) {
+            const pane = input.closest('.tab-pane');
+            if (pane) errorTabId = pane.getAttribute('data-tab-id');
+            errorEl = input;
         }
     };
 
-    // Add new signer to array
-    window.addNewSignerRow = function() {
-        const nameEl = document.getElementById('add_signer_name');
-        const roleEl = document.getElementById('add_signer_role');
-        const typeEl = document.getElementById('add_signer_type');
-        const priorityEl = document.getElementById('add_signer_priority');
-        const activeUserSelect = document.getElementById('active_user_select');
+    // Rule 1: Bunga Flat limit (Example)
+    const bungaJenis = document.getElementById('kop_bunga_pinjaman_jenis').value;
+    const bungaPersen = parseFloat(document.getElementById('kop_bunga_pinjaman_persen').value || 0);
+    if (bungaJenis === 'flat' && bungaPersen > 3.0) { // e.g. arbitrary limit for demo
+        showError('kop_bunga_pinjaman_persen', 'Bunga Flat maksimal 3.0%');
+    }
 
-        const name = nameEl.value.trim();
-        const role = roleEl.value.trim();
-        const type = typeEl.value;
-        const priority = parseInt(priorityEl.value) || 0;
+    // Rule 2: Jasa limit
+    const jasaJenis = document.querySelector('[name="kop_jasa_pinjaman_jenis"]').value;
+    const jasaVal = parseFloat(document.getElementById('kop_jasa_pinjaman_nominal').value || 0);
+    if (jasaJenis === 'persentase' && jasaVal > bungaPersen && bungaPersen > 0) {
+        showError('kop_jasa_pinjaman_nominal', 'Persentase jasa tidak boleh melebihi persentase bunga utama');
+    }
 
-        if (!name || !role) {
-            alert('Silakan isi Nama Lengkap dan Jabatan Pengurus.');
+    // Navigation on error
+    if (!isValid && errorTabId) {
+        switchTab(errorTabId);
+        if(errorEl) errorEl.focus();
+    }
+    
+    return isValid;
+}
+
+// Form Submit Handler
+function handleFormSubmit(e) {
+    if (!validateForm()) {
+        e.preventDefault();
+        return false;
+    }
+
+    // Failsafe timeout logic & Loading state
+    isSubmitting = true;
+    const btn = document.getElementById('submit-btn');
+    const icon = document.getElementById('submit-icon');
+    const txt = document.getElementById('submit-text');
+    
+    // Store original
+    const origIcon = icon.innerText;
+    const origTxt = txt.innerText;
+    
+    // Set loading
+    btn.classList.add('opacity-80', 'cursor-not-allowed', 'pointer-events-none');
+    icon.classList.add('animate-spin');
+    icon.innerText = 'sync';
+    txt.innerText = 'Menyimpan...';
+
+    // Set 15s failsafe
+    setTimeout(() => {
+        if(isSubmitting) {
+            btn.classList.remove('opacity-80', 'cursor-not-allowed', 'pointer-events-none');
+            icon.classList.remove('animate-spin');
+            icon.innerText = origIcon;
+            txt.innerText = origTxt;
+            alert("Koneksi ke server memakan waktu lebih lama dari biasanya. Harap periksa koneksi Anda atau coba tekan simpan lagi.");
+            isSubmitting = false;
+        }
+    }, 15000);
+
+    // Clear draft on successful submit (handled by browser navigation usually, but we clear it now since we're leaving)
+    localStorage.removeItem('ksp_settings_draft');
+    return true;
+}
+
+// Unsaved changes warning
+window.addEventListener('beforeunload', (e) => {
+    if (!unsavedIndicator.classList.contains('hidden') && !isSubmitting) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+
+// Keyboard Shortcut Ctrl+S
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if(document.activeElement) document.activeElement.blur();
+        if(validateForm()) {
+            formEl.submit();
+        }
+    }
+});
+
+
+// ==========================================
+// 4. Component Scripts (Preview, Table)
+// ==========================================
+// Logo Preview
+document.getElementById('kop_logo').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) { document.getElementById('logo_preview').src = e.target.result; }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Debounced Format Preview
+const formatInput = document.getElementById('kop_format_nomor_surat');
+const previewEl = document.getElementById('nomor_surat_preview');
+const previewErrorEl = document.getElementById('nomor_surat_preview_error');
+let debounceTimer;
+function updatePreview() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        const formatVal = formatInput.value.trim();
+        if (!formatVal) {
+            previewEl.textContent = '-';
+            previewErrorEl.textContent = '';
             return;
         }
 
-        const selectedUserOption = activeUserSelect.options[activeUserSelect.selectedIndex];
-        const userId = selectedUserOption && selectedUserOption.value !== "" ? selectedUserOption.getAttribute('data-id') : null;
+        fetch('<?= base_url('admin/cooperative/settings/preview-number') ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': '<?= csrf_hash() ?>' },
+            body: new URLSearchParams({ 'format': formatVal, 'kode': 'RE' })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                previewEl.textContent = data.preview;
+                previewEl.classList.remove('text-rose-450');
+                previewErrorEl.textContent = '';
+            } else {
+                previewEl.textContent = 'Format Error';
+                previewEl.classList.add('text-rose-450');
+                previewErrorEl.textContent = data.error;
+            }
+        }).catch(err => {
+            // Ignore network errors in preview silently to avoid spam
+        });
+    }, 400);
+}
+formatInput.addEventListener('input', updatePreview);
 
-        const newSigner = {
-            schema_version: 1,
-            signer_id: 'signer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-            name: name,
-            role: role,
-            letter_type: type,
-            is_active: true,
-            priority: priority,
-            user_id: userId
-        };
+// Dynamic Signers Table CRUD
+const signersInput = document.getElementById('kop_letter_signers');
+const signersTbody = document.getElementById('signers_tbody');
+let signersData = [];
 
-        signersData.push(newSigner);
+function initSignersData() {
+    try { signersData = JSON.parse(signersInput.value || '[]'); } catch(e) { signersData = []; }
+}
+
+function renderSignersTable() {
+    signersTbody.innerHTML = '';
+    if (signersData.length === 0) {
+        signersTbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic text-xs">Belum ada pengurus penanda tangan.</td></tr>`;
+        return;
+    }
+    signersData.sort((a,b) => (b.priority || 0) - (a.priority || 0));
+    signersData.forEach(signer => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/30 transition-colors group';
+        
+        const badgeClass = signer.letter_type === 'resign' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' 
+            : (signer.letter_type === 'loan' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-slate-700/30 text-slate-400 border-slate-600');
+
+        tr.innerHTML = `
+            <td class="p-3">
+                <div class="font-bold text-white text-xs">${esc(signer.name)}</div>
+                <div class="text-[10px] text-slate-400">${esc(signer.role)}</div>
+            </td>
+            <td class="p-3 text-center">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold border uppercase ${badgeClass}">${esc(signer.letter_type)}</span>
+            </td>
+            <td class="p-3 text-center font-mono text-teal-400 text-xs font-bold">${signer.priority}</td>
+            <td class="p-3 text-center">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" ${signer.is_active ? 'checked' : ''} onchange="toggleSignerActive('${signer.signer_id}')">
+                    <div class="w-7 h-3.5 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white peer-checked:after:bg-white after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:bg-teal-500"></div>
+                </label>
+            </td>
+            <td class="p-3 text-right opacity-50 group-hover:opacity-100 transition-opacity">
+                <button type="button" onclick="deleteSignerRow('${signer.signer_id}')" class="text-rose-400 hover:text-rose-300 p-1 cursor-pointer"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </td>
+        `;
+        signersTbody.appendChild(tr);
+    });
+}
+
+window.toggleSignerActive = function(id) {
+    signersData = signersData.map(s => { if(s.signer_id === id) s.is_active = !s.is_active; return s; });
+    saveSignersJson();
+};
+window.deleteSignerRow = function(id) {
+    if(confirm('Hapus dewan pengurus ini?')) {
+        signersData = signersData.filter(s => s.signer_id !== id);
         saveSignersJson();
         renderSignersTable();
-
-        // Reset form
-        nameEl.value = '';
-        roleEl.value = '';
-        typeEl.value = 'resign';
-        priorityEl.value = '0';
-        activeUserSelect.value = '';
-    };
-
-    // Helper sanitasi XSS ringan di JS
-    function esc(str) {
-        if (!str) return '';
-        return str.replace(/&/g, '&amp;')
-                  .replace(/</g, '&lt;')
-                  .replace(/>/g, '&gt;')
-                  .replace(/"/g, '&quot;')
-                  .replace(/'/g, '&#039;');
     }
+};
+function saveSignersJson() {
+    signersInput.value = JSON.stringify(signersData);
+    saveDraftToStorage(); // trigger unsaved changes
+}
+window.autoFillSignerFromUser = function() {
+    const sel = document.getElementById('active_user_select');
+    if(sel.value) document.getElementById('add_signer_name').value = sel.value;
+};
+window.addNewSignerRow = function() {
+    const name = document.getElementById('add_signer_name').value.trim();
+    const role = document.getElementById('add_signer_role').value.trim();
+    const type = document.getElementById('add_signer_type').value;
+    const prio = parseInt(document.getElementById('add_signer_priority').value) || 0;
+    if(!name || !role) return alert('Isi Nama dan Jabatan');
 
-    // Render on load
+    signersData.push({
+        schema_version: 1, signer_id: 'sig_' + Date.now(), name: name, role: role,
+        letter_type: type, is_active: true, priority: prio, user_id: null
+    });
+    saveSignersJson();
     renderSignersTable();
+    
+    // reset
+    document.getElementById('add_signer_name').value = '';
+    document.getElementById('add_signer_role').value = '';
+    document.getElementById('add_signer_priority').value = '0';
+};
+function esc(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;') : ''; }
 
-    // 4. AJAX Administrative Cache Flusher Controller
-    window.triggerSystemCacheClear = function(type) {
-        const confirmMsg = type === 'all' 
-            ? 'Apakah Anda yakin ingin MEMBERSIHKAN SELURUH CACHE SISTEM (KOP + Snapshot Surat approved)? Tindakan ini akan meng-refresh paksa database saat surat dibuka.'
-            : 'Apakah Anda yakin ingin MEMBERSIHKAN CACHE KONFIGURASI Koperasi?';
-            
-        if (confirm(confirmMsg)) {
-            fetch(`<?= base_url('admin/cooperative/settings/clear-cache') ?>?type=${type}`, {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (response.status === 400) {
-                    throw new Error('Parameter pembersihan cache tidak valid.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                } else {
-                    alert('Gagal membersihkan cache: ' + data.error);
-                }
-            })
-            .catch(err => {
-                alert('Kesalahan jaringan: ' + err.message);
-            });
-        }
-    };
+window.triggerSystemCacheClear = function(type) {
+    if(confirm('Bersihkan cache sistem?')) {
+        fetch(`<?= base_url('admin/cooperative/settings/clear-cache') ?>?type=${type}`, { headers: {'X-Requested-With': 'XMLHttpRequest'} })
+        .then(res => res.json()).then(data => alert(data.message)).catch(() => alert('Network error'));
+    }
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    initSignersData();
+    renderSignersTable();
+    updatePreview();
+    loadDraftFromStorage();
+    
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById('tab-' + hash)) {
+        switchTab(hash);
+    }
+});
+
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById('tab-' + hash)) {
+        switchTab(hash);
+    }
+});
 </script>
-
-
-        </form>
-    </div>
-</div>
 <?= $this->endSection() ?>
