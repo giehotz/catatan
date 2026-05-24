@@ -2,7 +2,27 @@ parameters:
   level: 6
   paths:
     - app
+  scanFiles:
+    # CI4 Common functions (cache, is_cli, log_message, redirect, esc, service, route_to, etc.)
+    - vendor/codeigniter4/framework/system/Common.php
+    # CI4 helper files
+    - vendor/codeigniter4/framework/system/Helpers/array_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/cookie_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/date_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/filesystem_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/form_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/html_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/inflector_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/number_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/security_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/text_helper.php
+    - vendor/codeigniter4/framework/system/Helpers/url_helper.php
+    # Shield auth helper
+    - vendor/codeigniter4/shield/src/Helpers/auth_helper.php
   bootstrapFiles:
     - vendor/autoload.php
   excludePaths:
     - vendor
+
+includes:
+  - phpstan-baseline.neon

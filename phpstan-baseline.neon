@@ -1,0 +1,3115 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgrade\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgrade\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeFormatTo2\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeFormatTo2\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeKopTo2\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeKopTo2\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeSignerTo2\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Method App\\Adapters\\SnapshotAdapter\:\:upgradeSignerTo2\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Adapters/SnapshotAdapter.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\RecurringTransactionModel\:\:distinct\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Commands/ProcessRecurring.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Commands/PruneLogos.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Common.php
+
+		-
+			message: '#^Function view\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Common.php
+
+		-
+			message: '#^Function view\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Common.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: app/Common.php
+
+		-
+			message: '#^Property Config\\App\:\:\$appTimezone has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: app/Config/App.php
+
+		-
+			message: '#^Function setting not found\.$#'
+			identifier: function.notFound
+			count: 6
+			path: app/Config/Auth.php
+
+		-
+			message: '#^Property Config\\Auth\:\:\$personalFields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/Auth.php
+
+		-
+			message: '#^Property Config\\Auth\:\:\$redirects type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/Auth.php
+
+		-
+			message: '#^Property Config\\Auth\:\:\$validFields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/Auth.php
+
+		-
+			message: '#^Property Config\\Auth\:\:\$views type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/Auth.php
+
+		-
+			message: '#^Property Config\\AuthGroups\:\:\$matrix type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/AuthGroups.php
+
+		-
+			message: '#^Property Config\\AuthGroups\:\:\$permissions type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/AuthGroups.php
+
+		-
+			message: '#^Property Config\\AuthToken\:\:\$authenticatorHeader type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Config/AuthToken.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Autoload.php
+
+		-
+			message: '#^Constant WRITEPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Cache.php
+
+		-
+			message: '#^Constant ROOTPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Constants.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Database.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Database.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Events.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: app/Config/Events.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Exceptions.php
+
+		-
+			message: '#^Property Config\\Kint\:\:\$plugins has unknown class Kint\\Parser\\ConstructablePluginInterface as its type\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Config/Kint.php
+
+		-
+			message: '#^Property Config\\Kint\:\:\$richObjectPlugins has unknown class Kint\\Renderer\\Rich\\ValuePluginInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Config/Kint.php
+
+		-
+			message: '#^Property Config\\Kint\:\:\$richTabPlugins has unknown class Kint\\Renderer\\Rich\\TabPluginInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Config/Kint.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Logger.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Publisher.php
+
+		-
+			message: '#^Constant ROOTPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Publisher.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 15
+			path: app/Config/Routes.php
+
+		-
+			message: '#^Variable \$routes might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Config/Routes/inbox.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Routing.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Security.php
+
+		-
+			message: '#^Constant APPPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Services.php
+
+		-
+			message: '#^Method Config\\Services\:\:renderer\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Config/Services.php
+
+		-
+			message: '#^Method Config\\Services\:\:renderer\(\) has parameter \$config with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Config/Services.php
+
+		-
+			message: '#^Method Config\\Services\:\:renderer\(\) has parameter \$viewPath with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Config/Services.php
+
+		-
+			message: '#^Constant WRITEPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Session.php
+
+		-
+			message: '#^Constant SYSTEMPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Config/Toolbar.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Controllers/Admin/ActiveUsers.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\ActiveUsers\:\:data\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/ActiveUsers.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\ActiveUsers\:\:getActiveUsersData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/ActiveUsers.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\ActiveUsers\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/ActiveUsers.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AdminAuth\:\:login\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AdminAuth.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AdminAuth\:\:showLogin\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AdminAuth.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\AuditLogModel\:\:truncate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AuditLog\:\:auditLogs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AuditLog\:\:backupLogs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AuditLog\:\:clearLogs\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\AuditLog\:\:getLogsData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/AuditLog.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\Dashboard\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/Dashboard.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Admin/Impersonation.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Admin/Impersonation.php
+
+		-
+			message: '#^Cannot call method inGroup\(\) on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Controllers/Admin/Impersonation.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\Impersonation\:\:impersonate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/Impersonation.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\Impersonation\:\:stopImpersonate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/Impersonation.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\UserImport\:\:downloadImportTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/UserImport.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\UserImport\:\:importExcel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/UserImport.php
+
+		-
+			message: '#^Cannot access property \$active on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot access property \$password on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot access property \$status on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot access property \$status_message on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 7
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot call method addGroup\(\) on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot call method getGroups\(\) on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot call method inGroup\(\) on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Cannot call method removeGroup\(\) on array\<int\|string, bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\UserManagement\:\:assignRole\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\UserManagement\:\:resetPassword\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Method App\\Controllers\\Admin\\UserManagement\:\:toggleStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Controllers/Admin/UserManagement.php
+
+		-
+			message: '#^Method App\\Controllers\\Budget\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Budget.php
+
+		-
+			message: '#^Method App\\Controllers\\Budget\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Budget.php
+
+		-
+			message: '#^Method App\\Controllers\\Budget\:\:setLimit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Budget.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:buildCategoryTree\(\) has parameter \$categories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:buildCategoryTree\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Category\:\:seedDefaultCategories\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Category.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:exportExcel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:exportPdf\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:getKopData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:getMemberInfo\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:parseAndValidateParams\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ArrearsReportController\:\:preview\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ArrearsReportController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\CashController\:\:exportExcel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/CashController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\CashController\:\:exportPdf\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/CashController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\CashController\:\:funds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/CashController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\CashController\:\:storeFund\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/CashController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\DashboardController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/DashboardController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Cooperative/DirectLoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\DirectLoanController\:\:checkDirectLoanAccess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/DirectLoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\DirectLoanController\:\:directLoanForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/DirectLoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\DirectLoanController\:\:storeDirectLoan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/DirectLoanController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InstallmentController\:\:approveInstallment\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InstallmentController\:\:installments\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InstallmentController\:\:printReceipt\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InstallmentController\:\:rejectInstallment\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InstallmentController\:\:storeInstallment\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InstallmentController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InvitationController\:\:deleteInvitation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InvitationController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InvitationController\:\:generateInvitation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InvitationController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\InvitationController\:\:invitations\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/InvitationController.php
+
+		-
+			message: '#^Parameter \#1 \$prefix of function uniqid expects string, int\<0, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Controllers/Cooperative/InvitationController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:approveLoan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:directory\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:directoryDetails\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:exportDirectoryDetailsExcel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:loans\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\LoanController\:\:rejectLoan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/LoanController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ActivationController\:\:joinForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ActivationController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ActivationController\:\:magicLink\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ActivationController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ActivationController\:\:processJoin\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ActivationController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ActivationController\:\:rejectInvitation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ActivationController.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 3
+			path: app/Controllers/Cooperative/Member/BillsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\BillsController\:\:bills\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/BillsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\BillsController\:\:getMemberOrRedirect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/BillsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\BillsController\:\:paySavingBill\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/BillsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\DashboardController\:\:getMemberOrRedirect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/DashboardController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\DashboardController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/DashboardController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\DashboardController\:\:terms\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/DashboardController.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 3
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\LoansController\:\:getMemberOrRedirect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\LoansController\:\:loans\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\LoansController\:\:payInstallment\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\LoansController\:\:printReceipt\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\LoansController\:\:requestLoan\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/LoansController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:cancel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:downloadLetter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:getMemberOrRedirect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:submit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\ResignController\:\:verifyPublic\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/ResignController.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 3
+			path: app/Controllers/Cooperative/Member/SavingsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\SavingsController\:\:deposit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/SavingsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\SavingsController\:\:getMemberOrRedirect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/SavingsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\SavingsController\:\:savings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/SavingsController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\Member\\SavingsController\:\:withdraw\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/Member/SavingsController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Cooperative/MemberController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\MemberController\:\:members\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/MemberController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\MemberController\:\:toggleMemberStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/MemberController.php
+
+		-
+			message: '#^Cannot access property \$email on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Cannot access property \$id on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\MessageController\:\:broadcast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\MessageController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Parameter \#1 \$prefix of function uniqid expects string, int\<0, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Controllers/Cooperative/MessageController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Cooperative/ResignApprovalController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ResignApprovalController\:\:approve\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ResignApprovalController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ResignApprovalController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ResignApprovalController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\ResignApprovalController\:\:reject\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/ResignApprovalController.php
+
+		-
+			message: '#^Variable \$userId might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Controllers/Cooperative/ResignApprovalController.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Controllers/Cooperative/SavingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SavingController\:\:approveSaving\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SavingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SavingController\:\:rejectSaving\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SavingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SavingController\:\:savings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SavingController.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SettingController\:\:clearCache\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SettingController\:\:previewNumber\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SettingController\:\:settings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Method App\\Controllers\\Cooperative\\SettingController\:\:updateSettings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Offset 1 on array\{list\<string\>, list\<non\-empty\-string\>\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 2
+			path: app/Controllers/Cooperative/SettingController.php
+
+		-
+			message: '#^Method App\\Controllers\\CooperativeShu\:\:adminIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/CooperativeShu.php
+
+		-
+			message: '#^Method App\\Controllers\\CooperativeShu\:\:checkCoopManage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/CooperativeShu.php
+
+		-
+			message: '#^Method App\\Controllers\\CooperativeShu\:\:distribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/CooperativeShu.php
+
+		-
+			message: '#^Method App\\Controllers\\CooperativeShu\:\:memberIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/CooperativeShu.php
+
+		-
+			message: '#^Method App\\Controllers\\DebtReceivable\:\:createDebt\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/DebtReceivable.php
+
+		-
+			message: '#^Method App\\Controllers\\DebtReceivable\:\:createReceivable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/DebtReceivable.php
+
+		-
+			message: '#^Method App\\Controllers\\DebtReceivable\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/DebtReceivable.php
+
+		-
+			message: '#^Method App\\Controllers\\DebtReceivable\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/DebtReceivable.php
+
+		-
+			message: '#^Method App\\Controllers\\DebtReceivable\:\:updateStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/DebtReceivable.php
+
+		-
+			message: '#^Method App\\Controllers\\Home\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Home.php
+
+		-
+			message: '#^Method App\\Controllers\\InboxController\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/InboxController.php
+
+		-
+			message: '#^Method App\\Controllers\\InboxController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/InboxController.php
+
+		-
+			message: '#^Method App\\Controllers\\InboxController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/InboxController.php
+
+		-
+			message: '#^Access to an undefined property CodeIgniter\\Shield\\Entities\\User\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Access to an undefined property CodeIgniter\\Shield\\Entities\\User\:\:\$theme_preference\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 5
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 3
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Method App\\Controllers\\Profile\:\:deleteAvatar\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Method App\\Controllers\\Profile\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Method App\\Controllers\\Profile\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Method App\\Controllers\\Profile\:\:updateTheme\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Controllers/Profile.php
+
+		-
+			message: '#^Method App\\Controllers\\Recurring\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Recurring.php
+
+		-
+			message: '#^Method App\\Controllers\\Recurring\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Recurring.php
+
+		-
+			message: '#^Method App\\Controllers\\Recurring\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Recurring.php
+
+		-
+			message: '#^Method App\\Controllers\\Recurring\:\:toggle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Recurring.php
+
+		-
+			message: '#^Method App\\Controllers\\Report\:\:chartData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Report.php
+
+		-
+			message: '#^Method App\\Controllers\\Report\:\:export\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Report.php
+
+		-
+			message: '#^Method App\\Controllers\\Report\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Report.php
+
+		-
+			message: '#^Method App\\Controllers\\Savings\:\:allocate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Savings.php
+
+		-
+			message: '#^Method App\\Controllers\\Savings\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Savings.php
+
+		-
+			message: '#^Method App\\Controllers\\Savings\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Savings.php
+
+		-
+			message: '#^Method App\\Controllers\\Savings\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Savings.php
+
+		-
+			message: '#^Method App\\Controllers\\Savings\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Savings.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:adjustBalance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:seedDefaultCategories\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Transaction\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Transaction.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:processTransfer\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:transferIndex\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^Method App\\Controllers\\Wallet\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Controllers/Wallet.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateUsersTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001401_CreateUsersTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateIncomeCategoriesTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001402_CreateIncomeCategoriesTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateExpenseCategoriesTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001403_CreateExpenseCategoriesTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateTransactionsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001404_CreateTransactionsTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateDebtsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001405_CreateDebtsTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateDebtPaymentsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001406_CreateDebtPaymentsTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateReceivablesTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001407_CreateReceivablesTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateReceivablePaymentsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001408_CreateReceivablePaymentsTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateBudgetsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-18-001409_CreateBudgetsTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Database/Migrations/2026-05-18-061800_CreateWalletsAndModifyTransactions.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Database/Migrations/2026-05-18-061800_CreateWalletsAndModifyTransactions.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-18-080000_CreateCooperativeTables.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-18-080000_CreateCooperativeTables.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-19-004300_CreateKopShuHistoryTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-19-004300_CreateKopShuHistoryTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-20-104200_CreateKopSettingsTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-20-104200_CreateKopSettingsTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-20-120000_UpdateCooperativeForFinancialRules.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-20-120000_UpdateCooperativeForFinancialRules.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:disableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-22-221500_CreateCooperativeResignationTable.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Database\\ConnectionInterface\:\:enableForeignKeyChecks\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Database/Migrations/2026-05-22-221500_CreateCooperativeResignationTable.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Database\\Migrations\\CreateKopDocumentSnapshotsTable\:\:\$db contains generic class CodeIgniter\\Database\\BaseConnection but does not specify its types\: TConnection, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Database/Migrations/2026-05-23-093000_CreateKopDocumentSnapshotsTable.php
+
+		-
+			message: '#^Access to an undefined property App\\Entities\\User\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Entities/User.php
+
+		-
+			message: '#^Function setting not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: app/Filters/AdminAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\AdminAuthFilter\:\:after\(\) should return CodeIgniter\\HTTP\\ResponseInterface\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/AdminAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\AdminAuthFilter\:\:before\(\) should return CodeIgniter\\HTTP\\RequestInterface\|CodeIgniter\\HTTP\\ResponseInterface\|string\|null but empty return statement found\.$#'
+			identifier: return.empty
+			count: 3
+			path: app/Filters/AdminAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\AdminAuthFilter\:\:before\(\) should return CodeIgniter\\HTTP\\RequestInterface\|CodeIgniter\\HTTP\\ResponseInterface\|string\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/AdminAuthFilter.php
+
+		-
+			message: '#^Function setting not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: app/Filters/CoopAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\CoopAuthFilter\:\:after\(\) should return CodeIgniter\\HTTP\\ResponseInterface\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/CoopAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\CoopAuthFilter\:\:before\(\) should return CodeIgniter\\HTTP\\RequestInterface\|CodeIgniter\\HTTP\\ResponseInterface\|string\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/CoopAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\CsrfHeaderFilter\:\:before\(\) should return CodeIgniter\\HTTP\\RequestInterface\|CodeIgniter\\HTTP\\ResponseInterface\|string\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/CsrfHeaderFilter.php
+
+		-
+			message: '#^Function setting not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: app/Filters/UserAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\UserAuthFilter\:\:after\(\) should return CodeIgniter\\HTTP\\ResponseInterface\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Filters/UserAuthFilter.php
+
+		-
+			message: '#^Method App\\Filters\\UserAuthFilter\:\:before\(\) should return CodeIgniter\\HTTP\\RequestInterface\|CodeIgniter\\HTTP\\ResponseInterface\|string\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 2
+			path: app/Filters/UserAuthFilter.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Helpers/ReceiptHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\ReceiptHelper\:\:generateInstallmentReceiptPdf\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Helpers/ReceiptHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\ReceiptHelper\:\:generateInstallmentReceiptPdf\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Helpers/ReceiptHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\ReceiptHelper\:\:generateInstallmentReceiptPdf\(\) has parameter \$memberData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Helpers/ReceiptHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\ReceiptHelper\:\:generateInstallmentReceiptPdf\(\) has parameter \$submission with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Helpers/ReceiptHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\SuratHelper\:\:getKopData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Helpers/SuratHelper.php
+
+		-
+			message: '#^Method App\\Helpers\\SuratHelper\:\:getSigner\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Helpers/SuratHelper.php
+
+		-
+			message: '#^Offset 1\|2\|3\|4\|5\|6\|7\|8\|9\|10\|11\|12 on array\{1\: ''I'', 2\: ''II'', 3\: ''III'', 4\: ''IV'', 5\: ''V'', 6\: ''VI'', 7\: ''VII'', 8\: ''VIII'', \.\.\.\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Helpers/SuratHelper.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: app/Libraries/CustomView.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:countAllData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:countFiltered\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:countFiltered\(\) has parameter \$postData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:getDatatables\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:getDatatables\(\) has parameter \$postData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\AuditLogModel\:\:log\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/AuditLogModel.php
+
+		-
+			message: '#^Method App\\Models\\KopAngsuranModel\:\:invalidateParentLoanCache\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopAngsuranModel.php
+
+		-
+			message: '#^Method App\\Models\\KopAngsuranModel\:\:invalidateParentLoanCache\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopAngsuranModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:handleAfterDelete\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:handleAfterDelete\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:handleBeforeDelete\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:handleBeforeDelete\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:invalidateCache\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopDocumentSnapshotModel\:\:invalidateCache\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopDocumentSnapshotModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:getSaldo\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:getSaldo\(\) has parameter \$kategoriDana with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has parameter \$dariKategori with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has parameter \$keKategori with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has parameter \$keterangan with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has parameter \$nominal with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopKasInternalModel\:\:transferFunds\(\) has parameter \$userId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/KopKasInternalModel.php
+
+		-
+			message: '#^Method App\\Models\\KopPinjamanModel\:\:calculateLoanDetails\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopPinjamanModel.php
+
+		-
+			message: '#^Method App\\Models\\KopPinjamanModel\:\:invalidateLoanCache\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopPinjamanModel.php
+
+		-
+			message: '#^Method App\\Models\\KopPinjamanModel\:\:invalidateLoanCache\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/KopPinjamanModel.php
+
+		-
+			message: '#^Constant WRITEPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Models/KopSettingModel.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsCalculationService\:\:computeAllMembersArrearsSummary\(\) has parameter \$months with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsCalculationService.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsCalculationService\:\:computeAllMembersArrearsSummary\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsCalculationService.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsCalculationService\:\:computeArrearsRows\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsCalculationService.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcel\(\) has parameter \$kopData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcel\(\) has parameter \$member with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcel\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcel\(\) has parameter \$signer with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcelAllMembers\(\) has parameter \$kopData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcelAllMembers\(\) has parameter \$months with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcelAllMembers\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\ArrearsExcelBuilder\:\:buildExcelAllMembers\(\) has parameter \$signer with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ArrearsExcelBuilder.php
+
+		-
+			message: '#^Method App\\Services\\BudgetService\:\:getBudgetReport\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/BudgetService.php
+
+		-
+			message: '#^Method App\\Services\\BudgetService\:\:getSmartAlerts\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/BudgetService.php
+
+		-
+			message: '#^Method App\\Services\\ChartService\:\:getCategoryDistribution\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ChartService.php
+
+		-
+			message: '#^Method App\\Services\\ChartService\:\:getMonthlyTrend\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ChartService.php
+
+		-
+			message: '#^Method App\\Services\\ExportService\:\:exportToCSV\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Method App\\Services\\ExportService\:\:exportToExcel\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Method App\\Services\\ExportService\:\:exportToPDF\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Method App\\Services\\ExportService\:\:getFilteredTransactions\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Method App\\Services\\ExportService\:\:getFilteredTransactions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Parameter \#1 \$row of method PhpOffice\\PhpSpreadsheet\\Worksheet\\Worksheet\:\:getRowDimension\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/ExportService.php
+
+		-
+			message: '#^Cannot access property \$username on array\<int\|string, array\<int\|string, bool\|float\|int\|object\|string\|null\>\|bool\|float\|int\|object\|string\|null\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/InstallmentService.php
+
+		-
+			message: '#^Method App\\Services\\InstallmentService\:\:distributePaymentToLedger\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/InstallmentService.php
+
+		-
+			message: '#^Method App\\Services\\InstallmentService\:\:processAdminPayment\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/InstallmentService.php
+
+		-
+			message: '#^Method App\\Services\\InstallmentService\:\:submitUserPayment\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/InstallmentService.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:buildSchedule\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:buildSchedule\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:buildScheduleWithRecords\(\) has parameter \$installmentRecords with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:buildScheduleWithRecords\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:buildScheduleWithRecords\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:calculateLoanSummary\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:calculateLoanSummary\(\) has parameter \$paidInstallments with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:calculateLoanSummary\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:getArrearsForMonth\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:getArrearsForMonth\(\) has parameter \$paidInstallments with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:getArrearsForMonth\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\LoanAmortizationService\:\:getInstallmentNumberForMonth\(\) has parameter \$loan with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/LoanAmortizationService.php
+
+		-
+			message: '#^Method App\\Services\\RecurringService\:\:createSchedule\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/RecurringService.php
+
+		-
+			message: '#^Method App\\Services\\RecurringService\:\:getSchedulesReport\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/RecurringService.php
+
+		-
+			message: '#^Method App\\Services\\ReportPeriodService\:\:parseMonthRange\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/ReportPeriodService.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, string\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Services/UserImportService.php
+
+		-
+			message: '#^Method App\\Services\\UserImportService\:\:importFromExcel\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/UserImportService.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Services/UserImportService.php
+
+		-
+			message: '#^Function setting not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: app/Views/Shield/login.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/Shield/login.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/Shield/register.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$users has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/active_users.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/active_users.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/audit_logs.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeMembers has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/arrears_report.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/arrears_report.php
+
+		-
+			message: '#^Variable \$saldoDanaTalangan might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/cooperative/dashboard.php
+
+		-
+			message: '#^Variable \$saldoKasUtama might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/cooperative/dashboard.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/dashboard.php
+
+		-
+			message: '#^Variable \$totalTarget might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/admin/cooperative/dashboard.php
+
+		-
+			message: '#^Variable \$totalTerkumpul might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/admin/cooperative/dashboard.php
+
+		-
+			message: '#^Variable \$members might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/cooperative/direct_loan.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/direct_loan.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$riwayatDana has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/funds.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/funds.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/installments.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/invitations.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$loan has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/loan_directory_details.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$schedule has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/loan_directory_details.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$summary has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/loan_directory_details.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/loan_directory_details.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/loans.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$loans has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/loans_directory.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/loans_directory.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$members has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/members.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/members.php
+
+		-
+			message: '#^Access to an undefined property App\\Entities\\User\:\:\$is_member\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/admin/cooperative/messages.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/messages.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$kopData has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_all_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$rows has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_all_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$signer has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_all_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$kopData has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$rows has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$signer has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/partials/arrears_pdf_template.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/admin/cooperative/partials/funds_pdf_template.php
+
+		-
+			message: '#^Variable \$periode might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/cooperative/partials/funds_pdf_template.php
+
+		-
+			message: '#^Variable \$riwayatDana might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/cooperative/partials/funds_pdf_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$requests has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/resign_requests.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/resign_requests.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/savings.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/settings.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$shuHistory has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/shu.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$simulation has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/admin/cooperative/shu.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/cooperative/shu.php
+
+		-
+			message: '#^Access to an undefined property App\\Entities\\User\:\:\$active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/admin/dashboard.php
+
+		-
+			message: '#^Access to an undefined property App\\Entities\\User\:\:\$can_be_impersonated\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/admin/dashboard.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/admin/dashboard.php
+
+		-
+			message: '#^Variable \$clearedBy might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/pdf_audit_backup.php
+
+		-
+			message: '#^Variable \$logs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/admin/pdf_audit_backup.php
+
+		-
+			message: '#^Variable \$code might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/cli/error_404.php
+
+		-
+			message: '#^Variable \$message might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/cli/error_404.php
+
+		-
+			message: '#^Parameter \#1 \$string of function str_pad expects string, \(float\|int\) given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Views/errors/cli/error_exception.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Views/errors/cli/error_exception.php
+
+		-
+			message: '#^Variable \$exception might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: app/Views/errors/cli/error_exception.php
+
+		-
+			message: '#^Variable \$message might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/cli/error_exception.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/errors/html/error_400.php
+
+		-
+			message: '#^Variable \$message might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/html/error_400.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/errors/html/error_404.php
+
+		-
+			message: '#^Variable \$message might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/html/error_404.php
+
+		-
+			message: '#^Calling static\:\:describeMemory\(\) outside of class scope\.$#'
+			identifier: outOfClass.static
+			count: 2
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Calling static\:\:highlightFile\(\) outside of class scope\.$#'
+			identifier: outOfClass.static
+			count: 2
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$exception might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$file might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$line might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$title might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$trace might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/errors/html/error_exception.php
+
+		-
+			message: '#^Variable \$navItems on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: app/Views/layouts/admin_base.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/layouts/admin_base.php
+
+		-
+			message: '#^Variable \$navItems on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: app/Views/layouts/admin_cooperative_base.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/layouts/admin_cooperative_base.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/layouts/base.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/layouts/koprasi_base.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/layouts/mobile_base.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 2
+			path: app/Views/layouts/mobile_base.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Views/layouts/mobile_base.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/layouts/mobile_base.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeDebts has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeReceivables has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$recentTransactions has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$smartAlerts has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/mobile/user/dashboard.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/mobile/user/reports/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$expenseCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$incomeCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$transactions has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/mobile/user/transactions/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/mobile/user/transactions/index.php
+
+		-
+			message: '#^Variable \$kop might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: app/Views/partials/cooperative/installment_receipt_pdf.php
+
+		-
+			message: '#^Variable \$loan might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/partials/cooperative/installment_receipt_pdf.php
+
+		-
+			message: '#^Variable \$nomor_anggota might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/partials/cooperative/installment_receipt_pdf.php
+
+		-
+			message: '#^Variable \$submission might not be defined\.$#'
+			identifier: variable.undefined
+			count: 7
+			path: app/Views/partials/cooperative/installment_receipt_pdf.php
+
+		-
+			message: '#^Variable \$username might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/partials/cooperative/installment_receipt_pdf.php
+
+		-
+			message: '#^Access to an undefined property CodeIgniter\\Shield\\Entities\\User\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/partials/header_profile.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/partials/header_profile.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$signer has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/partials/letter_footer.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/partials/letter_kop.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$kop has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/partials/letter_kop.php
+
+		-
+			message: '#^Access to an undefined property CodeIgniter\\Shield\\Entities\\User\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/partials/mobile_drawer.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/partials/mobile_drawer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$navItems has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/partials/mobile_drawer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$expenseCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/budgets/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$report has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/budgets/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/budgets/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$expenseTree has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/categories/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$incomeTree has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/categories/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$rawExpenses has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/categories/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$rawIncomes has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/categories/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/categories/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeLoans has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/bills.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$bills has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/bills.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/bills.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/bills.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$loans has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/hub.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/hub.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/hub.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/join.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/loans.php
+
+		-
+			message: '#^Variable \$invitation might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: app/Views/user/cooperative/magic_join.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/magic_join.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$history has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/form.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/form.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/resign/form.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$admin has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/letter_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/letter_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$request has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/letter_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$user has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/letter_template.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$history has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/status.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/status.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$pendingRequest has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/status.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/resign/status.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/resign/verify_failed.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$admin has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/verify_success.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$member has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/verify_success.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$request has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/verify_success.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$user has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/resign/verify_success.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/resign/verify_success.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/savings.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$myShu has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/cooperative/shu_history.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/cooperative/shu_history.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: app/Views/user/cooperative/terms.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeDebts has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$activeReceivables has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$recentTransactions has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$smartAlerts has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/dashboard.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$debts has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/debt_receivable/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$receivables has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/debt_receivable/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/debt_receivable/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$messages has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/inbox/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/inbox/index.php
+
+		-
+			message: '#^Variable \$message might not be defined\.$#'
+			identifier: variable.undefined
+			count: 6
+			path: app/Views/user/inbox/show.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/inbox/show.php
+
+		-
+			message: '#^Access to an undefined property CodeIgniter\\Shield\\Entities\\User\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Views/user/profile/index.php
+
+		-
+			message: '#^Constant FCPATH not found\.$#'
+			identifier: constant.notFound
+			count: 4
+			path: app/Views/user/profile/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/profile/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$expenseCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/recurring/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$incomeCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/recurring/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$schedules has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/recurring/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/recurring/index.php
+
+		-
+			message: '#^Variable \$expenseCount might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/user/reports/index.php
+
+		-
+			message: '#^Variable \$incomeCount might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: app/Views/user/reports/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/reports/index.php
+
+		-
+			message: '#^Variable \$topExpenseJSON might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/user/reports/index.php
+
+		-
+			message: '#^Variable \$topIncomeJSON might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Views/user/reports/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$goals has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/savings/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$historyByGoal has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/savings/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/savings/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/savings/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$expenseCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$incomeCategories has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$transactions has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/transactions/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/transactions/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/wallets/index.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/wallets/index.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$wallets has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Views/user/wallets/transfer.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: app/Views/user/wallets/transfer.php
+
+		-
+			message: '#^Constant ENVIRONMENT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: app/Views/welcome_message.php
