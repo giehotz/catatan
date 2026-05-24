@@ -131,12 +131,12 @@
             <!-- Start Date -->
             <div class="space-y-1.5">
                 <label class="text-xs font-bold text-tx-secondary uppercase tracking-wider">Tanggal Mulai</label>
-                <input type="date" name="start_date" value="<?= (string) esc($filterStartDate) ?>" class="w-full px-4 py-2.5 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm">
+                <input type="date" name="start_date" value="<?= (string) esc($filterStartDate) ?>" class="w-full px-4 py-2.5 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-70">
             </div>
             <!-- End Date -->
             <div class="space-y-1.5">
                 <label class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Tanggal Akhir</label>
-                <input type="date" name="end_date" value="<?= (string) esc($filterEndDate) ?>" class="w-full px-4 py-2.5 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm">
+                <input type="date" name="end_date" value="<?= (string) esc($filterEndDate) ?>" class="w-full px-4 py-2.5 bg-base/60 border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-70">
             </div>
             <!-- Buttons -->
             <div class="flex gap-2 sm:col-span-2 md:col-span-2 lg:col-span-2">

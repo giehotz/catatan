@@ -150,7 +150,10 @@
                                         <select name="role" onchange="this.form.submit()" class="bg-slate-950/60 border border-slate-900 rounded-lg px-2.5 py-1 text-xs text-indigo-300 font-semibold focus:border-indigo-500 outline-none cursor-pointer hover:border-slate-800 transition-colors">
                                             <option value="user" <?= $user->isOnlyUser() ? 'selected' : '' ?>>User</option>
                                             <option value="manager" <?= $user->isManager() ? 'selected' : '' ?>>Manager</option>
-                                            <option value="admin" <?= $user->isAdmin() ? 'selected' : '' ?>>Admin</option>
+                                            <option value="admin" <?= $user->isAdmin() && !$user->inGroup('superadmin') ? 'selected' : '' ?>>Admin</option>
+                                            <?php if (auth()->user()->inGroup('superadmin')) : ?>
+                                                <option value="superadmin" <?= $user->inGroup('superadmin') ? 'selected' : '' ?>>Super Admin</option>
+                                            <?php endif; ?>
                                         </select>
                                     </form>
                                 <?php endif; ?>
@@ -175,7 +178,7 @@
                                 <div class="flex items-center justify-end gap-2.5">
                                     
                                     <!-- Toggle Block Status Form -->
-                                    <?php if (auth()->id() !== $user->id) : ?>
+                                    <?php if (auth()->id() !== $user->id && (! $user->inGroup('superadmin') || auth()->user()->inGroup('superadmin'))) : ?>
                                         <form action="<?= base_url('admin/toggle-status/' . $user->id) ?>" method="post" onsubmit="return confirm('Apakah Anda yakin ingin mengubah status aktif pengguna ini?');">
                                             <?= csrf_field() ?>
                                             <?php if ($user->active) : ?>
@@ -203,6 +206,7 @@
                                         </span>
                                     <?php endif ?>
 
+                                    <?php if (! $user->inGroup('superadmin') || auth()->user()->inGroup('superadmin')) : ?>
                                     <!-- Reset Password Trigger -->
                                     <button onclick="openResetModal(<?= $user->id ?>, '<?= (string) esc((string) $user->username) ?>')" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-indigo-500/20 hover:border-indigo-500/50 bg-indigo-500/5 hover:bg-indigo-500/10 text-indigo-400 hover:text-indigo-300 transition-all cursor-pointer flex items-center gap-1" title="Reset kata sandi pengguna">
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -210,9 +214,10 @@
                                         </svg>
                                         Sandi
                                     </button>
+                                    <?php endif ?>
 
                                     <!-- Impersonation Action -->
-                                    <?php if ($user->can_be_impersonated) : ?>
+                                    <?php if ($user->can_be_impersonated && auth()->user()->inGroup('superadmin')) : ?>
                                         <a href="<?= base_url('admin/impersonate/' . $user->id) ?>" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-amber-500/20 hover:border-amber-500/50 bg-amber-500/5 hover:bg-amber-500/10 text-amber-400 hover:text-amber-300 transition-all cursor-pointer flex items-center gap-1" title="Menyamar sebagai pengguna ini (Bantuan Teknis)">
                                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

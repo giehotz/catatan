@@ -24,6 +24,11 @@ class UserManagement extends BaseController
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan.');
         }
 
+        // Only superadmin can modify superadmin
+        if ($user->inGroup('superadmin') && !auth()->user()->inGroup('superadmin')) {
+            return redirect()->back()->with('error', 'Akses Ditolak: Anda tidak berhak mengubah status akun Super Admin.');
+        }
+
         // Toggle 'active' status
         $newStatus = $user->active ? 0 : 1;
         $user->active = $newStatus;
@@ -70,6 +75,11 @@ class UserManagement extends BaseController
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan.');
         }
 
+        // Only superadmin can modify superadmin
+        if ($user->inGroup('superadmin') && !auth()->user()->inGroup('superadmin')) {
+            return redirect()->back()->with('error', 'Akses Ditolak: Anda tidak berhak mereset sandi akun Super Admin.');
+        }
+
         // Set password and save
         $user->password = $password;
 
@@ -95,6 +105,9 @@ class UserManagement extends BaseController
 
         $role = $this->request->getPost('role');
         $validRoles = ['user', 'manager', 'admin'];
+        if (auth()->user()->inGroup('superadmin')) {
+            $validRoles[] = 'superadmin';
+        }
 
         if (!in_array($role, $validRoles)) {
             return redirect()->back()->with('error', 'Peran yang dipilih tidak valid.');
@@ -105,6 +118,11 @@ class UserManagement extends BaseController
 
         if (!$user) {
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan.');
+        }
+
+        // Only superadmin can modify superadmin or assign superadmin role
+        if (!auth()->user()->inGroup('superadmin') && ($user->inGroup('superadmin') || $role === 'superadmin')) {
+            return redirect()->back()->with('error', 'Akses Ditolak: Anda tidak memiliki hak untuk mengatur atau memberikan peran Super Admin.');
         }
 
         // Shield role assignment: remove previous groups and add new one(s)

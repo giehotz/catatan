@@ -30,6 +30,11 @@ class AdminAuthFilter implements FilterInterface
 
         // 3. If logged in but lacks admin/superadmin privileges, check if they are a Manager accessing cooperative routes
         $user = auth()->user();
+        
+        // 4. Record last active date
+        if (setting('Auth.recordActiveDate')) {
+            auth()->recordActiveDate();
+        }
         if (!$user->inGroup('admin') && !$user->inGroup('superadmin')) {
             // Allow Managers to access cooperative management routes under /admin/cooperative
             if ($user->inGroup('manager') && strpos(current_url(), 'admin/cooperative') !== false) {

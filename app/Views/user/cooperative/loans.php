@@ -187,7 +187,7 @@
                                                 </div>
                                                 <div class="flex items-center justify-between text-slate-400">
                                                     <span>Sisa Hutang:</span>
-                                                    <strong class="text-indigo-400 font-extrabold">Rp <?= number_format(floatval($l['nominal_total']) - floatval($l['total_paid']), 2, ',', '.') ?></strong>
+                                                    <strong class="text-indigo-400 font-extrabold">Rp <?= number_format(floatval($l['nominal_total']) - floatval($l['total_paid']) - floatval($l['pending_submissions_amount']), 2, ',', '.') ?></strong>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,14 +203,23 @@
                                                 <form action="<?= base_url('cooperative/pay-installment/' . $l['id']) ?>" method="post" enctype="multipart/form-data" class="space-y-3">
                                                     <?= csrf_field() ?>
                                                     
-                                                    <div class="flex gap-2">
-                                                        <div class="w-1/3">
-                                                            <label for="angsuran_ke_<?= $l['id'] ?>" class="text-[9px] text-slate-500 uppercase block mb-1">Angsuran Ke-</label>
-                                                            <input type="number" id="angsuran_ke_<?= $l['id'] ?>" name="angsuran_ke" required min="1" max="<?= $l['tenor_bulan'] ?>" placeholder="1" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-900 rounded-lg focus:border-indigo-500 text-white text-xs font-bold text-center">
+                                                    <div class="space-y-3">
+                                                        <div class="space-y-1">
+                                                            <label for="nominal_bayar_<?= $l['id'] ?>" class="text-[9px] text-slate-500 uppercase block mb-1">Nominal Transfer (Rp)</label>
+                                                            <?php $sisaHutangReal = floatval($l['nominal_total']) - floatval($l['total_paid']) - floatval($l['pending_submissions_amount']); ?>
+                                                            <input type="number" id="nominal_bayar_<?= $l['id'] ?>" name="nominal_bayar" required min="1000" max="<?= $sisaHutangReal ?>" placeholder="Misal: <?= number_format(floatval($l['nominal_total']) / intval($l['tenor_bulan']), 0, '', '') ?>" oninput="previewDistribution(<?= $l['id'] ?>, <?= floatval($l['nominal_total']) / intval($l['tenor_bulan']) ?>, <?= $sisaHutangReal ?>)" class="w-full px-3 py-2 bg-slate-950 border border-slate-900 rounded-lg focus:border-indigo-500 text-white text-xs font-bold transition-colors" <?= $sisaHutangReal <= 0 ? 'disabled' : '' ?>>
+                                                            <?php if (floatval($l['pending_submissions_amount']) > 0) : ?>
+                                                                <p class="text-[9px] text-amber-400 mt-1">Sisa limit memperhitungkan Rp <?= number_format($l['pending_submissions_amount'], 0, ',', '.') ?> yang sedang pending.</p>
+                                                            <?php endif; ?>
                                                         </div>
-                                                        <div class="w-2/3">
+                                                        <div class="space-y-1">
                                                             <label for="bukti_bayar_<?= $l['id'] ?>" class="text-[9px] text-slate-500 uppercase block mb-1">Bukti Transfer (Image)</label>
                                                             <input type="file" id="bukti_bayar_<?= $l['id'] ?>" name="bukti_bayar" required accept="image/*" class="w-full px-2 py-1 bg-slate-950 border border-slate-900 rounded-lg text-[10px] text-slate-400 outline-none file:mr-2 file:py-0.5 file:px-1.5 file:rounded file:border-0 file:text-[9px] file:font-bold file:bg-slate-800 file:text-indigo-400 hover:file:bg-slate-700 cursor-pointer">
+                                                        </div>
+                                                        
+                                                        <!-- Preview Distribution -->
+                                                        <div id="preview_dist_<?= $l['id'] ?>" class="hidden p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-[10px] text-indigo-300">
+                                                            <!-- JS will populate this -->
                                                         </div>
                                                     </div>
 
@@ -229,6 +238,49 @@
 
                                 <?php endif; ?>
 
+                                <!-- History Submissions -->
+                                <?php if (!empty($l['submissions'])) : ?>
+                                    <div class="mt-4 border-t border-slate-900/60 pt-4">
+                                        <h5 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">Riwayat Pengajuan Angsuran</h5>
+                                        <div class="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                                            <?php foreach ($l['submissions'] as $sub) : ?>
+                                                <div class="flex items-start justify-between p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs">
+                                                    <div class="space-y-1">
+                                                        <div class="flex items-center gap-2">
+                                                            <strong class="text-white">Rp <?= number_format($sub['nominal_pengajuan'], 2, ',', '.') ?></strong>
+                                                            <?php if ($sub['source'] === 'admin') : ?>
+                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-500/20 text-amber-500 border border-amber-500/30 uppercase">Input Admin</span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <span class="text-[9px] text-slate-500 block font-mono"><?= date('d M Y, H:i', strtotime($sub['created_at'])) ?></span>
+                                                        
+                                                        <?php if ($sub['status'] === 'rejected' && !empty($sub['catatan_tolak'])) : ?>
+                                                            <div class="p-2 mt-2 bg-rose-500/10 border border-rose-500/20 rounded-lg">
+                                                                <strong class="text-[9px] text-rose-500 uppercase block mb-0.5">Alasan Penolakan:</strong>
+                                                                <p class="text-[10px] text-rose-300 leading-tight"><?= esc($sub['catatan_tolak']) ?></p>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <div class="text-right space-y-2">
+                                                        <?php if ($sub['status'] === 'pending') : ?>
+                                                            <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-slate-500/10 text-slate-400 border border-slate-800 uppercase block text-center">Pending</span>
+                                                        <?php elseif ($sub['status'] === 'approved') : ?>
+                                                            <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase block text-center">Disetujui</span>
+                                                            <a href="<?= base_url('cooperative/loans/receipt/' . $sub['id']) ?>" target="_blank" class="inline-flex items-center gap-1 text-[9px] text-indigo-400 hover:text-indigo-300 font-bold uppercase tracking-wider mt-1 border border-indigo-500/30 px-2 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors">
+                                                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                                                </svg>
+                                                                Cetak Kuitansi
+                                                            </a>
+                                                        <?php else : ?>
+                                                            <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase block text-center">Ditolak</span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -322,6 +374,49 @@
         simPencairanBersih.textContent = formatter.format(payoutBersih);
         simTotalBayar.textContent = formatter.format(totalBayar);
         simCicilan.textContent = formatter.format(cicilan);
+    }
+
+    function previewDistribution(loanId, monthlyInstallment, remainingDebt) {
+        const input = document.getElementById('nominal_bayar_' + loanId);
+        const previewBox = document.getElementById('preview_dist_' + loanId);
+        
+        const amount = parseFloat(input.value) || 0;
+        
+        if (amount <= 0) {
+            previewBox.classList.add('hidden');
+            return;
+        }
+
+        previewBox.classList.remove('hidden');
+
+        const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+
+        if (amount > remainingDebt) {
+            previewBox.innerHTML = `<span class="text-rose-400 font-bold">Peringatan: Nominal melebihi sisa hutang (${formatter.format(remainingDebt)}).</span>`;
+            return;
+        }
+
+        const fullMonths = Math.floor(amount / monthlyInstallment);
+        const remainder = amount % monthlyInstallment;
+        
+        let msg = `Nominal <strong>${formatter.format(amount)}</strong> akan melunasi:`;
+        msg += `<ul class="list-disc ml-4 mt-1">`;
+        
+        if (fullMonths > 0) {
+            msg += `<li><strong>${fullMonths}</strong> cicilan penuh (sebesar ${formatter.format(monthlyInstallment)} / bulan)</li>`;
+        }
+        
+        if (remainder > 0) {
+            msg += `<li>Cicilan parsial <strong>${formatter.format(remainder)}</strong> untuk angsuran berikutnya</li>`;
+        }
+        
+        msg += `</ul>`;
+        previewBox.innerHTML = msg;
     }
 
     // Call initially to render the 12-month default correctly

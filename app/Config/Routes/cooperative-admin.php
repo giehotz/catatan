@@ -37,11 +37,14 @@ $routes->group('admin/cooperative', ['namespace' => 'App\Controllers\Cooperative
     
     $routes->get('installments', 'InstallmentController::installments');
     $routes->post('installments/store', 'InstallmentController::storeInstallment');
+    $routes->get('installments/receipt/(:num)', 'InstallmentController::printReceipt/$1');
     $routes->post('approve-installment/(:num)', 'InstallmentController::approveInstallment/$1');
     $routes->post('reject-installment/(:num)', 'InstallmentController::rejectInstallment/$1');
     
     $routes->get('funds', 'CashController::funds');
     $routes->post('funds/store', 'CashController::storeFund');
+    $routes->post('funds/pdf', 'CashController::exportPdf');
+    $routes->post('funds/excel', 'CashController::exportExcel');
     
     // (Modul SHU menggunakan controller CooperativeShu di luar Cooperative folder)
     $routes->get('shu', '\App\Controllers\CooperativeShu::adminIndex');

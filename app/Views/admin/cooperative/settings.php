@@ -87,6 +87,9 @@ $serverStateHash = md5(json_encode($strSettings));
                     <button type="button" role="tab" aria-selected="false" onclick="switchTab('kop_surat')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="kop_surat">
                         <span class="material-symbols-outlined text-sm"></span> Template & KOP
                     </button>
+                    <button type="button" role="tab" aria-selected="false" onclick="switchTab('syarat_ketentuan')" class="px-5 py-4 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap tab-btn" data-tab-id="syarat_ketentuan">
+                        <span class="material-symbols-outlined text-sm"></span> Syarat & Ketentuan
+                    </button>
                 </div>
 
                 <!-- Padding Container for contents -->
@@ -440,6 +443,20 @@ $serverStateHash = md5(json_encode($strSettings));
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: Syarat & Ketentuan -->
+                    <div id="tab-syarat_ketentuan" class="tab-pane hidden" data-tab-id="syarat_ketentuan" role="tabpanel">
+                        <div class="mb-6 border-b border-slate-700/60 pb-4">
+                            <h2 class="text-lg font-bold text-white mb-1">Syarat & Ketentuan Koperasi</h2>
+                            <p class="text-xs text-slate-400">Atur teks untuk halaman Syarat & Ketentuan yang akan dibaca oleh anggota di halaman utama koperasi.</p>
+                        </div>
+
+                        <div class="bg-[#1e293b]/80 border border-slate-700/60 rounded-xl p-5 shadow-sm space-y-4">
+                            <label class="text-xs font-bold text-slate-400 block uppercase tracking-wide">Teks Syarat & Ketentuan</label>
+                            <p class="text-[10px] text-slate-500">Anda dapat menggunakan tag HTML dasar seperti &lt;p&gt;, &lt;strong&gt;, &lt;br&gt;, atau &lt;ul&gt; &lt;li&gt; untuk mengatur paragraf.</p>
+                            <textarea name="kop_syarat_ketentuan" rows="15" class="w-full bg-[#0f172a] border border-slate-600 rounded p-4 text-slate-300 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 outline-none transition-all"><?= htmlspecialchars($strSettings['kop_syarat_ketentuan'] ?? '') ?></textarea>
                         </div>
                     </div>
                 </div>

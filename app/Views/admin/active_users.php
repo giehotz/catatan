@@ -208,8 +208,10 @@
 </div>
 
 <script>
+(function() {
     // Initial users injected from controller
-    let users = <?= json_encode($users) ?>;
+    let users = <?= json_encode($users, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?: '[]' ?>;
+    if (!Array.isArray(users)) users = [];
     const DATA_URL = "<?= base_url('admin/active-users/data') ?>";
     
     // Filters & Search State
@@ -280,7 +282,13 @@
 
     // Render User Table Row
     function renderRows(filteredUsers) {
-        tableBody.innerHTML = '';
+        try {
+            tableBody.innerHTML = '';
+            
+            if (!Array.isArray(filteredUsers)) {
+                console.error('filteredUsers is not an array:', filteredUsers);
+                filteredUsers = [];
+            }
         
         if (filteredUsers.length === 0) {
             emptyState.classList.remove('hidden');
@@ -357,6 +365,10 @@
             `;
             tableBody.appendChild(tr);
         });
+        } catch (e) {
+            console.error('Error in renderRows:', e);
+            tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-rose-500 font-bold bg-rose-500/10">Error rendering UI: ${e.message}</td></tr>`;
+        }
     }
 
     // Main Filter & Search function
@@ -383,7 +395,11 @@
             );
         }
         
-        renderRows(filtered);
+        try {
+            renderRows(filtered);
+        } catch(e) {
+            console.error('Filter/Search Error:', e);
+        }
     }
 
     // Set Active Status Tab
@@ -601,5 +617,13 @@
         updateCircleProgress();
         startTimerLoop();
     });
+
+    // Expose functions to global scope for inline onclick handlers
+    window.setFilter = setFilter;
+    window.handleSearch = handleSearch;
+    window.clearSearch = clearSearch;
+    window.togglePause = togglePause;
+    window.manualRefresh = manualRefresh;
+})();
 </script>
 <?= $this->endSection() ?>

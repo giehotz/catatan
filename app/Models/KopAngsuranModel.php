@@ -13,6 +13,7 @@ class KopAngsuranModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'pinjaman_id',
+        'submission_id_fk',
         'angsuran_ke',
         'nominal_bayar',
         'pokok_dibayar',

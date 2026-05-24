@@ -54,73 +54,74 @@
         </div>
     <?php endif ?>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="space-y-8">
         
-        <!-- Manual Installment Form Column -->
-        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 sm:p-8 space-y-6 h-fit">
+        <!-- Manual Installment Form Row -->
+        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 sm:p-8 space-y-6">
             <div class="space-y-1">
                 <h3 class="text-lg font-bold text-white tracking-tight">Catat Angsuran Manual</h3>
                 <p class="text-xs text-slate-500">Mendaftarkan bukti setoran angsuran anggota secara langsung.</p>
             </div>
 
-            <form action="<?= base_url('admin/cooperative/installments/store') ?>" method="post" enctype="multipart/form-data" class="space-y-5">
+            <form action="<?= base_url('admin/cooperative/installments/store') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
 
-                <div class="space-y-2">
-                    <label for="pinjaman_id" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Pilih Pinjaman Aktif</label>
-                    <select id="pinjaman_id" name="pinjaman_id" required class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white font-semibold outline-none text-sm cursor-pointer" onchange="updateInstallmentSuggestion(this)">
-                        <option value="" disabled selected>-- Pilih Pinjaman Anggota --</option>
-                        <?php if (!empty($activeLoans)) : ?>
-                            <?php foreach ($activeLoans as $loan) : ?>
-                                <?php 
-                                    $monthlyPayment = floatval($loan['nominal_total']) / intval($loan['tenor_bulan']);
-                                ?>
-                                <option value="<?= $loan['id'] ?>" data-flat="<?= $monthlyPayment ?>" data-tenor="<?= $loan['tenor_bulan'] ?>">
-                                    <?= (string) esc($loan['username']) ?> (<?= (string) esc($loan['nomor_anggota']) ?>) - Rp <?= number_format($loan['nominal_total'], 0, ',', '.') ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <option value="" disabled>Tidak ada pinjaman aktif</option>
-                        <?php endif; ?>
-                    </select>
-                    <p class="text-[10px] text-slate-500 leading-relaxed">Pilih pinjaman anggota yang berstatus aktif.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                    <div class="space-y-2">
+                        <label for="pinjaman_id" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Pilih Pinjaman Aktif</label>
+                        <select id="pinjaman_id" name="pinjaman_id" required class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white font-semibold outline-none text-sm cursor-pointer" onchange="updateInstallmentSuggestion(this)">
+                            <option value="" disabled selected>-- Pilih Pinjaman Anggota --</option>
+                            <?php if (!empty($activeLoans)) : ?>
+                                <?php foreach ($activeLoans as $loan) : ?>
+                                    <?php 
+                                        $monthlyPayment = floatval($loan['nominal_total']) / intval($loan['tenor_bulan']);
+                                    ?>
+                                    <option value="<?= $loan['id'] ?>" data-flat="<?= $monthlyPayment ?>" data-tenor="<?= $loan['tenor_bulan'] ?>">
+                                        <?= (string) esc($loan['username']) ?> (<?= (string) esc($loan['nomor_anggota']) ?>) - Rp <?= number_format($loan['nominal_total'], 0, ',', '.') ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <option value="" disabled>Tidak ada pinjaman aktif</option>
+                            <?php endif; ?>
+                        </select>
+                        <p class="text-[10px] text-slate-500 leading-relaxed">Pilih pinjaman anggota yang berstatus aktif.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="nominal_bayar" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Nominal Bayar (Rp)</label>
+                        <input type="number" id="nominal_bayar" name="nominal_bayar" required min="1" step="0.01" placeholder="Contoh: 500000" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-600 transition-all outline-none text-sm font-semibold">
+                        <p class="text-[10px] text-slate-500 leading-relaxed">Nominal setoran pembayaran angsuran.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="tujuan_dana" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tujuan Kas Penerima</label>
+                        <select id="tujuan_dana" name="tujuan_dana" required class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white font-semibold outline-none text-sm cursor-pointer">
+                            <option value="kas_utama" selected>Kas Utama Koperasi</option>
+                            <option value="dana_talangan">Dana Talangan</option>
+                        </select>
+                        <p class="text-[10px] text-slate-500 leading-relaxed">Dana angsuran akan dicatat masuk ke kas ini.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="bukti_bayar" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Bukti Bayar (Opsional)</label>
+                        <input type="file" id="bukti_bayar" name="bukti_bayar" accept="image/*" class="w-full px-4 py-2.5 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 text-slate-400 text-xs font-semibold cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 file:cursor-pointer hover:file:bg-slate-700">
+                        <p class="text-[10px] text-slate-500 leading-relaxed">Unggah file struk transfer bank (jika ada).</p>
+                    </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label for="angsuran_ke" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Angsuran Ke-</label>
-                    <input type="number" id="angsuran_ke" name="angsuran_ke" required min="1" placeholder="Contoh: 1" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-600 transition-all outline-none text-sm font-semibold">
-                    <p class="text-[10px] text-slate-500 leading-relaxed" id="tenor-hint">Tentukan periode cicilan angsuran ke berapa.</p>
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="w-full md:w-auto px-8 py-3 bg-linear-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-emerald-600/10 cursor-pointer flex items-center justify-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Simpan Angsuran Manual
+                    </button>
                 </div>
-
-                <div class="space-y-2">
-                    <label for="nominal_bayar" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Nominal Bayar (Rp)</label>
-                    <input type="number" id="nominal_bayar" name="nominal_bayar" required min="1" step="0.01" placeholder="Contoh: 500000" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-600 transition-all outline-none text-sm font-semibold">
-                    <p class="text-[10px] text-slate-500 leading-relaxed">Nominal setoran pembayaran angsuran.</p>
-                </div>
-
-                <div class="space-y-2">
-                    <label for="tanggal_bayar" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tanggal Transaksi</label>
-                    <input type="date" id="tanggal_bayar" name="tanggal_bayar" required value="<?= date('Y-m-d') ?>" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white transition-all outline-none text-sm font-semibold">
-                    <p class="text-[10px] text-slate-500 leading-relaxed">Tanggal anggota menyetor pembayaran.</p>
-                </div>
-
-                <div class="space-y-2">
-                    <label for="bukti_bayar" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Bukti Bayar (Opsional)</label>
-                    <input type="file" id="bukti_bayar" name="bukti_bayar" accept="image/*" class="w-full px-4 py-2.5 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 text-slate-400 text-xs font-semibold cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 file:cursor-pointer hover:file:bg-slate-700">
-                    <p class="text-[10px] text-slate-500 leading-relaxed">Unggah file struk transfer bank (jika ada).</p>
-                </div>
-
-                <button type="submit" class="w-full py-3 bg-linear-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-emerald-600/10 cursor-pointer flex items-center justify-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Simpan Angsuran
-                </button>
             </form>
         </div>
 
-        <!-- Installments List Table Column -->
-        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl shadow-xl overflow-hidden lg:col-span-2 h-fit">
+        <!-- Installments List Table Row -->
+        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl shadow-xl overflow-hidden">
             <div class="p-6 border-b border-slate-900/60 flex items-center justify-between">
                 <h3 class="text-lg font-bold text-white tracking-tight">Antrean Pengajuan Pembayaran Angsuran</h3>
                 <span class="px-2.5 py-0.5 bg-slate-950/80 text-[10px] font-bold rounded-lg text-slate-400 border border-slate-900 uppercase">
@@ -134,18 +135,17 @@
                         <tr class="border-b border-slate-900 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-950/40">
                             <th class="py-4 px-6">Peminjam</th>
                             <th class="py-4 px-6 text-right">Pokok Pinjaman</th>
-                            <th class="py-4 px-6 text-center">Angsuran Ke</th>
-                            <th class="py-4 px-6 text-right">Nominal Angsuran</th>
-                            <th class="py-4 px-6 text-center">Bukti Bayar</th>
+                            <th class="py-4 px-6 text-right">Nominal Transfer</th>
+                            <th class="py-4 px-6 text-center">Bukti Transfer</th>
                             <th class="py-4 px-6 text-center">Status</th>
-                            <th class="py-4 px-6">Tanggal Upload</th>
+                            <th class="py-4 px-6">Tgl Submit</th>
                             <th class="py-4 px-6 text-right w-52">Tindakan</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-900/60 text-sm text-slate-300">
                         <?php if (empty($installments)) : ?>
                             <tr>
-                                <td colspan="8" class="py-8 text-center text-slate-500 font-semibold">Belum ada pengajuan angsuran kredit.</td>
+                                <td colspan="7" class="py-8 text-center text-slate-500 font-semibold">Belum ada pengajuan angsuran kredit.</td>
                             </tr>
                         <?php else : ?>
                             <?php foreach ($installments as $inst) : ?>
@@ -157,11 +157,8 @@
                                     <td class="py-4 px-6 text-right font-semibold text-slate-400">
                                         Rp <?= number_format($inst['nominal_pinjaman'], 2, ',', '.') ?>
                                     </td>
-                                    <td class="py-4 px-6 text-center font-bold text-indigo-300 text-xs">
-                                        Ke-<?= (string) esc($inst['angsuran_ke']) ?> / <?= (string) esc($inst['tenor_bulan']) ?> Bulan
-                                    </td>
                                     <td class="py-4 px-6 text-right font-extrabold text-emerald-400">
-                                        Rp <?= number_format($inst['nominal_bayar'], 2, ',', '.') ?>
+                                        Rp <?= number_format($inst['nominal_pengajuan'], 2, ',', '.') ?>
                                     </td>
                                     <td class="py-4 px-6 text-center">
                                         <?php if ($inst['bukti_bayar']) : ?>
@@ -187,7 +184,7 @@
                                         <?php endif; ?>
                                     </td>
                                     <td class="py-4 px-6 text-xs text-slate-500 font-semibold font-mono">
-                                        <?= date('d M Y, H:i', strtotime($inst['tanggal_bayar'])) ?>
+                                        <?= date('d M Y, H:i', strtotime($inst['created_at'])) ?>
                                     </td>
                                     <td class="py-4 px-6 text-right">
                                         <?php if ($inst['status'] === 'pending') : ?>
@@ -221,7 +218,17 @@
                                                 </form>
                                             </div>
                                         <?php else : ?>
-                                            <span class="text-xs text-slate-600 italic">Terproses</span>
+                                            <div class="flex flex-col items-end gap-1 text-xs text-slate-500">
+                                                <span class="italic">Terproses</span>
+                                                <?php if ($inst['status'] === 'approved') : ?>
+                                                    <a href="<?= base_url('admin/cooperative/installments/receipt/' . $inst['id']) ?>" target="_blank" class="inline-flex items-center gap-1 text-[10px] text-indigo-400 hover:text-indigo-300 font-bold uppercase tracking-wider border border-indigo-500/30 px-2 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors">
+                                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                                        </svg>
+                                                        Cetak
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -249,8 +256,7 @@
             document.getElementById('nominal_bayar').value = Math.round(parseFloat(flatAmount));
         }
         if (tenor) {
-            document.getElementById('tenor-hint').innerText = 'Tentukan periode cicilan angsuran ke berapa (Tenor Maksimal: ' + tenor + ' Bulan).';
-            document.getElementById('angsuran_ke').max = tenor;
+            document.getElementById('nominal_bayar').setAttribute('data-max', (parseFloat(flatAmount) * parseFloat(tenor)));
         }
     }
 

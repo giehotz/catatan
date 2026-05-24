@@ -14,6 +14,11 @@ class CoopAuthFilter implements FilterInterface
             return redirect()->to(base_url('admin/login'))->with('error', 'Silakan login terlebih dahulu.');
         }
         
+        // Record last active date
+        if (setting('Auth.recordActiveDate')) {
+            auth()->recordActiveDate();
+        }
+        
         $user = auth()->user();
         if (!$user->inGroup('admin') && !$user->inGroup('superadmin') && !$user->inGroup('manager')) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Halaman tidak ditemukan.');

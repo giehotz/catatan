@@ -51,6 +51,7 @@
                 <label class="text-xs font-bold text-slate-400 block">Pilih Anggota Aktif</label>
                 <select id="filter_anggota" class="w-full px-3 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-white text-xs font-semibold outline-none focus:border-teal-500 cursor-pointer transition-colors">
                     <option value="">-- Pilih Anggota --</option>
+                    <option value="all" class="text-teal-400 font-bold">-- Semua Anggota (Rekap Total) --</option>
                     <?php foreach ($activeMembers as $m): ?>
                     <option value="<?= (string) esc((string) $m['id']) ?>">
                         <?= (string) esc((string) $m['username']) ?> (<?= (string) esc((string) $m['nomor_anggota']) ?>)
@@ -125,14 +126,14 @@
         <div id="preview_table_wrapper" class="hidden overflow-x-auto border border-slate-900 rounded-2xl">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-teal-900/30 text-[10px] font-bold text-teal-300 uppercase tracking-wider border-b border-teal-900/40">
+                    <tr id="preview_thead_tr" class="bg-teal-900/30 text-[10px] font-bold text-teal-300 uppercase tracking-wider border-b border-teal-900/40">
                         <th class="py-3 px-4 text-center">No</th>
-                        <th class="py-3 px-4">Bulan</th>
+                        <th id="th_nama_bulan" class="py-3 px-4">Bulan</th>
                         <th class="py-3 px-4 text-right">Tunggakan Wajib</th>
                         <th class="py-3 px-4 text-right">Tunggakan Sosial</th>
                         <th class="py-3 px-4 text-right">Tunggakan Jasa</th>
                         <th class="py-3 px-4 text-right">Jumlah</th>
-                        <th class="py-3 px-4 text-center">Status</th>
+                        <th id="th_status" class="py-3 px-4 text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody id="preview_tbody" class="divide-y divide-slate-900/60 text-xs text-slate-300">
@@ -140,12 +141,12 @@
                 </tbody>
                 <tfoot>
                     <tr id="preview_total_row" class="bg-teal-900/40 text-xs font-bold text-teal-300 border-t border-teal-900/40">
-                        <td colspan="2" class="py-3 px-4 text-right">TOTAL TUNGGAKAN</td>
+                        <td colspan="2" class="py-3 px-4 text-right">GRAND TOTAL</td>
                         <td id="total_wajib" class="py-3 px-4 text-right"></td>
                         <td id="total_sosial" class="py-3 px-4 text-right"></td>
                         <td id="total_jasa" class="py-3 px-4 text-right"></td>
                         <td id="total_grand" class="py-3 px-4 text-right text-rose-400"></td>
-                        <td></td>
+                        <td id="td_status_footer"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -261,9 +262,28 @@ function renderPreview(member, rows, anggotaId, tahun, months) {
     document.getElementById('preview_area').classList.remove('hidden');
 
     // Member info
-    document.getElementById('preview_member_name').textContent = member.username || '-';
-    document.getElementById('preview_member_meta').textContent =
-        'No. Anggota: ' + (member.nomor_anggota || '-') + ' | Email: ' + (member.email || '-');
+    if (anggotaId === 'all') {
+        document.getElementById('preview_member_name').textContent = 'Rekapitulasi Seluruh Anggota Aktif';
+        const mNames = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        const firstM = mNames[months[0] - 1];
+        const lastM  = mNames[months[months.length - 1] - 1];
+        const periodStr = months.length > 1 ? `${firstM} - ${lastM} ${tahun}` : `${firstM} ${tahun}`;
+        document.getElementById('preview_member_meta').textContent = 'Periode: ' + periodStr;
+        
+        // Adjust headers
+        document.getElementById('th_nama_bulan').textContent = 'Nama Anggota';
+        document.getElementById('th_status').classList.add('hidden');
+        document.getElementById('td_status_footer').classList.add('hidden');
+    } else {
+        document.getElementById('preview_member_name').textContent = member.username || '-';
+        document.getElementById('preview_member_meta').textContent =
+            'No. Anggota: ' + (member.nomor_anggota || '-') + ' | Email: ' + (member.email || '-');
+            
+        // Adjust headers
+        document.getElementById('th_nama_bulan').textContent = 'Bulan';
+        document.getElementById('th_status').classList.remove('hidden');
+        document.getElementById('td_status_footer').classList.remove('hidden');
+    }
 
     const grandTotal = rows.reduce((s, r) => s + Number(r.jumlah), 0);
 
@@ -287,20 +307,27 @@ function renderPreview(member, rows, anggotaId, tahun, months) {
 
     rows.forEach((r, i) => {
         const hasArrears = Number(r.jumlah) > 0;
-        let statusBadge = hasArrears
-            ? '<span class="inline-block px-2 py-0.5 rounded-md text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase">Menunggak</span>'
-            : '<span class="inline-block px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Lunas</span>';
+        
+        let statusCol = '';
+        if (anggotaId !== 'all') {
+            let statusBadge = hasArrears
+                ? '<span class="inline-block px-2 py-0.5 rounded-md text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase">Menunggak</span>'
+                : '<span class="inline-block px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Lunas</span>';
+            statusCol = `<td class="py-3 px-4 text-center">${statusBadge}</td>`;
+        }
+
+        const namaAtauBulan = anggotaId === 'all' ? r.nama_anggota : r.bulan_nama;
 
         const tr = document.createElement('tr');
         tr.className = (i % 2 === 0 ? 'bg-slate-900/20' : 'bg-slate-950/10') + (hasArrears ? ' border-l-2 border-rose-500/40' : '');
         tr.innerHTML = `
             <td class="py-3 px-4 text-center">${i + 1}</td>
-            <td class="py-3 px-4 font-semibold text-white">${r.bulan_nama}</td>
+            <td class="py-3 px-4 font-semibold text-white">${namaAtauBulan}</td>
             <td class="py-3 px-4 text-right ${Number(r.tunggakan_wajib) > 0 ? 'text-rose-400 font-bold' : 'text-emerald-500'}">${fmtRp(r.tunggakan_wajib)}</td>
             <td class="py-3 px-4 text-right ${Number(r.tunggakan_sosial) > 0 ? 'text-rose-400 font-bold' : 'text-emerald-500'}">${fmtRp(r.tunggakan_sosial)}</td>
             <td class="py-3 px-4 text-right ${Number(r.tunggakan_jasa) > 0 ? 'text-rose-400 font-bold' : 'text-emerald-500'}">${fmtRp(r.tunggakan_jasa)}</td>
             <td class="py-3 px-4 text-right ${hasArrears ? 'text-rose-300 font-extrabold' : 'text-emerald-400 font-bold'}">${fmtRp(r.jumlah)}</td>
-            <td class="py-3 px-4 text-center">${statusBadge}</td>
+            ${statusCol}
         `;
         tbody.appendChild(tr);
 

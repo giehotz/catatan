@@ -4,16 +4,19 @@ namespace App\Controllers;
 
 use App\Services\ChartService;
 use App\Services\ExportService;
+use App\Services\ReportPeriodService;
 
 class Report extends BaseController
 {
     protected ChartService $chartService;
     protected ExportService $exportService;
+    protected ReportPeriodService $reportPeriodService;
 
     public function __construct()
     {
         $this->chartService = new ChartService();
         $this->exportService = new ExportService();
+        $this->reportPeriodService = new ReportPeriodService();
     }
 
     /**
@@ -42,14 +45,54 @@ class Report extends BaseController
         
         $totalIncome = 0;
         $totalExpense = 0;
+        $incomeCount = 0;
+        $expenseCount = 0;
+
+        $incomeCatMap = [];
+        $expenseCatMap = [];
 
         foreach ($transactions as $tx) {
+            $amount = floatval($tx['amount']);
+            $catName = $tx['category_name'] ?: 'Kategori Dihapus';
+
             if ($tx['type'] === 'income') {
-                $totalIncome += $tx['amount'];
+                $totalIncome += $amount;
+                $incomeCount++;
+                if (!isset($incomeCatMap[$catName])) $incomeCatMap[$catName] = 0;
+                $incomeCatMap[$catName] += $amount;
             } else {
-                $totalExpense += $tx['amount'];
+                $totalExpense += $amount;
+                $expenseCount++;
+                if (!isset($expenseCatMap[$catName])) $expenseCatMap[$catName] = 0;
+                $expenseCatMap[$catName] += $amount;
             }
         }
+
+        // Helper to get Top N categories
+        $getTopN = function($catMap, $limit = 5) {
+            arsort($catMap);
+            $labels = [];
+            $series = [];
+            $othersSum = 0;
+            $count = 0;
+            foreach ($catMap as $cat => $val) {
+                if ($count < $limit) {
+                    $labels[] = $cat;
+                    $series[] = $val;
+                } else {
+                    $othersSum += $val;
+                }
+                $count++;
+            }
+            if ($othersSum > 0) {
+                $labels[] = 'Lainnya';
+                $series[] = $othersSum;
+            }
+            return ['labels' => $labels, 'series' => $series];
+        };
+
+        $topIncomeCategories = $getTopN($incomeCatMap, 5);
+        $topExpenseCategories = $getTopN($expenseCatMap, 5);
 
         $netBalance = $totalIncome - $totalExpense;
 
@@ -57,6 +100,10 @@ class Report extends BaseController
             'title'             => 'Analisis & Laporan',
             'totalIncome'       => $totalIncome,
             'totalExpense'      => $totalExpense,
+            'incomeCount'       => $incomeCount,
+            'expenseCount'      => $expenseCount,
+            'topIncomeJSON'     => json_encode($topIncomeCategories, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),
+            'topExpenseJSON'    => json_encode($topExpenseCategories, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),
             'netBalance'        => $netBalance,
             'filterStartDate'   => $startDate,
             'filterEndDate'     => $endDate,
@@ -99,10 +146,19 @@ class Report extends BaseController
         // Handle both GET (for CSV/Excel standard links) and POST (for PDF with charts)
         $format = $this->request->getPostGet('format') ?: 'pdf';
         
+        $startMonth = $this->request->getPostGet('start_month');
+        $endMonth = $this->request->getPostGet('end_month');
+
+        try {
+            $parsedDates = $this->reportPeriodService->parseMonthRange($startMonth, $endMonth);
+        } catch (\InvalidArgumentException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        
         $filters = [
             'type'       => $this->request->getPostGet('type'),
-            'start_date' => $this->request->getPostGet('start_date'),
-            'end_date'   => $this->request->getPostGet('end_date'),
+            'start_date' => $parsedDates['start_date'],
+            'end_date'   => $parsedDates['end_date'],
             'search'     => $this->request->getPostGet('search')
         ];
 

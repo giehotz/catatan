@@ -33,7 +33,8 @@
   --color-info: var(--status-info);
 }
 
-:root, .theme-dark {
+:root {
+  color-scheme: dark;
   /* DARK MODE (Default/Current App State) */
   --bg-base: var(--color-slate-950);
   --bg-surface: var(--color-slate-900);
@@ -55,7 +56,12 @@
   --status-info: var(--color-sky-400);
 }
 
+.theme-dark {
+  color-scheme: dark;
+}
+
 .theme-light {
+  color-scheme: light;
   /* LIGHT MODE */
   --bg-base: var(--color-slate-50);
   --bg-surface: var(--color-white);
@@ -127,3 +133,7 @@ body.theme-transitioned *:not(input):not(textarea):not([data-no-transition]) {
   --tw-gradient-to: var(--bg-base) var(--tw-gradient-to-position);
 }
 
+/* Fix browser native calendar icon visibility in dark mode */
+.theme-dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.6);
+}

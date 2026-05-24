@@ -85,4 +85,15 @@ class DashboardController extends BaseController
             'is_member'      => true,
         ]);
     }
+
+    /**
+     * Cooperative Terms and Conditions Page.
+     */
+    public function terms()
+    {
+        return view('user/cooperative/terms', [
+            'title'     => 'Syarat & Ketentuan Koperasi',
+            'is_member' => auth()->loggedIn() && is_object($this->getMemberOrRedirect()) === false,
+        ]);
+    }
 }

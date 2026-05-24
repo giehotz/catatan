@@ -75,6 +75,88 @@
 
     </div>
 
+    <!-- Treasury Vault Metrics (dari funds.php) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <!-- Kas Utama -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Kas Utama</h3>
+                <div class="p-2 bg-emerald-500/20 rounded-lg">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <span class="text-2xl font-black text-white tracking-tight">Rp <?= number_format($saldoKasUtama, 0, ',', '.') ?></span>
+            </div>
+        </div>
+
+        <!-- Dana Talangan -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Dana Talangan</h3>
+                <div class="p-2 bg-blue-500/20 rounded-lg">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <span class="text-2xl font-black text-white tracking-tight">Rp <?= number_format($saldoDanaTalangan, 0, ',', '.') ?></span>
+            </div>
+        </div>
+
+        <!-- Target Angsuran -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-all"></div>
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Target Angsuran</h3>
+                <div class="p-2 bg-orange-500/20 rounded-lg">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <span class="text-2xl font-black text-white tracking-tight">Rp <?= number_format($totalTarget, 0, ',', '.') ?></span>
+            </div>
+        </div>
+
+        <!-- Terkumpul -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Terkumpul</h3>
+                <div class="p-2 bg-purple-500/20 rounded-lg">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <span class="text-2xl font-black text-white tracking-tight">Rp <?= number_format($totalTerkumpul, 0, ',', '.') ?></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar Analitik -->
+    <?php 
+    $progressPercent = $totalTarget > 0 ? min(100, ($totalTerkumpul / $totalTarget) * 100) : 0; 
+    ?>
+    <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 shadow-md relative overflow-hidden mt-4">
+        <div class="flex justify-between text-xs font-bold mb-3">
+            <span class="text-slate-300">Rasio Pengembalian Piutang Koperasi</span>
+            <span class="text-emerald-400"><?= number_format($progressPercent, 1) ?>%</span>
+        </div>
+        <div class="w-full bg-slate-950 rounded-full h-3">
+            <div class="bg-linear-to-r from-emerald-500 to-emerald-300 h-3 rounded-full transition-all duration-1000 ease-out" style="width: <?= $progressPercent ?>%"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-3">Metrik ini menghitung total pengembalian uang muka dari pinjaman berstatus aktif/lunas. Berfungsi memantau NPL (Non-Performing Loans).</p>
+    </div>
+
     <!-- Quick Workflow Queues Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         

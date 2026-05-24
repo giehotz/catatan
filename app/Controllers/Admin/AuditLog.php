@@ -118,6 +118,11 @@ class AuditLog extends BaseController
      */
     public function clearLogs()
     {
+        // Require superadmin role
+        if (!auth()->user()->inGroup('superadmin')) {
+            return redirect()->back()->with('error', 'Akses Ditolak: Hanya Super Admin yang berhak menghapus Log Audit.');
+        }
+
         $auditModel = new AuditLogModel();
         
         // 1. Ambil seluruh data log sebelum dihapus

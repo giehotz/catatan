@@ -18,6 +18,11 @@ class UserAuthFilter implements FilterInterface
         if (!auth()->loggedIn()) {
             return redirect()->to(base_url('login'))->with('error', 'Silakan masuk terlebih dahulu.');
         }
+
+        // Record last active date
+        if (setting('Auth.recordActiveDate')) {
+            auth()->recordActiveDate();
+        }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

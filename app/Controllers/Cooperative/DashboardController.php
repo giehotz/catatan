@@ -41,6 +41,10 @@ class DashboardController extends BaseController
         $totalAngsuran = $this->angsuranModel->where('status', 'approved')->selectSum('nominal_bayar')->first()['nominal_bayar'] ?? 0;
         $piutangAktif = floatval($totalPinjaman) - floatval($totalAngsuran);
 
+        // Kas Internal
+        $saldoKasUtama = $this->kasInternalModel->getSaldo('kas_utama');
+        $saldoDanaTalangan = $this->kasInternalModel->getSaldo('dana_talangan');
+
         // 3. Count members
         $activeMembers = $this->anggotaModel->where('status_keaktifan', 'aktif')->countAllResults();
 
@@ -111,6 +115,10 @@ class DashboardController extends BaseController
             'pendingLoans'       => $pendingLoans,
             'pendingInstallments'=> $pendingInstallments,
             'chartData'          => json_encode($chartData),
+            'saldoKasUtama'      => $saldoKasUtama,
+            'saldoDanaTalangan'  => $saldoDanaTalangan,
+            'totalTarget'        => (float)$totalPinjaman,
+            'totalTerkumpul'     => (float)$totalAngsuran,
         ]);
     }
 }

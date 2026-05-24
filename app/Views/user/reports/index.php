@@ -33,20 +33,20 @@
         
         <!-- Export Shortcuts -->
         <div class="flex items-center gap-3 w-full md:w-auto relative z-10">
-            <button type="button" onclick="exportPDFWithCharts()" id="btnExportPdfTop" 
+            <button type="button" onclick="openExportModal('pdf')" id="btnExportPdfTop" 
                class="grow md:grow-0 px-4 py-2.5 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 hover:border-rose-500/40 text-rose-400 text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 PDF Laporan
             </button>
-            <a href="<?= base_url('reports/export?format=excel' . (!empty($filterStartDate) ? '&start_date=' . $filterStartDate : '') . (!empty($filterEndDate) ? '&end_date=' . $filterEndDate : '') . (!empty($filterSearch) ? '&search=' . $filterSearch : '') . (!empty($filterType) ? '&type=' . $filterType : '')) ?>" 
+            <button type="button" onclick="openExportModal('excel')" 
                class="grow md:grow-0 px-4 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 hover:border-emerald-500/40 text-emerald-400 text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Excel (.xlsx)
-            </a>
+            </button>
         </div>
     </div>
 
@@ -83,6 +83,87 @@
                     Rp <?= number_format($netBalance, 0, ',', '.') ?>
                 </span>
             </div>
+        </div>
+    </div>
+
+    <!-- Detailed Top Charts -->
+    <div class="space-y-6 animate-fade-in mb-8">
+        <!-- Top Row: Income and Expense Summaries -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Total Pemasukan -->
+            <div class="bg-surface border border-br-default rounded-2xl p-6 flex justify-between items-center shadow-lg">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-tx-primary mb-0.5">Total Pemasukan</h3>
+                        <p class="text-xs text-tx-secondary"><?= $incomeCount ?> Transaksi</p>
+                    </div>
+                </div>
+                <div class="text-xl sm:text-2xl font-extrabold text-emerald-400">
+                    Rp <?= number_format($totalIncome, 0, ',', '.') ?>
+                </div>
+            </div>
+
+            <!-- Total Pengeluaran -->
+            <div class="bg-surface border border-br-default rounded-2xl p-6 flex justify-between items-center shadow-lg">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-rose-500/10 rounded-full flex items-center justify-center border border-rose-500/20">
+                        <svg class="w-6 h-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-tx-primary mb-0.5">Total Pengeluaran</h3>
+                        <p class="text-xs text-tx-secondary"><?= $expenseCount ?> Transaksi</p>
+                    </div>
+                </div>
+                <div class="text-xl sm:text-2xl font-extrabold text-rose-400">
+                    Rp <?= number_format($totalExpense, 0, ',', '.') ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Donut Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Pemasukan Terbesar -->
+            <?php if ($incomeCount > 0): ?>
+            <div class="bg-surface border border-br-default rounded-2xl p-6 shadow-lg flex flex-col">
+                <h3 class="text-[10px] sm:text-xs font-bold text-tx-secondary uppercase tracking-widest mb-6">Pemasukan Terbesar</h3>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="w-full sm:w-[45%] h-48 flex items-center justify-center relative">
+                        <div id="topIncomeDonutChart" class="w-full h-full flex items-center justify-center"></div>
+                    </div>
+                    <div id="topIncomeLegend" class="w-full sm:w-[55%] space-y-3"></div>
+                </div>
+            </div>
+            <?php else: ?>
+            <div class="bg-surface border border-br-default rounded-2xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[250px]">
+                <h3 class="text-[10px] sm:text-xs font-bold text-tx-secondary uppercase tracking-widest mb-2">Pemasukan Terbesar</h3>
+                <p class="text-sm text-tx-secondary">Belum ada transaksi pada periode ini.</p>
+            </div>
+            <?php endif; ?>
+
+            <!-- Pengeluaran Terbesar -->
+            <?php if ($expenseCount > 0): ?>
+            <div class="bg-surface border border-br-default rounded-2xl p-6 shadow-lg flex flex-col">
+                <h3 class="text-[10px] sm:text-xs font-bold text-tx-secondary uppercase tracking-widest mb-6">Pengeluaran Terbesar</h3>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="w-full sm:w-[45%] h-48 flex items-center justify-center relative">
+                        <div id="topExpenseDonutChart" class="w-full h-full flex items-center justify-center"></div>
+                    </div>
+                    <div id="topExpenseLegend" class="w-full sm:w-[55%] space-y-3"></div>
+                </div>
+            </div>
+            <?php else: ?>
+            <div class="bg-surface border border-br-default rounded-2xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[250px]">
+                <h3 class="text-[10px] sm:text-xs font-bold text-tx-secondary uppercase tracking-widest mb-2">Pengeluaran Terbesar</h3>
+                <p class="text-sm text-tx-secondary">Belum ada transaksi pada periode ini.</p>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -190,27 +271,27 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                <button type="button" onclick="exportPDFWithCharts()" id="btnExportPdfBottom" 
+                <button type="button" onclick="openExportModal('pdf')" id="btnExportPdfBottom" 
                    class="grow sm:grow-0 px-5 py-3 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 hover:border-rose-500/40 text-rose-600 dark:text-rose-400 text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                     Unduh PDF Premium
                 </button>
-                <a href="<?= base_url('reports/export?format=excel' . (!empty($filterStartDate) ? '&start_date=' . $filterStartDate : '') . (!empty($filterEndDate) ? '&end_date=' . $filterEndDate : '') . (!empty($filterSearch) ? '&search=' . $filterSearch : '') . (!empty($filterType) ? '&type=' . $filterType : '')) ?>" 
+                <button type="button" onclick="openExportModal('excel')" 
                    class="grow sm:grow-0 px-5 py-3 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 hover:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     Unduh Excel (.xlsx)
-                </a>
-                <a href="<?= base_url('reports/export?format=csv' . (!empty($filterStartDate) ? '&start_date=' . $filterStartDate : '') . (!empty($filterEndDate) ? '&end_date=' . $filterEndDate : '') . (!empty($filterSearch) ? '&search=' . $filterSearch : '') . (!empty($filterType) ? '&type=' . $filterType : '')) ?>" 
+                </button>
+                <button type="button" onclick="openExportModal('csv')" 
                    class="grow sm:grow-0 px-5 py-3 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/40 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
                     </svg>
                     Unduh berkas CSV
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -221,7 +302,88 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<?php if (session()->getFlashdata('error')): ?>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const isDark = document.documentElement.classList.contains('theme-dark');
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '<?= addslashes((string) session()->getFlashdata('error')) ?>',
+            background: isDark ? '#0f172a' : '#ffffff',
+            color: isDark ? '#f1f5f9' : '#0f172a'
+        });
+    });
+</script>
+<?php endif; ?>
+
+<script>
+    // Detailed Top Charts Logic
+    const topIncomeData = <?= $topIncomeJSON ?>;
+    const topExpenseData = <?= $topExpenseJSON ?>;
+    const countIncome = <?= $incomeCount ?>;
+    const countExpense = <?= $expenseCount ?>;
+
+    const topIncomeColors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#06B6D4', '#64748B'];
+    const topExpenseColors = ['#EF4444', '#F97316', '#EAB308', '#A855F7', '#EC4899', '#64748B'];
+
+    function formatRupiah(number) {
+        return "Rp " + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function renderCustomLegend(containerId, labels, series, colors) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        let html = '';
+        labels.forEach((label, index) => {
+            const color = colors[index % colors.length];
+            const value = formatRupiah(series[index]);
+            html += `
+                <div class="flex items-center justify-between text-xs sm:text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${color}"></span>
+                        <span class="text-tx-secondary truncate max-w-[120px] sm:max-w-[150px]" title="${label}">${label}</span>
+                    </div>
+                    <span class="font-bold text-tx-primary shrink-0">${value}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (countIncome > 0) {
+            new ApexCharts(document.querySelector("#topIncomeDonutChart"), {
+                series: topIncomeData.series,
+                labels: topIncomeData.labels,
+                colors: topIncomeColors,
+                chart: { type: 'donut', height: 200, background: 'transparent', parentHeightOffset: 0 },
+                plotOptions: { pie: { donut: { size: '65%' } } },
+                dataLabels: { enabled: false },
+                stroke: { show: false },
+                legend: { show: false },
+                tooltip: { theme: 'dark', y: { formatter: val => formatRupiah(val) } }
+            }).render();
+            renderCustomLegend('topIncomeLegend', topIncomeData.labels, topIncomeData.series, topIncomeColors);
+        }
+
+        if (countExpense > 0) {
+            new ApexCharts(document.querySelector("#topExpenseDonutChart"), {
+                series: topExpenseData.series,
+                labels: topExpenseData.labels,
+                colors: topExpenseColors,
+                chart: { type: 'donut', height: 200, background: 'transparent', parentHeightOffset: 0 },
+                plotOptions: { pie: { donut: { size: '65%' } } },
+                dataLabels: { enabled: false },
+                stroke: { show: false },
+                legend: { show: false },
+                tooltip: { theme: 'dark', y: { formatter: val => formatRupiah(val) } }
+            }).render();
+            renderCustomLegend('topExpenseLegend', topExpenseData.labels, topExpenseData.series, topExpenseColors);
+        }
+    });
+
     // Global data variables for charts
     let chartData = null;
     let categoryChartInstance = null;
@@ -549,7 +711,87 @@
         }
     }
 
-    async function exportPDFWithCharts() {
+    function openExportModal(format) {
+        const isDark = document.documentElement.classList.contains('theme-dark');
+        const swalBg = isDark ? '#0f172a' : '#ffffff';
+        const swalColor = isDark ? '#f1f5f9' : '#0f172a';
+        const isDarkTextClass = isDark ? 'text-slate-300' : 'text-slate-700';
+        const isDarkInputClass = isDark ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-white border-slate-300 text-slate-800';
+        
+        // Get current month as default (YYYY-MM)
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const currentMonth = `${year}-${month}`;
+
+        Swal.fire({
+            title: 'Pilih Rentang Laporan',
+            html: `
+                <div class="space-y-4 text-left px-2">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold ${isDarkTextClass} uppercase tracking-wider block">Bulan Mulai</label>
+                        <input type="month" id="swal-start-month" class="w-full px-4 py-2 border rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors ${isDarkInputClass}" value="${currentMonth}">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold ${isDarkTextClass} uppercase tracking-wider block">Bulan Sampai</label>
+                        <input type="month" id="swal-end-month" class="w-full px-4 py-2 border rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors ${isDarkInputClass}" value="${currentMonth}">
+                    </div>
+                </div>
+            `,
+            background: swalBg,
+            color: swalColor,
+            showCancelButton: true,
+            confirmButtonText: 'Unduh',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#4F46E5',
+            preConfirm: () => {
+                const start = document.getElementById('swal-start-month').value;
+                const end = document.getElementById('swal-end-month').value;
+                
+                if (!start || !end) {
+                    Swal.showValidationMessage('Bulan mulai dan sampai wajib diisi.');
+                    return false;
+                }
+                
+                if (start > end) {
+                    Swal.showValidationMessage('Bulan Sampai tidak boleh lebih awal dari Bulan Mulai.');
+                    return false;
+                }
+                
+                // Max 12 months calculation
+                const startDate = new Date(start + '-01');
+                const endDate = new Date(end + '-01');
+                
+                const diffMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth()) + 1;
+                
+                if (diffMonths > 12) {
+                    Swal.showValidationMessage('Rentang maksimal laporan adalah 12 bulan.');
+                    return false;
+                }
+                
+                return { startMonth: start, endMonth: end };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const { startMonth, endMonth } = result.value;
+                if (format === 'pdf') {
+                    exportPDFWithCharts(startMonth, endMonth);
+                } else {
+                    // Redirect for excel/csv
+                    const search = document.querySelector('input[name="search"]').value || '';
+                    const type = document.querySelector('input[name="type"]')?.value || '<?= esc((string)$filterType) ?>';
+                    
+                    let url = '<?= base_url('reports/export') ?>?format=' + format + '&start_month=' + startMonth + '&end_month=' + endMonth;
+                    if (search) url += '&search=' + encodeURIComponent(search);
+                    if (type) url += '&type=' + encodeURIComponent(type);
+                    
+                    window.location.href = url;
+                }
+            }
+        });
+    }
+
+    async function exportPDFWithCharts(startMonth, endMonth) {
         const isDark = document.documentElement.classList.contains('theme-dark');
         const swalBg = isDark ? '#0f172a' : '#ffffff';
         const swalColor = isDark ? '#f1f5f9' : '#0f172a';
@@ -600,19 +842,19 @@
             const trendBase64 = trendURI.imgURI;
             const categoryBase64 = categoryURI.imgURI;
 
-            // 2. Ambil parameter filter
-            const startDate = document.querySelector('input[name="start_date"]').value;
-            const endDate = document.querySelector('input[name="end_date"]').value;
+            // 2. Ambil parameter filter text
             const search = document.querySelector('input[name="search"]').value;
+            const type = document.querySelector('input[name="type"]')?.value || '<?= esc((string)$filterType) ?>';
 
             // 3. Buat FormData
             const formData = new FormData();
             formData.append('format', 'pdf');
             formData.append('trend_chart', trendBase64);
             formData.append('category_chart', categoryBase64);
-            formData.append('start_date', startDate);
-            formData.append('end_date', endDate);
+            formData.append('start_month', startMonth);
+            formData.append('end_month', endMonth);
             formData.append('search', search);
+            if (type) formData.append('type', type);
             // Append CSRF Token (CI4 default field is csrf_test_name)
             formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
 

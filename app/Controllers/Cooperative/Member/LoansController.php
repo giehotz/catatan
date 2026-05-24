@@ -7,6 +7,7 @@ use App\Models\KopPinjamanModel;
 use App\Models\KopAngsuranModel;
 use App\Models\KopSettingModel;
 use App\Traits\MemberTrait;
+use App\Services\InstallmentService;
 
 class LoansController extends BaseController
 {
@@ -14,11 +15,13 @@ class LoansController extends BaseController
 
     protected KopPinjamanModel $pinjamanModel;
     protected KopAngsuranModel $angsuranModel;
+    protected InstallmentService $installmentService;
 
     public function __construct()
     {
         $this->pinjamanModel = new KopPinjamanModel();
         $this->angsuranModel = new KopAngsuranModel();
+        $this->installmentService = new InstallmentService();
     }
 
     /**
@@ -36,7 +39,15 @@ class LoansController extends BaseController
         foreach ($loans as &$l) {
             $l['approved_installments'] = $this->angsuranModel->where('pinjaman_id', $l['id'])->where('status', 'approved')->countAllResults();
             $l['total_paid'] = $this->angsuranModel->where('pinjaman_id', $l['id'])->where('status', 'approved')->selectSum('nominal_bayar')->first()['nominal_bayar'] ?? 0;
-            $l['pending_installments'] = $this->angsuranModel->where('pinjaman_id', $l['id'])->where('status', 'pending')->countAllResults();
+            $l['pending_installments'] = \Config\Database::connect()->table('kop_angsuran_submissions')->where('pinjaman_id', $l['id'])->where('status', 'pending')->countAllResults();
+            $l['pending_submissions_amount'] = \Config\Database::connect()->table('kop_angsuran_submissions')->where('pinjaman_id', $l['id'])->where('status', 'pending')->selectSum('nominal_pengajuan')->get()->getRow()->nominal_pengajuan ?? 0;
+            
+            // Get submissions history for the view
+            $l['submissions'] = \Config\Database::connect()->table('kop_angsuran_submissions')
+                                ->where('pinjaman_id', $l['id'])
+                                ->orderBy('created_at', 'DESC')
+                                ->get()
+                                ->getResultArray();
         }
 
         $settingsKeys = [
@@ -119,7 +130,7 @@ class LoansController extends BaseController
         }
 
         $rules = [
-            'angsuran_ke' => 'required|integer|greater_than[0]',
+            'nominal_bayar' => 'required|numeric|greater_than[0]',
             'bukti_bayar' => 'uploaded[bukti_bayar]|is_image[bukti_bayar]|max_size[bukti_bayar,2048]',
         ];
 
@@ -127,16 +138,16 @@ class LoansController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $angsuranKe = intval($this->request->getPost('angsuran_ke'));
+        $nominalBayar = floatval($this->request->getPost('nominal_bayar'));
 
-        // Prevent double submit for the exact same installment number if pending/approved
-        $exist = $this->angsuranModel->where('pinjaman_id', $loanId)->where('angsuran_ke', $angsuranKe)->whereIn('status', ['pending', 'approved'])->countAllResults();
-        if ($exist > 0) {
-            return redirect()->back()->with('error', "Pembayaran untuk Angsuran ke-{$angsuranKe} sudah diajukan sebelumnya.");
+        // Validate overpayment including pending submissions
+        $totalApproved = $this->angsuranModel->where('pinjaman_id', $loanId)->where('status', 'approved')->selectSum('nominal_bayar')->first()['nominal_bayar'] ?? 0;
+        $totalPendingSubmissions = \Config\Database::connect()->table('kop_angsuran_submissions')->where('pinjaman_id', $loanId)->where('status', 'pending')->selectSum('nominal_pengajuan')->get()->getRow()->nominal_pengajuan ?? 0;
+        
+        $sisaHutang = floatval($loan['nominal_total']) - floatval($totalApproved) - floatval($totalPendingSubmissions);
+        if ($nominalBayar > $sisaHutang) {
+            return redirect()->back()->withInput()->with('error', "Nominal transfer (Rp " . number_format($nominalBayar, 2, ',', '.') . ") melebihi batas maksimal yang diperbolehkan (Rp " . number_format($sisaHutang, 2, ',', '.') . "). Harap cek ulang sisa tagihan dan pengajuan Anda yang masih pending.");
         }
-
-        // Nominal is calculated flat per month: nominal_total / tenor_bulan
-        $nominalBayar = floatval($loan['nominal_total']) / intval($loan['tenor_bulan']);
 
         $file = $this->request->getFile('bukti_bayar');
         $newName = '';
@@ -148,15 +159,32 @@ class LoansController extends BaseController
             $file->move(FCPATH . 'uploads/bukti_cicilan', $newName);
         }
 
-        $this->angsuranModel->insert([
-            'pinjaman_id'   => $loanId,
-            'angsuran_ke'   => $angsuranKe,
-            'nominal_bayar' => $nominalBayar,
-            'bukti_bayar'   => $newName,
-            'status'        => 'pending',
-            'tanggal_bayar' => date('Y-m-d H:i:s'),
-        ]);
+        try {
+            $this->installmentService->submitUserPayment($loan, $nominalBayar, $newName);
+            return redirect()->to(base_url('cooperative/loans'))->with('message', "Bukti transfer angsuran sebesar Rp " . number_format($nominalBayar, 2, ',', '.') . " berhasil diunggah dan sedang menunggu validasi admin.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 
-        return redirect()->to(base_url('cooperative/loans'))->with('message', "Bukti angsuran ke-{$angsuranKe} berhasil diunggah. Status akan segera diperbarui.");
+    public function printReceipt(int $submissionId)
+    {
+        $member = $this->getMemberOrRedirect();
+        if (is_object($member) && method_exists($member, 'getStatusCode')) {
+            return $member;
+        }
+
+        $submission = \Config\Database::connect()->table('kop_angsuran_submissions')->where('id', $submissionId)->get()->getRowArray();
+        if (!$submission || $submission['status'] !== 'approved') {
+            return redirect()->back()->with('error', 'Kuitansi tidak ditemukan atau belum disetujui.');
+        }
+
+        // Validate ownership securely
+        $loan = $this->pinjamanModel->where('id', $submission['pinjaman_id'])->where('anggota_id', $member['id'])->first();
+        if (!$loan) {
+            return redirect()->back()->with('error', 'Kuitansi tidak ditemukan.');
+        }
+
+        return \App\Helpers\ReceiptHelper::generateInstallmentReceiptPdf($submission, $loan, $member);
     }
 }

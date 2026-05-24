@@ -12,6 +12,11 @@ class Impersonation extends BaseController
      */
     public function impersonate(int $userId)
     {
+        // Require superadmin role
+        if (!auth()->user()->inGroup('superadmin')) {
+            return redirect()->back()->with('error', 'Akses Ditolak: Hanya Super Admin yang dapat menggunakan fitur penyamaran (impersonate).');
+        }
+
         // Prevent self impersonation
         if (auth()->id() === $userId) {
             return redirect()->back()->with('error', 'Anda tidak dapat menyamar sebagai diri Anda sendiri.');

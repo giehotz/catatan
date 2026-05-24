@@ -86,9 +86,9 @@
                             <!-- Efek fade kiri -->
                             <div id="navFadeLeft" class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-base to-transparent pointer-events-none opacity-0 transition-opacity duration-200"></div>
                             
-                            <nav class="flex items-center gap-2 sm:gap-3 py-1.5 text-slate-400 font-medium text-xs sm:text-sm mx-auto">
+                            <nav class="flex items-center gap-2 sm:gap-3 py-1.5 text-tx-secondary font-medium text-xs sm:text-sm mx-auto">
                                 <?php foreach ($navItems as $item): ?>
-                                    <a href="<?= $item['url'] ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= $item['active'] ? 'bg-indigo-500/15 text-indigo-400 ring-1 ring-indigo-500/30 shadow-sm shadow-indigo-500/10' : 'hover:text-slate-200 hover:bg-slate-800/60' ?>">
+                                    <a href="<?= $item['url'] ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= $item['active'] ? 'bg-brand/15 text-brand ring-1 ring-brand/30 shadow-sm shadow-brand/10' : 'hover:text-tx-primary hover:bg-elevated' ?>">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <?= $item['icon'] ?>
                                         </svg>
@@ -97,8 +97,8 @@
                                 <?php endforeach; ?>
                                 
                                 <?php if (auth()->user()->inGroup('admin') || auth()->user()->inGroup('superadmin') || auth()->user()->inGroup('manager')): ?>
-                                    <div class="h-6 w-px bg-slate-700 mx-1 shrink-0"></div>
-                                    <a href="<?= auth()->user()->inGroup('manager') ? base_url('admin/cooperative') : base_url('admin') ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30 hover:bg-emerald-500/20 shadow-sm shadow-emerald-500/10">
+                                    <div class="h-6 w-px bg-br-default mx-1 shrink-0"></div>
+                                    <a href="<?= auth()->user()->inGroup('manager') ? base_url('admin/cooperative') : base_url('admin') ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 bg-success/10 text-success ring-1 ring-success/30 hover:bg-success/20 shadow-sm shadow-success/10">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                                         <span>Panel Admin</span>
                                     </a>

@@ -21,6 +21,7 @@ $routes->group('cooperative', ['namespace' => 'App\Controllers\Cooperative\Membe
     $routes->get('loans', 'LoansController::loans');
     $routes->post('request-loan', 'LoansController::requestLoan');
     $routes->post('pay-installment/(:num)', 'LoansController::payInstallment/$1');
+    $routes->get('loans/receipt/(:num)', 'LoansController::printReceipt/$1');
     
     $routes->get('bills', 'BillsController::bills');
     $routes->post('pay-saving-bill', 'BillsController::paySavingBill');
@@ -33,6 +34,9 @@ $routes->group('cooperative', ['namespace' => 'App\Controllers\Cooperative\Membe
     $routes->post('resign/cancel/(:num)', 'ResignController::cancel/$1');
     $routes->get('resign/letter/(:num)', 'ResignController::downloadLetter/$1');
 });
+
+// Public Cooperative Terms Page
+$routes->get('cooperative/terms', '\App\Controllers\Cooperative\Member\DashboardController::terms');
 
 // Public Resignation Verification (No auth filter)
 $routes->get('cooperative/verify-resign/(:any)', '\App\Controllers\Cooperative\Member\ResignController::verifyPublic/$1');

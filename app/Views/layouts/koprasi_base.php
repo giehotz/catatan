@@ -157,7 +157,7 @@ if (auth()->loggedIn()) {
                 <div class="flex items-center gap-4">
                     <a href="#" class="text-xs text-tx-secondary hover:text-brand transition-colors">Kebijakan Privasi</a>
                     <span class="text-xs text-tx-disabled/50 select-none">|</span>
-                    <a href="#" class="text-xs text-tx-secondary hover:text-brand transition-colors">Syarat & Ketentuan</a>
+                    <a href="<?= base_url('cooperative/terms') ?>" class="text-xs text-slate-400 hover:text-indigo-400 transition-colors">Syarat & Ketentuan</a>
                 </div>
             </div>
         </footer>
