@@ -18,12 +18,16 @@ use Config\Services;
 
 if (!function_exists('view')) {
     /**
-     * Grabs the current RendererInterface and renders the view.
-     * Overridden to serve mobile-specific views automatically with dynamic fallbacks
-     * and session-persistent preview options.
+     * Cache for file_exists() checks on view paths.
+     * Valid per-request execution only. Automatically resets at end of request.
      *
-     * PRINSIP: Hanya menukar nama berkas view yang dimuat. Data ($data) dan konfigurasi ($options)
-     * tetap dikirimkan secara utuh ke presenter.
+     * @var array<string, bool>
+     */
+    static $viewPathCache = [];
+
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $options
      */
     function view(string $name, array $data = [], array $options = []): string
     {
@@ -31,28 +35,37 @@ if (!function_exists('view')) {
 
         if ($isMobilePhone === null) {
             $sessionMode = null;
-            
+            $previewParam = $_GET['preview'] ?? null;
+
+            // Validate preview param — hanya 'mobile' atau 'desktop'
+            if ($previewParam && !in_array($previewParam, ['mobile', 'desktop', 'clear'], true)) {
+                $previewParam = null;
+            }
+
             // Coba akses session jika tersedia dan bukan di CLI
             if (!is_cli() && session_status() !== PHP_SESSION_DISABLED) {
                 try {
                     $session = Services::session();
-                    if (isset($_GET['preview'])) {
-                        $p = $_GET['preview'];
-                        if ($p === 'mobile' || $p === 'desktop') {
-                            $session->set('preview_mode', $p);
-                        } elseif ($p === 'clear') {
+                    $hasSession = true;
+
+                    if ($previewParam !== null) {
+                        if ($previewParam === 'mobile' || $previewParam === 'desktop') {
+                            $session->set('preview_mode', $previewParam);
+                        } elseif ($previewParam === 'clear') {
                             $session->remove('preview_mode');
                         }
                     }
                     $sessionMode = $session->get('preview_mode');
                 } catch (\Throwable $e) {
-                    // Safe fallback
+                    $hasSession = false;
                 }
+            } else {
+                $hasSession = false;
             }
 
             // Jika session tidak tersedia/belum diset, baca dari query param langsung
-            if ($sessionMode === null && isset($_GET['preview'])) {
-                $sessionMode = $_GET['preview'];
+            if ($sessionMode === null && $previewParam !== null) {
+                $sessionMode = $previewParam;
             }
 
             if ($sessionMode === 'desktop') {
@@ -60,9 +73,31 @@ if (!function_exists('view')) {
             } elseif ($sessionMode === 'mobile') {
                 $isMobilePhone = true;
             } else {
-                $agent = Services::request()->getUserAgent();
-                // Hanya layani tampilan mobile untuk smartphone jika agent terdeteksi
-                $isMobilePhone = $agent && $agent->isMobile();
+                // Check session cache for UserAgent detection
+                $cached = null;
+                if ($hasSession && isset($_SESSION['_mobile_cache'])) {
+                    $cached = $_SESSION['_mobile_cache'];
+                    // Invalidate jika preview param berubah
+                    if ($cached['preview_mode'] !== $sessionMode) {
+                        $cached = null;
+                        unset($_SESSION['_mobile_cache']);
+                    }
+                }
+
+                if ($cached !== null && isset($cached['is_mobile'])) {
+                    $isMobilePhone = $cached['is_mobile'];
+                } else {
+                    $agent = Services::request()->getUserAgent();
+                    $isMobilePhone = $agent && $agent->isMobile();
+
+                    if ($hasSession) {
+                        $_SESSION['_mobile_cache'] = [
+                            'is_mobile'    => $isMobilePhone,
+                            'preview_mode' => $sessionMode,
+                            'timestamp'    => time(),
+                        ];
+                    }
+                }
             }
         }
 
@@ -70,7 +105,11 @@ if (!function_exists('view')) {
             $mobileView = 'mobile/' . $name;
             $viewPath = APPPATH . 'Views/' . $mobileView . '.php';
 
-            if (file_exists($viewPath)) {
+            if (!isset($viewPathCache[$viewPath])) {
+                $viewPathCache[$viewPath] = file_exists($viewPath);
+            }
+
+            if ($viewPathCache[$viewPath]) {
                 $name = $mobileView;
             }
         }
