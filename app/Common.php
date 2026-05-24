@@ -18,20 +18,13 @@ use Config\Services;
 
 if (!function_exists('view')) {
     /**
-     * Cache for file_exists() checks on view paths.
-     * Valid per-request execution only. Automatically resets at end of request.
-     *
-     * @var array<string, bool>
-     */
-    static $viewPathCache = [];
-
-    /**
      * @param array<string, mixed> $data
      * @param array<string, mixed> $options
      */
     function view(string $name, array $data = [], array $options = []): string
     {
         static $isMobilePhone = null;
+        static $viewPathCache = [];
 
         if ($isMobilePhone === null) {
             $sessionMode = null;
