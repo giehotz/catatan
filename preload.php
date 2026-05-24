@@ -80,6 +80,23 @@ class preload
     }
 
     /**
+     * Build compiled exclusion regex from exclude path patterns.
+     * Handles cross-platform path separators (Unix / vs Windows \).
+     */
+    private function buildExcludeRegex(array $excludePatterns): string
+    {
+        $normalized = array_map(function (string $p): string {
+            return str_replace('\\', '/', $p);
+        }, $excludePatterns);
+
+        $escaped = array_map(function (string $p): string {
+            return preg_quote($p, '#');
+        }, $normalized);
+
+        return '#' . implode('|', $escaped) . '#i';
+    }
+
+    /**
      * Load PHP files.
      */
     public function load(): void
@@ -93,11 +110,15 @@ class preload
                 RecursiveRegexIterator::GET_MATCH,
             );
 
+            // Build compiled regex once — replaces nested str_contains loop
+            $excludeRegex = $this->buildExcludeRegex($path['exclude']);
+
             foreach ($phpFiles as $key => $file) {
-                foreach ($path['exclude'] as $exclude) {
-                    if (str_contains($file[0], $exclude)) {
-                        continue 2;
-                    }
+                // Normalize path separator for cross-platform matching
+                $filePath = str_replace('\\', '/', $file[0]);
+
+                if (preg_match($excludeRegex, $filePath)) {
+                    continue;
                 }
 
                 require_once $file[0];
