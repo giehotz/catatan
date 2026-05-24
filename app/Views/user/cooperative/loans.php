@@ -5,19 +5,19 @@
     
     <!-- Navigation Back links -->
     <div class="flex items-center justify-between">
-        <a href="<?= base_url('cooperative') ?>" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+        <a href="<?= base_url('cooperative') ?>" class="inline-flex items-center gap-1.5 text-xs font-bold text-tx-secondary hover:text-tx-primary transition-colors">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Kembali ke Dasbor Koperasi Saya
         </a>
-        <span class="text-xs text-slate-500 font-semibold font-mono">Loans Desk</span>
+        <span class="text-xs text-tx-disabled font-semibold font-mono">Loans Desk</span>
     </div>
 
     <!-- Title Header -->
     <div class="space-y-1">
-        <h1 class="text-3xl font-extrabold text-white tracking-tight">Pinjaman & Angsuran Saya</h1>
-        <p class="text-slate-400 text-sm">Ajukan fasilitas pinjaman baru dengan bunga flat bulanan ringan, hitung simulasi, dan setor bukti transfer angsuran.</p>
+        <h1 class="text-3xl font-extrabold text-tx-primary tracking-tight">Pinjaman & Angsuran Saya</h1>
+        <p class="text-tx-secondary text-sm">Ajukan fasilitas pinjaman baru dengan bunga flat bulanan ringan, hitung simulasi, dan setor bukti transfer angsuran.</p>
     </div>
 
     <!-- Message Banners -->
@@ -41,7 +41,7 @@
 
     <?php if (isset($errors)) : ?>
         <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs space-y-1">
-            <strong class="font-bold text-white block mb-1">Gagal mengajukan pinjaman:</strong>
+            <strong class="font-bold text-tx-primary block mb-1">Gagal mengajukan pinjaman:</strong>
             <?php foreach ($errors as $error) : ?>
                 <p>• <?= (string) esc($error) ?></p>
             <?php endforeach; ?>
@@ -51,23 +51,23 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         
         <!-- Application and Simulator Form Column -->
-        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 sm:p-8 space-y-6 h-fit md:col-span-1">
+        <div class="bg-surface/40 border border-br-default rounded-2xl p-6 sm:p-8 space-y-6 h-fit md:col-span-1">
             <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white tracking-tight">Ajukan Pinjaman Baru</h3>
-                <p class="text-xs text-slate-500">Hitung nilai pengembalian flat Anda di bawah ini secara seketika.</p>
+                <h3 class="text-lg font-bold text-tx-primary tracking-tight">Ajukan Pinjaman Baru</h3>
+                <p class="text-xs text-tx-disabled">Hitung nilai pengembalian flat Anda di bawah ini secara seketika.</p>
             </div>
 
             <form action="<?= base_url('cooperative/request-loan') ?>" method="post" class="space-y-5">
                 <?= csrf_field() ?>
 
                 <div class="space-y-2">
-                    <label for="nominal_pinjaman" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Nominal Pinjaman</label>
-                    <input type="number" id="nominal_pinjaman" name="nominal_pinjaman" required min="100000" placeholder="Min: Rp 100.000" oninput="runSimulation()" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-600 transition-all outline-none text-sm font-semibold">
+                    <label for="nominal_pinjaman" class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Nominal Pinjaman</label>
+                    <input type="number" id="nominal_pinjaman" name="nominal_pinjaman" required min="100000" placeholder="Min: Rp 100.000" oninput="runSimulation()" class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-tx-primary placeholder-tx-disabled transition-all outline-none text-sm font-semibold">
                 </div>
 
                 <div class="space-y-2">
-                    <label for="tenor_bulan" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tenor Pembiayaan</label>
-                    <select id="tenor_bulan" name="tenor_bulan" required onchange="runSimulation()" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl text-white text-xs font-bold outline-none focus:border-indigo-500 cursor-pointer">
+                    <label for="tenor_bulan" class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Tenor Pembiayaan</label>
+                    <select id="tenor_bulan" name="tenor_bulan" required onchange="runSimulation()" class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl text-tx-primary text-xs font-bold outline-none focus:border-indigo-500 cursor-pointer">
                         <option value="3">3 Bulan</option>
                         <option value="6">6 Bulan</option>
                         <option value="12" selected>12 Bulan</option>
@@ -77,47 +77,47 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="keterangan" class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tujuan Penggunaan</label>
-                    <input type="text" id="keterangan" name="keterangan" placeholder="Contoh: Renovasi atau Modal Usaha" class="w-full px-4 py-3 bg-slate-950/60 border border-slate-900 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-600 transition-all outline-none text-sm font-semibold">
+                    <label for="keterangan" class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Tujuan Penggunaan</label>
+                    <input type="text" id="keterangan" name="keterangan" placeholder="Contoh: Renovasi atau Modal Usaha" class="w-full px-4 py-3 bg-base/60 border border-br-default rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-tx-primary placeholder-tx-disabled transition-all outline-none text-sm font-semibold">
                 </div>
 
                 <!-- Simulation Widget Box -->
-                <div class="p-4 bg-slate-950/80 border border-slate-900 rounded-2xl space-y-3.5 text-xs">
+                <div class="p-4 bg-base/80 border border-br-default rounded-2xl space-y-3.5 text-xs">
                     <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block">Simulasi Perhitungan</span>
                     
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Aturan Bunga:</span>
-                            <span class="font-bold text-white"><?= floatval($settings['kop_bunga_pinjaman_persen'] ?? '1.50') ?>% (<?= ucfirst($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') ?>) / <?= $settings['kop_bunga_pinjaman_periode'] ?? 'bulanan' ?></span>
+                            <span class="font-bold text-tx-primary"><?= floatval($settings['kop_bunga_pinjaman_persen'] ?? '1.50') ?>% (<?= ucfirst($settings['kop_bunga_pinjaman_jenis'] ?? 'flat') ?>) / <?= $settings['kop_bunga_pinjaman_periode'] ?? 'bulanan' ?></span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Bunga Dibayar:</span>
                             <span class="font-bold text-slate-300"><?= ($settings['kop_bunga_pinjaman_opsi_bayar'] ?? 'cicil') === 'di_awal' ? 'Di Awal (Dipotong)' : 'Dicicil Bulanan' ?></span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Jasa Layanan:</span>
-                            <span id="sim_jasa_layanan" class="font-bold text-white">Rp 0</span>
+                            <span id="sim_jasa_layanan" class="font-bold text-tx-primary">Rp 0</span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Total Bunga:</span>
                             <span id="sim_total_bunga" class="font-bold text-rose-400">Rp 0</span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Pencairan Bersih:</span>
                             <span id="sim_pencairan_bersih" class="font-bold text-indigo-400">Rp 0</span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-400">
+                        <div class="flex items-center justify-between text-tx-secondary">
                             <span>Total Pengembalian:</span>
                             <span id="sim_total_bayar" class="font-bold text-emerald-400">Rp 0</span>
                         </div>
-                        <div class="border-t border-slate-900 my-2 pt-2 flex items-center justify-between font-bold text-white text-sm">
+                        <div class="border-t border-br-default my-2 pt-2 flex items-center justify-between font-bold text-tx-primary text-sm">
                             <span>Cicilan Per Bulan:</span>
                             <span id="sim_cicilan" class="text-indigo-400">Rp 0</span>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3.5 bg-linear-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-indigo-600/10 cursor-pointer flex items-center justify-center gap-1.5">
+                <button type="submit" class="w-full py-3.5 bg-linear-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-tx-primary font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-indigo-600/10 cursor-pointer flex items-center justify-center gap-1.5">
                     Kirim Pengajuan Kredit
                 </button>
             </form>
@@ -127,33 +127,33 @@
         <div class="space-y-6 md:col-span-2">
             
             <!-- Loan Lists -->
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl shadow-xl overflow-hidden">
-                <div class="p-6 border-b border-slate-900/60">
-                    <h3 class="text-lg font-bold text-white tracking-tight">Fasilitas Pinjaman Kredit Saya</h3>
+            <div class="bg-surface/40 border border-br-default rounded-2xl shadow-xl overflow-hidden">
+                <div class="p-6 border-b border-br-default/60">
+                    <h3 class="text-lg font-bold text-tx-primary tracking-tight">Fasilitas Pinjaman Kredit Saya</h3>
                 </div>
 
-                <div class="divide-y divide-slate-900/60 text-sm text-slate-300">
+                <div class="divide-y divide-br-default/60 text-sm text-slate-300">
                     <?php if (empty($loans)) : ?>
-                        <div class="p-8 text-center text-slate-500 font-semibold">Anda belum memiliki riwayat pengajuan pinjaman kredit.</div>
+                        <div class="p-8 text-center text-tx-disabled font-semibold">Anda belum memiliki riwayat pengajuan pinjaman kredit.</div>
                     <?php else : ?>
                         <?php foreach ($loans as $l) : ?>
                             <div class="p-6 space-y-6">
                                 <!-- Top Row: Details -->
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div class="space-y-1">
-                                        <span class="text-xs text-slate-500 block">Dibuat: <?= date('d M Y', strtotime($l['created_at'])) ?></span>
+                                        <span class="text-xs text-tx-disabled block">Dibuat: <?= date('d M Y', strtotime($l['created_at'])) ?></span>
                                         <div class="flex items-center gap-2">
-                                            <strong class="text-white text-base">Pokok: Rp <?= number_format($l['nominal_pinjaman'], 0, ',', '.') ?></strong>
+                                            <strong class="text-tx-primary text-base">Pokok: Rp <?= number_format($l['nominal_pinjaman'], 0, ',', '.') ?></strong>
                                             <span class="px-2 py-0.5 text-[9px] font-bold rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase"><?= (string) esc($l['tenor_bulan']) ?> Bulan</span>
                                         </div>
                                     </div>
                                     <div class="space-y-1 sm:text-right">
-                                        <span class="text-xs text-slate-500 block">Total Pengembalian</span>
+                                        <span class="text-xs text-tx-disabled block">Total Pengembalian</span>
                                         <strong class="text-emerald-400 text-base block">Rp <?= number_format($l['nominal_total'], 0, ',', '.') ?></strong>
                                     </div>
                                     <div>
                                         <?php if ($l['status'] === 'pending') : ?>
-                                            <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-slate-500/10 text-slate-400 border border-slate-800 uppercase block text-center">Pending Review</span>
+                                            <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-slate-500/10 text-tx-secondary border border-br-default uppercase block text-center">Pending Review</span>
                                         <?php elseif ($l['status'] === 'approved') : ?>
                                             <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase block text-center animate-pulse">Aktif</span>
                                         <?php elseif ($l['status'] === 'paid') : ?>
@@ -167,25 +167,25 @@
                                 <!-- Amortization/Payment widgets ONLY if approved/paid -->
                                 <?php if ($l['status'] === 'approved' || $l['status'] === 'paid') : ?>
                                     
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-950/60 p-4 sm:p-5 rounded-2xl border border-slate-900/60">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-base/60 p-4 sm:p-5 rounded-2xl border border-br-default/60">
                                         
                                         <!-- Installment Stats -->
                                         <div class="space-y-3">
-                                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Status Cicilan Koperasi</h5>
+                                            <h5 class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Status Cicilan Koperasi</h5>
                                             <div class="space-y-1.5 text-xs">
-                                                <div class="flex items-center justify-between text-slate-400">
+                                                <div class="flex items-center justify-between text-tx-secondary">
                                                     <span>Nilai Angsuran Flat:</span>
-                                                    <strong class="text-white">Rp <?= number_format(floatval($l['nominal_total']) / intval($l['tenor_bulan']), 2, ',', '.') ?> / bulan</strong>
+                                                    <strong class="text-tx-primary">Rp <?= number_format(floatval($l['nominal_total']) / intval($l['tenor_bulan']), 2, ',', '.') ?> / bulan</strong>
                                                 </div>
-                                                <div class="flex items-center justify-between text-slate-400">
+                                                <div class="flex items-center justify-between text-tx-secondary">
                                                     <span>Terbayar Valid:</span>
                                                     <strong class="text-emerald-400">Rp <?= number_format($l['total_paid'], 2, ',', '.') ?> (<?= $l['approved_installments'] ?> Kali)</strong>
                                                 </div>
-                                                <div class="flex items-center justify-between text-slate-400">
+                                                <div class="flex items-center justify-between text-tx-secondary">
                                                     <span>Antrean Verifikasi:</span>
                                                     <strong class="text-amber-400"><?= $l['pending_installments'] ?> cicilan</strong>
                                                 </div>
-                                                <div class="flex items-center justify-between text-slate-400">
+                                                <div class="flex items-center justify-between text-tx-secondary">
                                                     <span>Sisa Hutang:</span>
                                                     <strong class="text-indigo-400 font-extrabold">Rp <?= number_format(floatval($l['nominal_total']) - floatval($l['total_paid']) - floatval($l['pending_submissions_amount']), 2, ',', '.') ?></strong>
                                                 </div>
@@ -195,26 +195,26 @@
                                         <!-- Installment payment upload form -->
                                         <?php if ($l['status'] === 'approved') : ?>
                                             <div class="space-y-3">
-                                                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Setor Bukti Transfer Angsuran</h5>
+                                                <h5 class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Setor Bukti Transfer Angsuran</h5>
                                                 
                                                 <!-- Bank transfer guide reminder -->
-                                                <p class="text-[9px] text-slate-500 leading-relaxed">Silakan transfer angsuran flat Anda ke salah satu rekening koperasi terdaftar, lalu unggah buktinya.</p>
+                                                <p class="text-[9px] text-tx-disabled leading-relaxed">Silakan transfer angsuran flat Anda ke salah satu rekening koperasi terdaftar, lalu unggah buktinya.</p>
 
                                                 <form action="<?= base_url('cooperative/pay-installment/' . $l['id']) ?>" method="post" enctype="multipart/form-data" class="space-y-3">
                                                     <?= csrf_field() ?>
                                                     
                                                     <div class="space-y-3">
                                                         <div class="space-y-1">
-                                                            <label for="nominal_bayar_<?= $l['id'] ?>" class="text-[9px] text-slate-500 uppercase block mb-1">Nominal Transfer (Rp)</label>
+                                                            <label for="nominal_bayar_<?= $l['id'] ?>" class="text-[9px] text-tx-disabled uppercase block mb-1">Nominal Transfer (Rp)</label>
                                                             <?php $sisaHutangReal = floatval($l['nominal_total']) - floatval($l['total_paid']) - floatval($l['pending_submissions_amount']); ?>
-                                                            <input type="number" id="nominal_bayar_<?= $l['id'] ?>" name="nominal_bayar" required min="1000" max="<?= $sisaHutangReal ?>" placeholder="Misal: <?= number_format(floatval($l['nominal_total']) / intval($l['tenor_bulan']), 0, '', '') ?>" oninput="previewDistribution(<?= $l['id'] ?>, <?= floatval($l['nominal_total']) / intval($l['tenor_bulan']) ?>, <?= $sisaHutangReal ?>)" class="w-full px-3 py-2 bg-slate-950 border border-slate-900 rounded-lg focus:border-indigo-500 text-white text-xs font-bold transition-colors" <?= $sisaHutangReal <= 0 ? 'disabled' : '' ?>>
+                                                            <input type="number" id="nominal_bayar_<?= $l['id'] ?>" name="nominal_bayar" required min="1000" max="<?= $sisaHutangReal ?>" placeholder="Misal: <?= number_format(floatval($l['nominal_total']) / intval($l['tenor_bulan']), 0, '', '') ?>" oninput="previewDistribution(<?= $l['id'] ?>, <?= floatval($l['nominal_total']) / intval($l['tenor_bulan']) ?>, <?= $sisaHutangReal ?>)" class="w-full px-3 py-2 bg-base border border-br-default rounded-lg focus:border-indigo-500 text-tx-primary text-xs font-bold transition-colors" <?= $sisaHutangReal <= 0 ? 'disabled' : '' ?>>
                                                             <?php if (floatval($l['pending_submissions_amount']) > 0) : ?>
                                                                 <p class="text-[9px] text-amber-400 mt-1">Sisa limit memperhitungkan Rp <?= number_format($l['pending_submissions_amount'], 0, ',', '.') ?> yang sedang pending.</p>
                                                             <?php endif; ?>
                                                         </div>
                                                         <div class="space-y-1">
-                                                            <label for="bukti_bayar_<?= $l['id'] ?>" class="text-[9px] text-slate-500 uppercase block mb-1">Bukti Transfer (Image)</label>
-                                                            <input type="file" id="bukti_bayar_<?= $l['id'] ?>" name="bukti_bayar" required accept="image/*" class="w-full px-2 py-1 bg-slate-950 border border-slate-900 rounded-lg text-[10px] text-slate-400 outline-none file:mr-2 file:py-0.5 file:px-1.5 file:rounded file:border-0 file:text-[9px] file:font-bold file:bg-slate-800 file:text-indigo-400 hover:file:bg-slate-700 cursor-pointer">
+                                                            <label for="bukti_bayar_<?= $l['id'] ?>" class="text-[9px] text-tx-disabled uppercase block mb-1">Bukti Transfer (Image)</label>
+                                                            <input type="file" id="bukti_bayar_<?= $l['id'] ?>" name="bukti_bayar" required accept="image/*" class="w-full px-2 py-1 bg-base border border-br-default rounded-lg text-[10px] text-tx-secondary outline-none file:mr-2 file:py-0.5 file:px-1.5 file:rounded file:border-0 file:text-[9px] file:font-bold file:bg-elevated file:text-indigo-400 hover:file:bg-elevated cursor-pointer">
                                                         </div>
                                                         
                                                         <!-- Preview Distribution -->
@@ -223,7 +223,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <button type="submit" class="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs transition-colors cursor-pointer shadow-md shadow-indigo-600/10">
+                                                    <button type="submit" class="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-tx-primary font-bold rounded-lg text-xs transition-colors cursor-pointer shadow-md shadow-indigo-600/10">
                                                         Setor Bukti Cicilan
                                                     </button>
                                                 </form>
@@ -240,19 +240,19 @@
 
                                 <!-- History Submissions -->
                                 <?php if (!empty($l['submissions'])) : ?>
-                                    <div class="mt-4 border-t border-slate-900/60 pt-4">
-                                        <h5 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">Riwayat Pengajuan Angsuran</h5>
+                                    <div class="mt-4 border-t border-br-default/60 pt-4">
+                                        <h5 class="text-[10px] font-bold text-tx-secondary uppercase tracking-wider mb-3">Riwayat Pengajuan Angsuran</h5>
                                         <div class="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
                                             <?php foreach ($l['submissions'] as $sub) : ?>
-                                                <div class="flex items-start justify-between p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs">
+                                                <div class="flex items-start justify-between p-3 rounded-xl bg-base border border-br-default text-xs">
                                                     <div class="space-y-1">
                                                         <div class="flex items-center gap-2">
-                                                            <strong class="text-white">Rp <?= number_format($sub['nominal_pengajuan'], 2, ',', '.') ?></strong>
+                                                            <strong class="text-tx-primary">Rp <?= number_format($sub['nominal_pengajuan'], 2, ',', '.') ?></strong>
                                                             <?php if ($sub['source'] === 'admin') : ?>
                                                                 <span class="px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-500/20 text-amber-500 border border-amber-500/30 uppercase">Input Admin</span>
                                                             <?php endif; ?>
                                                         </div>
-                                                        <span class="text-[9px] text-slate-500 block font-mono"><?= date('d M Y, H:i', strtotime($sub['created_at'])) ?></span>
+                                                        <span class="text-[9px] text-tx-disabled block font-mono"><?= date('d M Y, H:i', strtotime($sub['created_at'])) ?></span>
                                                         
                                                         <?php if ($sub['status'] === 'rejected' && !empty($sub['catatan_tolak'])) : ?>
                                                             <div class="p-2 mt-2 bg-rose-500/10 border border-rose-500/20 rounded-lg">
@@ -263,7 +263,7 @@
                                                     </div>
                                                     <div class="text-right space-y-2">
                                                         <?php if ($sub['status'] === 'pending') : ?>
-                                                            <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-slate-500/10 text-slate-400 border border-slate-800 uppercase block text-center">Pending</span>
+                                                            <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-slate-500/10 text-tx-secondary border border-br-default uppercase block text-center">Pending</span>
                                                         <?php elseif ($sub['status'] === 'approved') : ?>
                                                             <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase block text-center">Disetujui</span>
                                                             <a href="<?= base_url('cooperative/loans/receipt/' . $sub['id']) ?>" target="_blank" class="inline-flex items-center gap-1 text-[9px] text-indigo-400 hover:text-indigo-300 font-bold uppercase tracking-wider mt-1 border border-indigo-500/30 px-2 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors">

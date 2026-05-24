@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="max-w-xl mx-auto space-y-6 pt-10">
 
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl relative">
+    <div class="bg-surface border border-br-default rounded-3xl overflow-hidden shadow-2xl relative">
         <div class="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
         
         <div class="p-8 sm:p-10 text-center space-y-6">
@@ -14,31 +14,31 @@
             </div>
             
             <div>
-                <h2 class="text-2xl font-bold text-white mb-2">Undangan Koperasi</h2>
-                <p class="text-slate-400">Pengurus Koperasi mengundang Anda untuk bergabung secara resmi sebagai anggota.</p>
+                <h2 class="text-2xl font-bold text-tx-primary mb-2">Undangan Koperasi</h2>
+                <p class="text-tx-secondary">Pengurus Koperasi mengundang Anda untuk bergabung secara resmi sebagai anggota.</p>
             </div>
 
-            <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800 text-left space-y-3">
-                <div class="flex justify-between items-center text-sm border-b border-slate-800/50 pb-3">
-                    <span class="text-slate-500">Dikirim Oleh</span>
-                    <span class="font-bold text-white">Administrator Koperasi</span>
+            <div class="p-4 rounded-xl bg-base/50 border border-br-default text-left space-y-3">
+                <div class="flex justify-between items-center text-sm border-b border-br-default/50 pb-3">
+                    <span class="text-tx-disabled">Dikirim Oleh</span>
+                    <span class="font-bold text-tx-primary">Administrator Koperasi</span>
                 </div>
-                <div class="flex justify-between items-center text-sm border-b border-slate-800/50 pb-3">
-                    <span class="text-slate-500">Untuk</span>
+                <div class="flex justify-between items-center text-sm border-b border-br-default/50 pb-3">
+                    <span class="text-tx-disabled">Untuk</span>
                     <span class="font-bold text-indigo-400"><?= esc($invitation['email']) ?></span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-500">Kode Undangan</span>
+                    <span class="text-tx-disabled">Kode Undangan</span>
                     <span class="font-mono font-bold text-slate-300"><?= esc($invitation['code']) ?></span>
                 </div>
             </div>
             
-            <p class="text-sm text-slate-500 pb-2">Dengan menerima undangan ini, Anda menyetujui seluruh syarat & ketentuan Koperasi.</p>
+            <p class="text-sm text-tx-disabled pb-2">Dengan menerima undangan ini, Anda menyetujui seluruh syarat & ketentuan Koperasi.</p>
 
-            <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-800">
+            <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-br-default">
                 <form action="<?= base_url('cooperative/reject-join/' . $invitation['code']) ?>" method="post" class="flex-1" onsubmit="return confirm('Anda yakin ingin menolak undangan ini?');">
                     <?= csrf_field() ?>
-                    <button type="submit" class="w-full py-3.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl text-sm transition-all cursor-pointer">
+                    <button type="submit" class="w-full py-3.5 bg-base hover:bg-surface border border-br-default text-slate-300 font-bold rounded-xl text-sm transition-all cursor-pointer">
                         Tolak Undangan
                     </button>
                 </form>
@@ -46,7 +46,7 @@
                 <form action="<?= base_url('cooperative/join') ?>" method="post" class="flex-1">
                     <?= csrf_field() ?>
                     <input type="hidden" name="invitation_code" value="<?= esc($invitation['code']) ?>">
-                    <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-indigo-600/20 cursor-pointer">
+                    <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-tx-primary font-bold rounded-xl text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-indigo-600/20 cursor-pointer">
                         Ya, Bergabung
                     </button>
                 </form>
