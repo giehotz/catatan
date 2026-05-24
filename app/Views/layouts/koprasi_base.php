@@ -4,7 +4,7 @@
  * @var string|null $title
  */
 $memberActiveTab = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 bg-emerald-500/15 text-emerald-500 dark:text-emerald-450 ring-1 ring-emerald-500/30 shadow-sm shadow-emerald-500/10 font-bold';
-$memberInactiveTab = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 font-semibold';
+$memberInactiveTab = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 text-tx-secondary hover:text-tx-primary hover:bg-elevated font-semibold';
 
 // Robust active detection for KSP main hub pages (including join flows)
 $isHubActive = current_url() === base_url('cooperative')
@@ -72,14 +72,17 @@ if (auth()->loggedIn()) {
                 <?php if (auth()->loggedIn()): ?>
                     <div id="desktopNavWrapper" class="relative hidden md:block">
                         <div id="mainNavLinks" class="flex items-center h-14 overflow-x-auto no-scrollbar scroll-smooth relative">
-                            <nav class="flex items-center gap-2 sm:gap-3 py-1.5 text-slate-400 font-medium text-xs sm:text-sm mx-auto">
-                                <a href="<?= base_url('/') ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/30 hover:bg-indigo-500/20 shadow-sm shadow-indigo-500/10" title="Kembali ke Catatan Keuangan Pribadi">
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                    </svg>
-                                    <span>Catatan Keuangan</span>
-                                </a>
-                                <div class="h-6 w-px bg-slate-700 mx-1 shrink-0"></div>
+                            <nav class="flex items-center gap-2 sm:gap-3 py-1.5 text-tx-secondary font-medium text-xs sm:text-sm mx-auto">
+                                    <a href="<?= $item['url'] ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= $item['active'] ? $memberActiveTab : $memberInactiveTab ?>"><?= $item['icon'] ?><span><?= $item['label'] ?></span></a>
+                                <?php endforeach ?>
+                                <?php if ($hasActiveLoans): ?>
+                                <a href="<?= base_url('cooperative/loans') ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= current_url() === base_url('cooperative/loans') ? $memberActiveTab : $memberInactiveTab ?>"><svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Pinjaman Saya</span></a>
+                                <?php endif ?>
+                                <div class="h-6 w-px bg-br-default mx-1 shrink-0"></div>
+                                <?php if (!$isMobile ?? false): ?>
+                                    <a href="<?= base_url('inbox') ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= strpos(current_url(), base_url('inbox')) !== false ? $memberActiveTab : $memberInactiveTab ?>"><svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg><span>Pesan Masuk</span></a>
+                                <?php endif ?>
+                            <div class="h-6 w-px bg-br-default mx-1 shrink-0"></div>
 
                                 <a href="<?= base_url('cooperative') ?>" class="<?= $isHubActive ? $memberActiveTab : $memberInactiveTab ?>">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -157,7 +160,7 @@ if (auth()->loggedIn()) {
                 <div class="flex items-center gap-4">
                     <a href="#" class="text-xs text-tx-secondary hover:text-brand transition-colors">Kebijakan Privasi</a>
                     <span class="text-xs text-tx-disabled/50 select-none">|</span>
-                    <a href="<?= base_url('cooperative/terms') ?>" class="text-xs text-slate-400 hover:text-indigo-400 transition-colors">Syarat & Ketentuan</a>
+                    <a href="<?= base_url('cooperative/terms') ?>" class="text-xs text-tx-secondary hover:text-brand transition-colors">Syarat & Ketentuan</a>
                 </div>
             </div>
         </footer>

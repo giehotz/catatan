@@ -29,11 +29,11 @@ if (auth()->user()->inGroup('admin') || auth()->user()->inGroup('superadmin')) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white">
+<html lang="id" class="h-full bg-base text-tx-primary selection:bg-indigo-500 selection:text-white">
 <head>
     <?= view('partials/head', ['title' => $title ?? 'Panel Administrasi', 'forceDarkTheme' => true]) ?>
 </head>
-<body class="h-full bg-slate-950 antialiased overflow-x-hidden">
+<body class="h-full bg-base antialiased overflow-x-hidden">
     
     <!-- Premium background glowing gradients -->
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none"></div>

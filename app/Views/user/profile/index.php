@@ -175,9 +175,9 @@
                     <div class="space-y-1.5 max-w-xs">
                         <label for="theme_preference_select" class="text-xs font-bold text-tx-secondary uppercase tracking-wider block">Tema Terpilih</label>
                         <select id="theme_preference_select" name="theme_preference" onchange="updateThemeSelection(this.value)" class="w-full px-4 py-3 bg-base border border-br-default rounded-xl focus:border-brand focus:ring-1 focus:ring-brand text-tx-primary transition-all outline-none text-sm">
-                            <option value="light">☀️ Mode Terang (Light Mode)</option>
-                            <option value="dark">🌙 Mode Gelap (Dark Mode)</option>
-                            <option value="system">💻 Ikuti Sistem OS (System Mode)</option>
+                            <option value="light" <?= ($user->theme_preference ?? 'system') === 'light' ? 'selected' : '' ?>>☀️ Mode Terang (Light Mode)</option>
+                            <option value="dark" <?= ($user->theme_preference ?? 'system') === 'dark' ? 'selected' : '' ?>>🌙 Mode Gelap (Dark Mode)</option>
+                            <option value="system" <?= ($user->theme_preference ?? 'system') === 'system' ? 'selected' : '' ?>>💻 Ikuti Sistem OS (System Mode)</option>
                         </select>
                     </div>
                 </div>

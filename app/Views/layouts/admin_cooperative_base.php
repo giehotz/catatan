@@ -5,7 +5,7 @@
 
 // Unified styling classes to prevent IDE tailwind CSS property conflicts
 $adminActiveTab = 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30 shadow-sm shadow-emerald-500/10 font-bold';
-$adminInactiveTab = 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 font-semibold';
+$adminInactiveTab = 'text-tx-secondary hover:text-tx-primary hover:bg-elevated font-semibold';
 $isAdmin = auth()->user()->inGroup('admin') || auth()->user()->inGroup('superadmin');
 $directLoanEnabled = \App\Models\KopSettingModel::getSetting('direct_loan_enabled', '0') === '1';
 $canDirectLoan = $isAdmin || $directLoanEnabled;
@@ -34,7 +34,7 @@ if ($isAdmin) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-955 text-slate-100 selection:bg-emerald-500 selection:text-white">
+<html lang="id" class="h-full bg-base text-tx-primary selection:bg-emerald-500 selection:text-white">
 <head>
     <?= view('partials/head', ['title' => $title ?? 'Pengelola Koperasi', 'forceDarkTheme' => true]) ?>
 </head>

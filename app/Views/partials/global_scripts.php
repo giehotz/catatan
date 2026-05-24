@@ -218,6 +218,8 @@ function updateProfileDropdownControls() { const select = document.getElementByI
 // Bind initial events
 document.addEventListener('DOMContentLoaded', () => {
     updateToggleIcons();
+    updateProfileDropdownControls();
+    updateMobileSheetControls();
 });
 
 // ====================== Smart Navigation Scroll (Desktop Nav) ======================
