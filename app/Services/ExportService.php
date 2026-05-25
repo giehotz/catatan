@@ -28,32 +28,33 @@ class ExportService
      */
     public function getFilteredTransactions(int $userId, array $filters): array
     {
-        $query = $this->transactionModel->where('user_id', $userId);
+        $this->transactionModel->resetQuery();
+        $this->transactionModel
+            ->select('transactions.*, COALESCE(ic.name, ec.name, \'Kategori Dihapus\') as category_name')
+            ->join('income_categories ic', "transactions.category_id = ic.id AND transactions.type = 'income'", 'left')
+            ->join('expense_categories ec', "transactions.category_id = ec.id AND transactions.type = 'expense'", 'left')
+            ->where('transactions.user_id', $userId);
 
         if (!empty($filters['type'])) {
-            $query->where('type', $filters['type']);
+            $this->transactionModel->where('transactions.type', $filters['type']);
         }
         if (!empty($filters['start_date'])) {
-            $query->where('transaction_date >=', $filters['start_date']);
+            $this->transactionModel->where('transactions.transaction_date >=', $filters['start_date']);
         }
         if (!empty($filters['end_date'])) {
-            $query->where('transaction_date <=', $filters['end_date']);
+            $this->transactionModel->where('transactions.transaction_date <=', $filters['end_date']);
         }
         if (!empty($filters['search'])) {
-            $query->like('description', $filters['search']);
+            $this->transactionModel->like('transactions.description', $filters['search']);
         }
 
-        $transactions = $query->orderBy('transaction_date', 'DESC')->orderBy('id', 'DESC')->findAll();
+        $transactions = $this->transactionModel
+            ->orderBy('transactions.transaction_date', 'DESC')
+            ->orderBy('transactions.id', 'DESC')
+            ->findAll();
 
         foreach ($transactions as &$tx) {
             $tx['amount'] = floatval($tx['amount']);
-            if ($tx['type'] === 'income') {
-                $cat = $this->incomeCategoryModel->find($tx['category_id']);
-                $tx['category_name'] = $cat ? $cat['name'] : 'Kategori Dihapus';
-            } else {
-                $cat = $this->expenseCategoryModel->find($tx['category_id']);
-                $tx['category_name'] = $cat ? $cat['name'] : 'Kategori Dihapus';
-            }
         }
 
         return $transactions;

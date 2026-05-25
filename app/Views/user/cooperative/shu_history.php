@@ -17,7 +17,6 @@
 
     <!-- Stats Summary Row -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <!-- Card 1: Total SHU Diterima -->
         <div class="bg-surface/40 border border-br-default rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between h-32">
             <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
             <span class="block text-xs font-bold text-tx-disabled uppercase tracking-wider mb-2">Total SHU Diterima (All Time)</span>
@@ -26,7 +25,6 @@
             </div>
         </div>
 
-        <!-- Card 2: Status Distribusi -->
         <div class="bg-surface/40 border border-br-default rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between h-32">
             <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl"></div>
             <span class="block text-xs font-bold text-tx-disabled uppercase tracking-wider mb-2">Jumlah Pembagian</span>
@@ -35,7 +33,6 @@
             </div>
         </div>
 
-        <!-- Card 3: Edukasi Singkat -->
         <div class="bg-surface/40 border border-br-default rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between h-32">
             <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl"></div>
             <span class="block text-xs font-bold text-tx-disabled uppercase tracking-wider mb-2">Alokasi SHU Otomatis</span>
@@ -55,7 +52,7 @@
                     <tr>
                         <th class="px-6 py-4">Tahun Buku</th>
                         <th class="px-6 py-4 text-right">Jasa Modal (Simpanan)</th>
-                        <th class="px-6 py-4 text-right">Jasa Anggota (Pinjaman)</th>
+                        <th class="px-6 py-4 text-right">Jasa Usaha (Pinjaman)</th>
                         <th class="px-6 py-4 text-right text-emerald-400 font-bold">Total SHU Diterima</th>
                         <th class="px-6 py-4">Tanggal Penerimaan</th>
                     </tr>
@@ -70,7 +67,7 @@
                             <tr class="hover:bg-elevated/20 transition-colors">
                                 <td class="px-6 py-4 font-bold text-tx-primary"><?= (int)$shu['tahun'] ?></td>
                                 <td class="px-6 py-4 text-right font-mono text-xs">Rp <?= number_format($shu['jasa_modal'], 2, ',', '.') ?></td>
-                                <td class="px-6 py-4 text-right font-mono text-xs">Rp <?= number_format($shu['jasa_anggota'], 2, ',', '.') ?></td>
+                                <td class="px-6 py-4 text-right font-mono text-xs">Rp <?= number_format(($shu['jasa_usaha'] ?? $shu['jasa_anggota']), 2, ',', '.') ?></td>
                                 <td class="px-6 py-4 text-right font-mono text-xs text-emerald-400 font-bold">Rp <?= number_format($shu['total_shu'], 2, ',', '.') ?></td>
                                 <td class="px-6 py-4 text-xs font-mono"><?= date('d M Y H:i', strtotime($shu['tanggal_distribusi'])) ?></td>
                             </tr>
@@ -81,7 +78,7 @@
         </div>
     </div>
 
-    <!-- Explanatory Banner about SHU Calculation -->
+    <!-- Explanatory Banner -->
     <div class="bg-surface/40 border border-br-default rounded-2xl p-6 shadow-xl relative overflow-hidden">
         <h3 class="text-sm font-bold text-tx-primary mb-3 flex items-center gap-1.5">
             <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -90,11 +87,11 @@
             Bagaimana Nilai SHU Anda Dihitung?
         </h3>
         <p class="text-tx-secondary text-xs leading-relaxed mb-3">
-            Sisa Hasil Usaha (SHU) yang dibagikan kepada Anda didasarkan pada asas keadilan dan asas koperasi berdasarkan kontribusi aktif Anda pada tahun buku tersebut:
+            Sisa Hasil Usaha (SHU) yang dibagikan kepada Anda didasarkan pada asas keadilan dan partisipasi anggota pada tahun buku tersebut:
         </p>
         <ul class="space-y-2 text-tx-secondary text-xs list-disc pl-5">
-            <li><strong class="text-indigo-300">Jasa Modal (Simpanan)</strong>: Dihitung secara proporsional berdasarkan rata-rata total saldo simpanan (pokok + wajib + sukarela) Anda berbanding total simpanan koperasi. Semakin rajin menabung, semakin besar jasa modal Anda.</li>
-            <li><strong class="text-emerald-300">Jasa Anggota (Pinjaman)</strong>: Dihitung secara proporsional berdasarkan bunga kredit yang Anda sumbangkan ke koperasi dari pinjaman aktif Anda berbanding total pendapatan bunga koperasi. Semakin aktif berpartisipasi dalam modul pinjaman, semakin besar jasa anggota Anda.</li>
+            <li><strong class="text-indigo-300">Jasa Modal (Simpanan)</strong>: Dihitung secara proporsional berdasarkan total saldo simpanan (pokok + wajib + sukarela) Anda berbanding total simpanan seluruh anggota. Semakin banyak simpanan Anda, semakin besar porsi Jasa Modal yang diterima.</li>
+            <li><strong class="text-emerald-300">Jasa Usaha (Volume Pinjaman)</strong>: Dihitung secara proporsional berdasarkan volume pinjaman Anda (nominal pinjaman, bukan bunga) berbanding total volume pinjaman seluruh anggota. Semakin aktif meminjam, semakin besar porsi Jasa Usaha yang diterima.</li>
         </ul>
     </div>
 

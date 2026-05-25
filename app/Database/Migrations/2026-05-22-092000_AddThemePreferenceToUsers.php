@@ -14,7 +14,7 @@ class AddThemePreferenceToUsers extends Migration
                 'constraint' => 20,
                 'default'    => 'system',
                 'null'       => false,
-                'after'      => 'avatar', // Let's place it after the avatar column if exists
+                'after'      => 'status_message',
             ],
         ];
 

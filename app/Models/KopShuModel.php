@@ -16,9 +16,13 @@ class KopShuModel extends Model
         'tahun',
         'jasa_modal',
         'jasa_anggota',
+        'jasa_usaha',
+        'volume_pinjaman',
+        'total_volume_pinjaman',
+        'allocation_id',
         'total_shu',
         'tanggal_distribusi',
-        'distributed_by'
+        'distributed_by',
     ];
 
     protected $useTimestamps = false;

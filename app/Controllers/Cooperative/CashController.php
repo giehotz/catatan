@@ -42,7 +42,23 @@ class CashController extends BaseController
         $totalTerkumpul = $this->angsuranModel->where('status', 'approved')->selectSum('nominal_bayar')->first()['nominal_bayar'] ?? 0;
 
         // Riwayat
-        $riwayatDana = $this->kasInternalModel->orderBy('tanggal_transaksi', 'DESC')->findAll(50);
+        $riwayatDana = $this->kasInternalModel
+            ->orderBy('tanggal_transaksi', 'DESC')
+            ->findAll(50);
+
+        // Audit Trail — cooperative fund actions only
+        $auditLogModel = new AuditLogModel();
+        $auditTrail = $auditLogModel
+            ->select('audit_logs.*, users.username')
+            ->join('users', 'users.id = audit_logs.user_id', 'left')
+            ->whereIn('audit_logs.action', ['coop_fund_transfer', 'coop_fund_manual'])
+            ->orderBy('audit_logs.created_at', 'DESC')
+            ->findAll(30);
+
+        // Tambahin nomor urut
+        foreach ($auditTrail as &$row) {
+            $row['actor'] = $row['username'] ?? 'System';
+        }
 
         $data = [
             'title' => 'Kelola Kas & Dana Eksternal',
@@ -50,7 +66,8 @@ class CashController extends BaseController
             'saldoDanaTalangan' => $saldoDanaTalangan,
             'totalTarget' => (float)$totalTarget,
             'totalTerkumpul' => (float)$totalTerkumpul,
-            'riwayatDana' => $riwayatDana
+            'riwayatDana' => $riwayatDana,
+            'auditTrail' => $auditTrail,
         ];
 
         return view('admin/cooperative/funds', $data);

@@ -13,13 +13,15 @@ class AdminAuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        $path = trim($request->getUri()->getPath(), '/');
+
         // 1. Bypass filter if we are already accessing the admin login URL to prevent redirection loops
-        if (strpos(current_url(), 'admin/login') !== false) {
+        if ($path === 'admin/login' || str_starts_with($path, 'admin/login/')) {
             return;
         }
 
-        // 2. Bypass filter if the user is currently impersonating and attempting to stop impersonating
-        if (strpos(current_url(), 'admin/stop-impersonate') !== false && session()->has('impersonator_user_id')) {
+        // 2. Bypass filter for stop-impersonate (route is outside admin group, no filter needed)
+        if ($path === 'admin/stop-impersonate' || str_starts_with($path, 'admin/stop-impersonate/')) {
             return;
         }
 

@@ -44,11 +44,12 @@ class Impersonation extends BaseController
         // Logout the admin user first to clear active session credentials before target login
         auth()->logout();
 
-        // Save original admin ID back in session
-        session()->set('impersonator_user_id', $adminId);
-
         // Login as the target user
         auth()->login($targetUser);
+
+        // Save original admin ID back in session AFTER login,
+        // because auth()->login() calls startLogin() which regenerates the session.
+        session()->set('impersonator_user_id', $adminId);
 
         return redirect()->to(base_url('/'))->with('message', "Anda sekarang menyamar sebagai '{$targetUser->username}'.");
     }

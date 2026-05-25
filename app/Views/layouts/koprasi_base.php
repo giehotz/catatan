@@ -28,6 +28,20 @@ if (auth()->loggedIn()) {
         cache()->save($cacheKey, $isKspActiveMember ? 1 : 0, 300);
     }
 }
+
+$hasActiveLoans = $hasActiveLoans ?? false;
+$isMobile = $isMobile ?? false;
+$navItems = [
+    ['url' => base_url('/'), 'label' => 'Catatan Keuangan', 'active' => false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />'],
+    ['url' => base_url('cooperative'), 'label' => 'Hub Koperasi Saya', 'active' => $isHubActive, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />'],
+];
+
+if ($isKspActiveMember) {
+    $navItems[] = ['url' => base_url('cooperative/savings'), 'label' => 'Simpanan Saya', 'active' => strpos(current_url(), base_url('cooperative/savings')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />'];
+    $navItems[] = ['url' => base_url('cooperative/loans'), 'label' => 'Pinjaman Saya', 'active' => strpos(current_url(), base_url('cooperative/loans')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />'];
+    $navItems[] = ['url' => base_url('cooperative/shu'), 'label' => 'SHU Saya', 'active' => strpos(current_url(), base_url('cooperative/shu')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />'];
+    $navItems[] = ['url' => base_url('cooperative/bills'), 'label' => 'Tagihan Saya', 'active' => strpos(current_url(), base_url('cooperative/bills')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="id" class="h-full bg-base text-tx-primary selection:bg-emerald-500 selection:text-white">
@@ -73,6 +87,7 @@ if (auth()->loggedIn()) {
                     <div id="desktopNavWrapper" class="relative hidden md:block">
                         <div id="mainNavLinks" class="flex items-center h-14 overflow-x-auto no-scrollbar scroll-smooth relative">
                             <nav class="flex items-center gap-2 sm:gap-3 py-1.5 text-tx-secondary font-medium text-xs sm:text-sm mx-auto">
+                                <?php foreach ($navItems as $item): ?>
                                     <a href="<?= $item['url'] ?>" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-200 shrink-0 <?= $item['active'] ? $memberActiveTab : $memberInactiveTab ?>"><?= $item['icon'] ?><span><?= $item['label'] ?></span></a>
                                 <?php endforeach ?>
                                 <?php if ($hasActiveLoans): ?>
@@ -167,18 +182,6 @@ if (auth()->loggedIn()) {
     </div>
 
     <!-- Mobile Navigation Drawer -->
-    <?php
-    $navItems = [
-        ['url' => base_url('/'), 'label' => 'Catatan Keuangan', 'active' => false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />'],
-        ['url' => base_url('cooperative'), 'label' => 'Hub Koperasi Saya', 'active' => $isHubActive, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />'],
-    ];
-    if ($isKspActiveMember) {
-        $navItems[] = ['url' => base_url('cooperative/savings'), 'label' => 'Simpanan Saya', 'active' => strpos(current_url(), base_url('cooperative/savings')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />'];
-        $navItems[] = ['url' => base_url('cooperative/loans'), 'label' => 'Pinjaman Saya', 'active' => strpos(current_url(), base_url('cooperative/loans')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />'];
-        $navItems[] = ['url' => base_url('cooperative/shu'), 'label' => 'SHU Saya', 'active' => strpos(current_url(), base_url('cooperative/shu')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />'];
-        $navItems[] = ['url' => base_url('cooperative/bills'), 'label' => 'Tagihan Saya', 'active' => strpos(current_url(), base_url('cooperative/bills')) !== false, 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />'];
-    }
-    ?>
     <?= view('partials/mobile_drawer', ['portal' => 'cooperative', 'navItems' => $navItems]) ?>
 
     <!-- Theme & Global Scripts -->

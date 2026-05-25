@@ -56,6 +56,7 @@ class AuditLog extends BaseController
             'coop_broadcast'            => 'Pesan Broadcast',
             'coop_direct_loan'          => 'Pinjaman Langsung',
             'coop_fund_stored'          => 'Dana Kas Dicatat',
+            'coop_shu_alokasi'          => 'Alokasi SHU Disimpan',
             'coop_shu_distributed'      => 'SHU Didistribusikan',
             'admin_login'               => 'Login Admin',
             'audit_cleared'             => 'Log Audit Dihapus',

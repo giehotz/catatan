@@ -131,14 +131,6 @@ class Filters extends BaseFilters
                 'profile/*',
             ]
         ],
-        'admin_auth' => [
-            'before' => [
-                'admin',
-                'admin/*',
-            ],
-            'except' => [
-                'admin/login'
-            ]
-        ]
+
     ];
 }

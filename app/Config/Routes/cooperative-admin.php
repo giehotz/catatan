@@ -49,6 +49,7 @@ $routes->group('admin/cooperative', ['namespace' => 'App\Controllers\Cooperative
     // (Modul SHU menggunakan controller CooperativeShu di luar Cooperative folder)
     $routes->get('shu', '\App\Controllers\CooperativeShu::adminIndex');
     $routes->post('shu/distribute', '\App\Controllers\CooperativeShu::distribute');
+    $routes->post('shu/save-alokasi', '\App\Controllers\CooperativeShu::saveAlokasi');
 
     // Membership Resignation System Approval
     $routes->get('resign-requests', 'ResignApprovalController::index');
